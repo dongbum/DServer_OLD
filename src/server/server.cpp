@@ -12,18 +12,19 @@
 namespace dserver
 {
 
-DServer::DServer(int i)
-{
-	std::cout << "DServer(int i) : " << i << std::endl;
-}
-
 DServer::DServer()
+:	session_(NULL)
 {
 	EndPoint endpoint_(boost::asio::ip::tcp::v4(), 12341);
 	Acceptor acceptor_(io_service_, endpoint_);
 	Socket socket_(io_service_);
-	acceptor_.accept(socket_);
 
+	session_ = new Session(acceptor_.get_io_service());
+	acceptor_.async_accept(session_->GetSocket(),
+				boost::bind(AcceptHandler, this, session_, boost::asio::placeholders::error)
+			);
+
+	/*
 	while (true)
 	{
 		char buffer[1024] = {0,};
@@ -55,9 +56,15 @@ DServer::DServer()
 			std::cout << "클라이언트로 보낸 메시지 : " << &buffer[0] << std::endl;
 		}
 	}
+	*/
 }
 
 DServer::~DServer(void)
+{
+
+}
+
+void DServer::AcceptHandler(Session* session, const boost::system::error_code& error)
 {
 
 }

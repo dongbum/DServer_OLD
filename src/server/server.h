@@ -11,12 +11,10 @@
 #include <iostream>
 #include <string>
 
-#include <boost/lexical_cast.hpp>
+#include <boost/bind.hpp>
 
-#include <boost/asio.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-
+#include "define.h"
+#include "session.h"
 
 namespace dserver
 {
@@ -30,11 +28,12 @@ public :
 	typedef boost::asio::ip::tcp::socket Socket;
 
 	DServer();
-	DServer(int i);
 	virtual ~DServer(void);
-	int a_server;
 private :
 	IoService io_service_;
+	Session* session_;
+
+	void AcceptHandler(Session* session, const boost::system::error_code& error);
 };
 
 }
