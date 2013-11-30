@@ -26,4 +26,35 @@ Socket& Session::GetSocket()
 	return socket_;
 }
 
+void Session::PostHandler(void)
+{
+	char recv_buffer[1024] = {0,};
+
+	socket_.async_read_some(
+			boost::asio::buffer(recv_buffer),
+			boost::bind(
+					&Session::ReceiveHandler,
+					this,
+					boost::asio::placeholders::error,
+					boost::asio::placeholders::bytes_transferred
+					)
+			);
+
+}
+
+void Session::ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred)
+{
+	if (error)
+	{
+
+	}
+
+	PostHandler();
+}
+
+void Session::WriteHandler(const boost::system::error_code& error, size_t bytes_transferred)
+{
+
+}
+
 }

@@ -8,11 +8,6 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include <iostream>
-#include <string>
-
-#include <boost/bind.hpp>
-
 #include "define.h"
 #include "session.h"
 

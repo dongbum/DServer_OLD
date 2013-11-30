@@ -9,7 +9,7 @@
 
 int main(void)
 {
-	dserver::DServer server_;
+	dserver::DServer server;
 
 	std::cout << "서버 종료" << std::endl;
 

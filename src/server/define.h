@@ -8,7 +8,11 @@
 #ifndef DEFINE_H_
 #define DEFINE_H_
 
+#include <iostream>
+#include <string>
+
 #include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;

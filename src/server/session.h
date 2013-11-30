@@ -19,6 +19,8 @@ public :
 	Session(IoService& io_service);
 	virtual ~Session();
 
+	void PostHandler(void);
+
 	Socket& GetSocket();
 private :
 	void ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred);
