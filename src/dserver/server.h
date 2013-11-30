@@ -22,12 +22,19 @@ public :
 	typedef boost::asio::ip::tcp::acceptor Acceptor;
 	typedef boost::asio::ip::tcp::socket Socket;
 
+	// 생성자
 	DServer();
+
+	// 소멸자
 	virtual ~DServer(void);
+
+	// 서버를 초기화한다.
+	void Init(void);
 private :
 	IoService io_service_;
 	Session* session_;
 
+	// 소켓 accept 핸들러
 	void AcceptHandler(Session* session, const boost::system::error_code& error);
 };
 

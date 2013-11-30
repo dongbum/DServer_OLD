@@ -5,11 +5,12 @@
  *      Author: dongbum
  */
 
-#include "server/server.h"
+#include "dserver/server.h"
 
 int main(void)
 {
 	dserver::DServer server;
+	server.Init();
 
 	std::cout << "서버 종료" << std::endl;
 

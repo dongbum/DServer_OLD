@@ -9,10 +9,14 @@
 #define DEFINE_H_
 
 #include <iostream>
+#include <map>
 #include <string>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;

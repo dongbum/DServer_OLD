@@ -12,8 +12,21 @@
 namespace dserver
 {
 
+// 생성자
 DServer::DServer()
 :	session_(NULL)
+{
+
+}
+
+// 소멸자
+DServer::~DServer(void)
+{
+
+}
+
+// 서버를 초기화한다.
+void DServer::Init(void)
 {
 	EndPoint endpoint_(boost::asio::ip::tcp::v4(), 12341);
 	Acceptor acceptor_(io_service_, endpoint_);
@@ -33,11 +46,7 @@ DServer::DServer()
 	io_service_.run();
 }
 
-DServer::~DServer(void)
-{
-
-}
-
+// 소켓 accept 핸들러
 void DServer::AcceptHandler(Session* session, const boost::system::error_code& error)
 {
 	if (!error)
