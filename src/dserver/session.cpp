@@ -10,8 +10,9 @@
 namespace dserver
 {
 
-Session::Session(IoService& io_service)
+Session::Session(IoService& io_service, DServer* server)
 :	socket_(io_service)
+,	server_(server)
 {
 	// TODO Auto-generated constructor stub
 }
@@ -58,6 +59,8 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 		{
 			std::cout << "Client connection error : " << error.value() << " - msg : " << error.message() << std::endl;
 		}
+
+		server_->CloseHandler(this);
 	}
 	else
 	{
@@ -74,6 +77,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 						boost::asio::placeholders::bytes_transferred
 						)
 				);
+
 		PostHandler();
 	}
 }
