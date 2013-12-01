@@ -27,6 +27,7 @@ private :
 	void WriteHandler(const boost::system::error_code& error, size_t bytes_transferred);
 
 	Socket socket_;
+	char recv_buffer_[1024];
 };
 
 }

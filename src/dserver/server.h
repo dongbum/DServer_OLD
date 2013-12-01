@@ -29,7 +29,7 @@ public :
 	virtual ~DServer(void);
 
 	// 서버를 초기화한다.
-	void Init(void);
+	void Init(std::string server_port);
 private :
 	IoService io_service_;
 	Session* session_;

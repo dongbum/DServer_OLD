@@ -26,9 +26,9 @@ DServer::~DServer(void)
 }
 
 // 서버를 초기화한다.
-void DServer::Init(void)
+void DServer::Init(std::string server_port)
 {
-	EndPoint endpoint_(boost::asio::ip::tcp::v4(), 12341);
+	EndPoint endpoint_(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port));
 	Acceptor acceptor_(io_service_, endpoint_);
 	Socket socket_(io_service_);
 
