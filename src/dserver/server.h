@@ -14,6 +14,8 @@
 namespace dserver
 {
 
+class Session;
+
 class DServer
 {
 public :
@@ -23,19 +25,31 @@ public :
 	typedef boost::asio::ip::tcp::socket Socket;
 
 	// 생성자
-	DServer();
+	DServer(IoService& io_service_, std::string server_port);
 
 	// 소멸자
 	virtual ~DServer(void);
 
-	// 서버를 초기화한다.
-	void Init(void);
-private :
-	IoService io_service_;
-	Session* session_;
+	void Start(void);
+	void Stop(void);
+
+	void Accept(void);
 
 	// 소켓 accept 핸들러
 	void AcceptHandler(Session* session, const boost::system::error_code& error);
+
+	// 소켓 close 핸들러
+	void CloseHandler(Session* session);
+private :
+	Acceptor acceptor_;
+	Session* session_;
+	Socket socket_;
+
+	// 세션들을 담아둘 큐
+	// 이 큐에서 세션을 빼서 처리한다.
+	std::queue<Session*> session_queue_;
+
+	int count_;
 };
 
 }

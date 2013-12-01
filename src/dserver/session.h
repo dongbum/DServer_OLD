@@ -9,14 +9,17 @@
 #define SESSION_H_
 
 #include "define.h"
+#include "server.h"
 
 namespace dserver
 {
 
+class DServer;
+
 class Session
 {
 public :
-	Session(IoService& io_service);
+	Session(IoService& io_service, dserver::DServer* server);
 	virtual ~Session();
 
 	void PostHandler(void);
@@ -26,7 +29,9 @@ private :
 	void ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred);
 	void WriteHandler(const boost::system::error_code& error, size_t bytes_transferred);
 
+	dserver::DServer* server_;
 	Socket socket_;
+	char recv_buffer_[1024];
 };
 
 }

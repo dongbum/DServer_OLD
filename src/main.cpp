@@ -5,12 +5,19 @@
  *      Author: dongbum
  */
 
+#include "dserver/config/config.h"
 #include "dserver/server.h"
 
 int main(void)
 {
-	dserver::DServer server;
-	server.Init();
+	IoService io_service_;
+
+	dserver::config::Config config("./ServerConfig.ini");
+
+	dserver::DServer server(io_service_, config.GetValue("DServer", "PORT"));
+	server.Start();
+
+	io_service_.run();
 
 	std::cout << "서버 종료" << std::endl;
 

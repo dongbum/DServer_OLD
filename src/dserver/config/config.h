@@ -25,7 +25,7 @@ public:
 	Config(std::string file_name);
 	virtual ~Config(void);
 
-	INI_Value GetValue(std::string section_name, std::string key_name);
+	Config::INI_Value GetValue(std::string section_name, std::string key_name);
 private:
 	boost::property_tree::ptree ptree_;
 	INI_Container ini_data_;
