@@ -21,6 +21,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
+#include <tbb/concurrent_queue.h>
+
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;
 typedef boost::asio::ip::tcp::acceptor Acceptor;

@@ -10,15 +10,16 @@
 
 int main(void)
 {
-	IoService io_service_;
-
+	// 설정 파일을 로딩한다.
 	dserver::config::Config config("./ServerConfig.ini");
 
-	dserver::DServer server(io_service_, config.GetValue("DServer", "PORT"));
+	// 서버 객체 생성
+	dserver::DServer server(config.GetValue("DServer", "PORT"));
+
+	// 서버 시작
 	server.Start();
 
-	io_service_.run();
-
+	// 서버 종료
 	std::cout << "서버 종료" << std::endl;
 
 	getchar();

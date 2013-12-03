@@ -2,3 +2,5 @@ make_gcc/DServer
 make_gcc/x64
 make_gcc/compiletime
 make_gcc/py/LastCompileList
+make_gcc/py/Compile.pyc
+make_gcc/py/CompileImpl.pyc
