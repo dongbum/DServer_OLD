@@ -8,11 +8,6 @@
 #include "work_thread_manager.h"
 
 
-WorkThreadManager::WorkThreadManager(void)
-{
-
-}
-
 WorkThreadManager::WorkThreadManager(const unsigned int thread_count)
 {
 	// 설정된 스레드갯수만큼

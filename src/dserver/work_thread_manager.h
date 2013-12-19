@@ -13,7 +13,6 @@
 class WorkThreadManager
 {
 public:
-	WorkThreadManager(void);
 	WorkThreadManager(const unsigned int thread_count);
 	virtual ~WorkThreadManager(void);
 
