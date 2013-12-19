@@ -10,6 +10,7 @@
 
 #include "define.h"
 #include "session.h"
+#include "work_thread_manager.h"
 
 namespace dserver
 {
@@ -45,6 +46,7 @@ private :
 	Acceptor acceptor_;
 	Session* session_;
 	Socket socket_;
+	WorkThreadManager* work_thread_manager_;
 
 	// 세션들을 담아둘 큐
 	// 이 큐에서 세션을 빼서 처리한다.

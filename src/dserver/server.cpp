@@ -6,8 +6,7 @@
  */
 
 #include "server.h"
-
-
+#include "work_thread_manager.h"
 
 namespace dserver
 {
@@ -38,6 +37,8 @@ DServer::~DServer(void)
 // 시
 void DServer::Start(void)
 {
+	work_thread_manager_ = new WorkThreadManager(8);
+
 	// Accept를 받는다.
 	Accept();
 
