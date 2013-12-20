@@ -15,7 +15,6 @@ namespace dserver
 DServer::DServer(std::string server_port)
 :	session_(NULL)
 ,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
-,	socket_(io_service_)
 ,	count_(0)
 {
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
@@ -26,6 +25,8 @@ DServer::DServer(std::string server_port)
 
 		tbb_queue_.push(session);
 	}
+
+	IOServiceHandler();
 }
 
 // 소멸자
@@ -34,49 +35,23 @@ DServer::~DServer(void)
 
 }
 
-// 시
-void DServer::Start(void)
+void DServer::IOServiceHandler(void)
 {
-	work_thread_manager_ = new WorkThreadManager(8);
+	Session* new_session = NULL;
 
-	// Accept를 받는다.
-	Accept();
+	// 큐에서 세션 한개를 뺀다.
+	tbb_queue_.try_pop(new_session);
 
-	std::cout << "START" << std::endl;
-
-	io_service_.run();
-}
-
-void DServer::Stop(void)
-{
-
-}
-
-void DServer::Accept(void)
-{
-	std::cout << "Accept" << std::endl;
-
-	// std::cout << "session_queue_.size() : " << session_queue_.size() << std::endl;
-	std::cout << "tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
-
-	// 맨 앞에 있는 세션 하나를 꺼낸다.
-	// session_ = session_queue_.front();
-	// session_queue_.pop();
-
-	// tbb 큐에서 꺼낸다.
-	tbb_queue_.try_pop(session_);
-
-	// 세션에 접속을 받도록 설정
-	// 접속이 되면 AcceptHandler를 호출한다.
+	// 그 세션에서 accept를 받는다.
 	acceptor_.async_accept(
-			session_->GetSocket(),
-			boost::bind(
-					&DServer::AcceptHandler,
-					this,
-					session_,
-					boost::asio::placeholders::error
-				)
-			);
+				new_session->GetSocket(),
+				boost::bind(
+						&DServer::AcceptHandler,
+						this,
+						new_session,
+						boost::asio::placeholders::error
+					)
+				);
 }
 
 // 소켓 accept 핸들러
@@ -99,7 +74,26 @@ void DServer::AcceptHandler(Session* session, const boost::system::error_code& e
 		// Accept에 문제가 있다면 이 세션을 종료한다.
 		CloseHandler(session);
 	}
+
+	IOServiceHandler();
 }
+
+// 시작
+void DServer::Start(void)
+{
+	// 워커스레드 매니저 생성
+	work_thread_manager_ = new WorkThreadManager(8);
+
+	std::cout << "START" << std::endl;
+
+	io_service_.run();
+}
+
+void DServer::Stop(void)
+{
+
+}
+
 
 // 세션 종료
 void DServer::CloseHandler(Session* session)
@@ -120,9 +114,6 @@ void DServer::CloseHandler(Session* session)
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
 	std::cout << "push end : tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
-
-	// Accept를 받는다.
-	Accept();
 }
 
 }
