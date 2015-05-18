@@ -35,7 +35,15 @@ Config::~Config(void)
 
 Config::INI_Value Config::GetValue(std::string section_name, std::string key_name)
 {
-	return ptree_.get<Config::INI_Value>(section_name + "." + key_name);
+	try
+	{
+		return ptree_.get<Config::INI_Value>(section_name + "." + key_name);
+	}
+	catch (boost::property_tree::ptree_bad_path& error)
+	{
+		std::cout << "GetValue failed : " << error.what() << std::endl;
+		exit(1);
+	}
 }
 
 
