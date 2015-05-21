@@ -17,7 +17,7 @@ int main(void)
 	dserver::DServer server(config.GetValue("DServer", "PORT"));
 
 	// 서버 시작
-	server.Start();
+	server.Start(config.GetValue("DServer", "THREAD_COUNT"));
 
 	// 서버 종료
 	std::cout << "서버 종료" << std::endl;

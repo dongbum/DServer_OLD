@@ -16,6 +16,7 @@ namespace dserver
 {
 
 class Session;
+class Config;
 
 class DServer
 {
@@ -31,7 +32,8 @@ public :
 	// 소멸자
 	virtual ~DServer(void);
 
-	void Start(void);
+	void Start(std::string& thread_count);
+	void Start(Config& config);
 	void Stop(void);
 
 	void Accept(void);

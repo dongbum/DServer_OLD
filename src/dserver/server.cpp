@@ -79,15 +79,16 @@ void DServer::AcceptHandler(Session* session, const boost::system::error_code& e
 }
 
 // 시작
-void DServer::Start(void)
+void DServer::Start(std::string& thread_count)
 {
 	// 워커스레드 매니저 생성
-	work_thread_manager_ = new WorkThreadManager(8);
+	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
 
 	std::cout << "START" << std::endl;
 
 	io_service_.run();
 }
+
 
 void DServer::Stop(void)
 {
