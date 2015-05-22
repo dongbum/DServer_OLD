@@ -13,6 +13,7 @@ namespace dserver
 Session::Session(IoService& io_service, DServer* server)
 :	socket_(io_service)
 ,	server_(server)
+,	packet_buffer_size_(0)
 {
 	// TODO Auto-generated constructor stub
 }
@@ -69,6 +70,60 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 	}
 	else
 	{
+		memcpy(&packet_buffer_[packet_buffer_size_], recv_buffer_, bytes_transferred);
+
+		uint32_t packet_data_size = packet_buffer_size_ + static_cast<uint32_t>(bytes_transferred);
+		uint32_t read_data = 0;
+
+		while (packet_data_size > 0)
+		{
+			// 받은 데이터가 헤더보다 작다면 중지
+			if (packet_data_size < sizeof(Header))
+				break;
+
+			// 헤더구하기
+			Header* header = (Header*)&packet_buffer_[read_data];
+
+			if (sizeof(Header) + header->GetDataLength() + sizeof(kEND_MARKER) <= packet_data_size)
+			{
+				int32_t end_marker_pos = sizeof(Header) + header->GetDataLength();
+
+				// 엔드마커를 구한다.
+				int32_t* end_marker = (int32_t*)(packet_buffer_[end_marker_pos]);
+
+				// 엔드마커를 확인해서 틀리다면 처리를 중지한다.
+				if (kEND_MARKER != *end_marker)
+				{
+					std::cout << "END MARKER CHECK : FAIL" << std::endl;
+					break;
+				}
+
+				// 데이터 처리
+				// packet_buffer_[read_data];
+
+				std::cout << "Header.TotalLength : " << header->GetTotalLength() << std::endl;
+				std::cout << "Header.ProtocolNo  : " << header->GetProtocolNo() << std::endl;
+				std::cout << "Header.DataLength  : " << header->GetDataLength() << std::endl;
+
+				packet_data_size = packet_data_size - header->GetDataLength();
+				packet_data_size = packet_data_size - sizeof(kEND_MARKER);
+
+				read_data = read_data + header->GetDataLength() + sizeof(kEND_MARKER);
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		if (packet_data_size > 0)
+		{
+
+		}
+
+		packet_buffer_size_ = packet_data_size;
+
+		/*
 		std::cout << "Session::async_write" << std::endl;
 
 		// WriteHandler를 이용해 데이터를 전송한다.
@@ -83,6 +138,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 						boost::asio::placeholders::bytes_transferred
 						)
 				);
+		*/
 
 		// 다시 PostHandler를 호출해서 Recv를 받는다.
 		PostHandler();

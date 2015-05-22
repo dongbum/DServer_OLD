@@ -17,6 +17,8 @@
 #include <string>
 #include <queue>
 
+#include <inttypes.h>
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
@@ -31,5 +33,7 @@ typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;
 typedef boost::asio::ip::tcp::acceptor Acceptor;
 typedef boost::asio::ip::tcp::socket Socket;
+
+const int32_t kEND_MARKER = 19830419;
 
 #endif /* DEFINE_H_ */

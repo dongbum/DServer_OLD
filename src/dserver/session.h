@@ -9,6 +9,7 @@
 #define SESSION_H_
 
 #include "define.h"
+#include "header.h"
 #include "server.h"
 
 namespace dserver
@@ -31,6 +32,10 @@ private :
 
 	dserver::DServer* server_;
 	Socket socket_;
+
+	unsigned char packet_buffer_[1024];
+	int packet_buffer_size_;
+
 	char recv_buffer_[1024];
 };
 
