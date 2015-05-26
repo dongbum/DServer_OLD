@@ -21,6 +21,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/functional.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
 

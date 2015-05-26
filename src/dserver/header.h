@@ -22,14 +22,14 @@ public:
 		data_length_ = 0;
 	}
 
-	int32_t		GetTotalLength(void)	{ return total_length_; };
-	int32_t		GetProtocolNo(void)		{ return protocol_no_; };
-	int32_t		GetDataLength(void)		{ return data_length_; };
+	int32_t			GetTotalLength(void)	{ return total_length_; };
+	int32_t			GetProtocolNo(void)		{ return protocol_no_; };
+	unsigned int&	GetDataLength(void)		{ return data_length_; };
 
 private:
-	int32_t		total_length_;
-	int32_t		protocol_no_;
-	int32_t		data_length_;
+	int32_t			total_length_;
+	int32_t			protocol_no_;
+	unsigned int	data_length_;
 };
 
 }
