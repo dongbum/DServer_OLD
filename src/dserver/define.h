@@ -18,6 +18,7 @@
 #include <queue>
 
 #include <inttypes.h>
+#include <locale.h>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>

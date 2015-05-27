@@ -106,7 +106,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 				// 데이터 처리
 				// packet_buffer_[read_data];
 
-				PacketProcess(header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
+				PacketProcess(header->GetProtocolNo(), &packet_buffer_[sizeof(Header)], header->GetDataLength());
 
 				std::cout << "Header.TotalLength : " << header->GetTotalLength() << std::endl;
 				std::cout << "Header.ProtocolNo  : " << header->GetProtocolNo() << std::endl;
