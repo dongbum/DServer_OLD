@@ -3,7 +3,9 @@
 
 #include "../dserver/define.h"
 #include "../dserver/protocol/base_protocol.h"
+
 #include "user_protocol_define.h"
+#include "user_protocol_body.h"
 
 namespace user_protocol
 {

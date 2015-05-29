@@ -19,9 +19,12 @@
 
 #include <inttypes.h>
 #include <locale.h>
+#include <tchar.h>
+#include <atlconv.h>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/endian/arithmetic.hpp>
 #include <boost/functional.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>

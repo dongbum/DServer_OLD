@@ -5,8 +5,9 @@
  *      Author: dongbum
  */
 
-#include "dserver/config/config.h"
+#include "dserver/define.h"
 #include "dserver/server.h"
+#include "dserver/config/config.h"
 #include "user_protocol/user_protocol.h"
 
 int test(int a, int b)
