@@ -24,7 +24,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <boost/endian/arithmetic.hpp>
+#include <boost/endian/conversion.hpp>
 #include <boost/functional.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
