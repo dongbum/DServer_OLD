@@ -17,11 +17,11 @@ namespace database
 namespace mysql
 {
 
-class MysqlConn
+class MySQLConn
 {
 public:
-	MysqlConn(void);
-	virtual ~MysqlConn(void);
+	MySQLConn(void);
+	virtual ~MySQLConn(void);
 
 	bool	Connect(void);
 	void	Disconnect(void);
