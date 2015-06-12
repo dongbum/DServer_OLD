@@ -10,6 +10,8 @@
 #include "dserver/config/config.h"
 #include "user_protocol/user_protocol.h"
 
+#include "dserver/database/mysql/mysql_conn.h"
+
 int test(int a, int b)
 {
 	return a + b;
@@ -17,6 +19,22 @@ int test(int a, int b)
 
 int main(void)
 {
+	/*
+	// MySQL 커넥션 테스트
+	dserver::database::mysql::MysqlConn conn;
+	conn.Connect();
+	conn.PrepareQuery("SELECT 19830419");
+	conn.Execute();
+
+	if (conn.Fetch())
+	{
+		std::cout << conn.GetInt() << std::endl;
+	}
+
+	conn.Disconnect();
+	return 0;
+	*/
+
 	/*
 	boost::function<int(int, int)> bind_test = boost::bind(test, _1, _2);
 
