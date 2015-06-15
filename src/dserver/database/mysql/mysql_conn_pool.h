@@ -18,11 +18,13 @@ public:
 	MySQLConnPool(int32_t& pool_count);
 	virtual ~MySQLConnPool(void);
 
-	bool			Init(void);
+	bool						Init(void);
+	void						Clear(void);
+	std::shared_ptr<MySQLConn>	GetMySQLConn(void);
 
 private:
-	MySQLConn**		mysql_conn_;
-	int32_t			pool_count_;
+	std::vector<std::shared_ptr<MySQLConn>>	mysql_conn_vec_;
+	int32_t									pool_count_;
 };
 
 

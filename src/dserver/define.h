@@ -41,4 +41,7 @@ typedef boost::asio::ip::tcp::socket Socket;
 
 const int32_t kEND_MARKER = 19830419;
 
+
+#define MAX_DATETIME_SIZE	(19+1)
+
 #endif /* DEFINE_H_ */
