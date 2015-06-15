@@ -11,6 +11,7 @@
 #include "user_protocol/user_protocol.h"
 
 #include "dserver/database/mysql/mysql_conn.h"
+#include "dserver/database/mysql/mysql_conn_pool.h"
 
 int test(int a, int b)
 {
@@ -19,6 +20,26 @@ int test(int a, int b)
 
 int main(void)
 {
+	/*
+	// MySQL 커넥션풀 테스트
+	int32_t thread_count = 4;
+	std::shared_ptr<dserver::database::mysql::MySQLConnPool> pool;
+
+	pool = std::shared_ptr<dserver::database::mysql::MySQLConnPool>(new dserver::database::mysql::MySQLConnPool(thread_count));
+	pool->Init();
+	
+	std::shared_ptr<dserver::database::mysql::MySQLConn> conn = pool->GetMySQLConn();
+	conn->PrepareQuery("SELECT 19830419");
+	conn->Execute();
+
+	while (conn->Fetch())
+	{
+		int32_t a = conn->GetInt();
+
+		std::cout << a << std::endl;
+	}
+	*/
+
 	/*
 	// MySQL 커넥션 테스트
 	dserver::database::mysql::MysqlConn conn;
