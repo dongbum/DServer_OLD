@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 #include <queue>
+#include <memory>
 
 #include <inttypes.h>
 #include <locale.h>

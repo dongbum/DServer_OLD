@@ -18,7 +18,7 @@ namespace dserver
 
 class DServer;
 
-class Session
+class Session : public std::enable_shared_from_this<Session>
 {
 public :
 	Session(IoService& io_service, dserver::DServer* server);
@@ -36,7 +36,7 @@ private :
 
 	
 
-	dserver::DServer* server_;
+	std::shared_ptr<dserver::DServer> server_;
 	Socket socket_;
 
 	unsigned char packet_buffer_[1024];

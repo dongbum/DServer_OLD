@@ -13,14 +13,14 @@ namespace dserver
 
 // 생성자
 DServer::DServer(std::string server_port)
-:	session_(NULL)
+:	session_(nullptr)
 ,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 ,	count_(0)
 {
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
 	for (int i = 0; i < 8; i++)
 	{
-		Session* session = new Session(acceptor_.get_io_service(), this);
+		std::shared_ptr<Session> session = std::shared_ptr<Session>(new Session(acceptor_.get_io_service(), this));
 		session->Init();
 		// session_queue_.push(session);
 
@@ -38,7 +38,7 @@ DServer::~DServer(void)
 
 void DServer::IOServiceHandler(void)
 {
-	Session* new_session = NULL;
+	std::shared_ptr<Session> new_session = nullptr;
 
 	// 큐에서 세션 한개를 뺀다.
 	tbb_queue_.try_pop(new_session);
@@ -56,7 +56,7 @@ void DServer::IOServiceHandler(void)
 }
 
 // 소켓 accept 핸들러
-void DServer::AcceptHandler(Session* session, const boost::system::error_code& error)
+void DServer::AcceptHandler(std::shared_ptr<Session> session, const boost::system::error_code& error)
 {
 	if (!error)
 	{
@@ -103,7 +103,7 @@ void DServer::Stop(void)
 
 
 // 세션 종료
-void DServer::CloseHandler(Session* session)
+void DServer::CloseHandler(std::shared_ptr<Session> session)
 {
 	std::cout << "CloseHandler" << std::endl;
 

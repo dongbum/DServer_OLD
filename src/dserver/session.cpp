@@ -71,7 +71,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 		}
 
 		// Recv가 실패하거나 소켓의 연결이 끊겼다면 소켓을 닫도록 한다.
-		server_->CloseHandler(this);
+		server_->CloseHandler(shared_from_this());
 	}
 	else
 	{

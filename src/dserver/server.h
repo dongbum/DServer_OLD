@@ -41,23 +41,23 @@ public :
 	void Accept(void);
 
 	// 소켓 accept 핸들러
-	void AcceptHandler(Session* session, const boost::system::error_code& error);
+	void AcceptHandler(std::shared_ptr<Session> session, const boost::system::error_code& error);
 
 	// 소켓 close 핸들러
-	void CloseHandler(Session* session);
+	void CloseHandler(std::shared_ptr<Session> session);
 
 	void IOServiceHandler();
 private :
 	IoService io_service_;
 	Acceptor acceptor_;
-	Session* session_;
+	std::shared_ptr<Session> session_;
 	WorkThreadManager* work_thread_manager_;
 
 	// 세션들을 담아둘 큐
 	// 이 큐에서 세션을 빼서 처리한다.
 	// std::queue<Session*> session_queue_;
 
-	tbb::concurrent_queue<Session*> tbb_queue_;
+	tbb::concurrent_queue< std::shared_ptr<Session> > tbb_queue_;
 
 	int count_;
 };
