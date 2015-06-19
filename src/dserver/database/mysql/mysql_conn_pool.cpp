@@ -13,7 +13,7 @@ MySQLConnPool::MySQLConnPool(int32_t& pool_count)
 {
 	for (int32_t i = 0; i < pool_count_; ++i)
 	{
-		mysql_conn_vec_.push_back(std::shared_ptr<MySQLConn>(new MySQLConn));
+		mysql_conn_vec_.push_back(MySQLConnPtr(new MySQLConn));
 	}
 }
 
@@ -45,9 +45,9 @@ void MySQLConnPool::Clear(void)
 }
 
 
-std::shared_ptr<MySQLConn> MySQLConnPool::GetMySQLConn(void)
+MySQLConnPool::MySQLConnPtr MySQLConnPool::GetMySQLConn(void)
 {
-	std::shared_ptr<MySQLConn> mysql_conn = mysql_conn_vec_[0];
+	MySQLConnPtr mysql_conn = mysql_conn_vec_[0];
 
 	return mysql_conn;
 }
