@@ -81,6 +81,9 @@
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp">
       <Filter>소스 파일\user_protocol\echo</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\dserver\work_queue.cpp">
+      <Filter>소스 파일\dserver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\define.h">
@@ -127,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\user_protocol\user_protocol_define.h">
       <Filter>소스 파일\user_protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\work_queue.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\request_work.h">
+      <Filter>소스 파일\dserver</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

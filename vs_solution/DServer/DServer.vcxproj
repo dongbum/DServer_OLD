@@ -103,6 +103,7 @@
     <ClCompile Include="..\..\src\dserver\session.cpp" />
     <ClCompile Include="..\..\src\dserver\utility\endian.cpp" />
     <ClCompile Include="..\..\src\dserver\utility\util.cpp" />
+    <ClCompile Include="..\..\src\dserver\work_queue.cpp" />
     <ClCompile Include="..\..\src\dserver\work_thread_manager.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp" />
@@ -116,10 +117,12 @@
     <ClInclude Include="..\..\src\dserver\define.h" />
     <ClInclude Include="..\..\src\dserver\header.h" />
     <ClInclude Include="..\..\src\dserver\protocol\base_protocol.h" />
+    <ClInclude Include="..\..\src\dserver\request_work.h" />
     <ClInclude Include="..\..\src\dserver\server.h" />
     <ClInclude Include="..\..\src\dserver\session.h" />
     <ClInclude Include="..\..\src\dserver\utility\endian.h" />
     <ClInclude Include="..\..\src\dserver\utility\util.h" />
+    <ClInclude Include="..\..\src\dserver\work_queue.h" />
     <ClInclude Include="..\..\src\dserver\work_thread_manager.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_body.h" />
