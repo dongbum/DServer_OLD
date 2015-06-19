@@ -29,10 +29,10 @@ public :
 
 	typedef std::shared_ptr<Session>		SessionPtr;
 
-	// »ı¼ºÀÚ
+	// ìƒì„±ì
 	DServer(std::string server_port);
 
-	// ¼Ò¸êÀÚ
+	// ì†Œë©¸ì
 	virtual ~DServer(void);
 
 	void Init(void);
@@ -42,10 +42,10 @@ public :
 
 	void Accept(void);
 
-	// ¼ÒÄÏ accept ÇÚµé·¯
+	// ì†Œì¼“ accept í•¸ë“¤ëŸ¬
 	void AcceptHandler(SessionPtr session, const boost::system::error_code& error);
 
-	// ¼ÒÄÏ close ÇÚµé·¯
+	// ì†Œì¼“ close í•¸ë“¤ëŸ¬
 	void CloseHandler(SessionPtr session);
 
 	void IOServiceHandler();
@@ -55,8 +55,8 @@ private :
 	SessionPtr				session_;
 	WorkThreadManager*		work_thread_manager_;
 
-	// ¼¼¼ÇµéÀ» ´ã¾ÆµÑ Å¥
-	// ÀÌ Å¥¿¡¼­ ¼¼¼ÇÀ» »©¼­ Ã³¸®ÇÑ´Ù.
+	// ì„¸ì…˜ë“¤ì„ ë‹´ì•„ë‘˜ í
+	// ì´ íì—ì„œ ì„¸ì…˜ì„ ë¹¼ì„œ ì²˜ë¦¬í•œë‹¤.
 	// std::queue<Session*> session_queue_;
 
 	tbb::concurrent_queue<SessionPtr> tbb_queue_;

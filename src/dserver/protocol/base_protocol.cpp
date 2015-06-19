@@ -24,12 +24,12 @@ void BaseProtocol::AddProtocol(uint32_t protocol_no, BaseProtocol::ProtocolFunct
 
 bool BaseProtocol::ExecuteProtocol(uint32_t protocol_no, unsigned char* data, unsigned int& data_length)
 {
-	// ÇÁ·ÎÅäÄÝ °Ë»ö
+	// í”„ë¡œí† ì½œ ê²€ìƒ‰
 	BaseProtocol::ProtocolMap::iterator iter = protocol_map.find(protocol_no);
 	if (iter == protocol_map.end())
 		return false;
 
-	// ÇÁ·ÎÅäÄÝ Ã³¸® ÇÔ¼ö ½ÇÇà
+	// í”„ë¡œí† ì½œ ì²˜ë¦¬ í•¨ìˆ˜ ì‹¤í–‰
 	ProtocolFunction protocol_function = (*iter).second;
 
 	protocol_function(protocol_no, data, data_length);

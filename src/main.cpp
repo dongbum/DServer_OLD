@@ -21,7 +21,7 @@ int test(int a, int b)
 int main(void)
 {
 	/*
-	// MySQL Ä¿³Ø¼ÇÇ® Å×½ºÆ®
+	// MySQL ì»¤ë„¥ì…˜í’€ í…ŒìŠ¤íŠ¸
 	int32_t thread_count = 4;
 	std::shared_ptr<dserver::database::mysql::MySQLConnPool> pool;
 
@@ -41,7 +41,7 @@ int main(void)
 	*/
 
 	/*
-	// MySQL Ä¿³Ø¼Ç Å×½ºÆ®
+	// MySQL ì»¤ë„¥ì…˜ í…ŒìŠ¤íŠ¸
 	dserver::database::mysql::MysqlConn conn;
 	conn.Connect();
 	conn.PrepareQuery("SELECT 19830419");
@@ -64,20 +64,20 @@ int main(void)
 	return 0;
 	*/
 
-	// ¼³Á¤ ÆÄÀÏÀ» ·ÎµùÇÑ´Ù.
+	// ì„¤ì • íŒŒì¼ì„ ë¡œë”©í•œë‹¤.
 	dserver::config::Config config("./ServerConfig.ini");
 
-	// ¼­¹ö °´Ã¼ »ı¼º
+	// ì„œë²„ ê°ì²´ ìƒì„±
 	dserver::DServer server(config.GetValue("DServer", "PORT"));
 
-	// ¼­¹ö ÃÊ±âÈ­
+	// ì„œë²„ ì´ˆê¸°í™”
 	server.Init();
 
-	// ¼­¹ö ½ÃÀÛ
+	// ì„œë²„ ì‹œì‘
 	server.Start(config.GetValue("DServer", "THREAD_COUNT"));
 
-	// ¼­¹ö Á¾·á
-	std::cout << "¼­¹ö Á¾·á" << std::endl;
+	// ì„œë²„ ì¢…ë£Œ
+	std::cout << "ì„œë²„ ì¢…ë£Œ" << std::endl;
 
 	getchar();
 

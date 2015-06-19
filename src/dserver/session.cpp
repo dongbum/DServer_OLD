@@ -28,15 +28,15 @@ Socket& Session::GetSocket()
 	return socket_;
 }
 
-// Accept°¡ µÇ¸é Ã³¸®ÇÒ ÇÔ¼ö
+// Acceptê°€ ë˜ë©´ ì²˜ë¦¬í•  í•¨ìˆ˜
 void Session::PostHandler(void)
 {
 	std::cout << "Session::PostHandler" << std::endl;
 
 	memset(recv_buffer_, 0, sizeof(recv_buffer_));
 
-	// Recv¸¦ ÇÑ´Ù.
-	// ReceiveHandler·Î Ã³¸®¸¦ ³Ñ±ä´Ù.
+	// Recvë¥¼ í•œë‹¤.
+	// ReceiveHandlerë¡œ ì²˜ë¦¬ë¥¼ ë„˜ê¸´ë‹¤.
 	socket_.async_read_some(
 			boost::asio::buffer(recv_buffer_),
 			boost::bind(
@@ -54,7 +54,7 @@ void Session::Init(void)
 	user_protocol_manager.Initialize();
 }
 
-// Recv¸¦ Ã³¸®ÇÒ ÇÔ¼ö
+// Recvë¥¼ ì²˜ë¦¬í•  í•¨ìˆ˜
 void Session::ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred)
 {
 	std::cout << "Session::ReceiveHandler : bytes_transferred(" << bytes_transferred << ")" << std::endl;
@@ -70,7 +70,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 			std::cout << "Client connection error : " << error.value() << " - msg : " << error.message() << std::endl;
 		}
 
-		// Recv°¡ ½ÇÆĞÇÏ°Å³ª ¼ÒÄÏÀÇ ¿¬°áÀÌ ²÷°å´Ù¸é ¼ÒÄÏÀ» ´İµµ·Ï ÇÑ´Ù.
+		// Recvê°€ ì‹¤íŒ¨í•˜ê±°ë‚˜ ì†Œì¼“ì˜ ì—°ê²°ì´ ëŠê²¼ë‹¤ë©´ ì†Œì¼“ì„ ë‹«ë„ë¡ í•œë‹¤.
 		server_->CloseHandler(shared_from_this());
 	}
 	else
@@ -82,28 +82,28 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 
 		while (packet_data_size > 0)
 		{
-			// ¹ŞÀº µ¥ÀÌÅÍ°¡ Çì´õº¸´Ù ÀÛ´Ù¸é ÁßÁö
+			// ë°›ì€ ë°ì´í„°ê°€ í—¤ë”ë³´ë‹¤ ì‘ë‹¤ë©´ ì¤‘ì§€
 			if (packet_data_size < sizeof(Header))
 				break;
 
-			// Çì´õ±¸ÇÏ±â
+			// í—¤ë”êµ¬í•˜ê¸°
 			Header* header = (Header*)&packet_buffer_[read_data];
 
 			if (sizeof(Header) + header->GetDataLength() + sizeof(kEND_MARKER) <= packet_data_size)
 			{
 				int32_t end_marker_pos = sizeof(Header) + header->GetDataLength();
 
-				// ¿£µå¸¶Ä¿¸¦ ±¸ÇÑ´Ù.
+				// ì—”ë“œë§ˆì»¤ë¥¼ êµ¬í•œë‹¤.
 				int32_t* end_marker = (int32_t*)(&packet_buffer_[end_marker_pos]);
 
-				// ¿£µå¸¶Ä¿¸¦ È®ÀÎÇØ¼­ Æ²¸®´Ù¸é Ã³¸®¸¦ ÁßÁöÇÑ´Ù.
+				// ì—”ë“œë§ˆì»¤ë¥¼ í™•ì¸í•´ì„œ í‹€ë¦¬ë‹¤ë©´ ì²˜ë¦¬ë¥¼ ì¤‘ì§€í•œë‹¤.
 				if (kEND_MARKER != *end_marker)
 				{
 					std::cout << "END MARKER CHECK : FAIL" << std::endl;
 					break;
 				}
 
-				// µ¥ÀÌÅÍ Ã³¸®
+				// ë°ì´í„° ì²˜ë¦¬
 				// packet_buffer_[read_data];
 
 				PacketProcess(header->GetProtocolNo(), &packet_buffer_[sizeof(Header)], header->GetDataLength());
@@ -133,7 +133,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 		/*
 		std::cout << "Session::async_write" << std::endl;
 
-		// WriteHandler¸¦ ÀÌ¿ëÇØ µ¥ÀÌÅÍ¸¦ Àü¼ÛÇÑ´Ù.
+		// WriteHandlerë¥¼ ì´ìš©í•´ ë°ì´í„°ë¥¼ ì „ì†¡í•œë‹¤.
 		char send_buffer[1024] = {0,};
 		boost::asio::async_write(
 				socket_,
@@ -147,12 +147,12 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 				);
 		*/
 
-		// ´Ù½Ã PostHandler¸¦ È£ÃâÇØ¼­ Recv¸¦ ¹Ş´Â´Ù.
+		// ë‹¤ì‹œ PostHandlerë¥¼ í˜¸ì¶œí•´ì„œ Recvë¥¼ ë°›ëŠ”ë‹¤.
 		PostHandler();
 	}
 }
 
-// µ¥ÀÌÅÍ¸¦ Àü¼ÛÇÑ´Ù.
+// ë°ì´í„°ë¥¼ ì „ì†¡í•œë‹¤.
 void Session::WriteHandler(const boost::system::error_code& error, size_t bytes_transferred)
 {
 	std::cout << "Session::WriteHandler : bytes_transferred(" << bytes_transferred << ")" << std::endl;
