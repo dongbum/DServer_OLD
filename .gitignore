@@ -5,3 +5,11 @@ make_gcc/compiletime
 make_gcc/py/LastCompileList
 make_gcc/py/Compile.pyc
 make_gcc/py/CompileImpl.pyc
+vs_solution/DServer/x64/
+vs_solution/DServer/Debug/
+*.sdf
+*.opensdf
+*.suo
+vs_solution/Bin/DServer64D.exe
+vs_solution/Bin/DServer64D.ilk
+vs_solution/Bin/DServer64D.pdb

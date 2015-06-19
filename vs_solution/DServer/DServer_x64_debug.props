@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_PropertySheetDisplayName>DServer_x64_debug.props</_PropertySheetDisplayName>
+    <IncludePath>D:\Library\boost_1_58_0;D:\Library\tbb43_20150424oss\include;D:\Library\mysql-connector-c++-noinstall-1.1.6-winx64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Library\boost_1_58_0\stage\lib;D:\Library\tbb43_20150424oss\lib\intel64\vc12;D:\Library\mysql-connector-c++-noinstall-1.1.6-winx64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup />
+</Project>
