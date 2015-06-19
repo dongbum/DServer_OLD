@@ -15,16 +15,18 @@ namespace mysql
 class MySQLConnPool
 {
 public:
+	typedef std::shared_ptr<MySQLConn>		MySQLConnPtr;
+
 	MySQLConnPool(int32_t& pool_count);
 	virtual ~MySQLConnPool(void);
 
-	bool						Init(void);
-	void						Clear(void);
-	std::shared_ptr<MySQLConn>	GetMySQLConn(void);
+	bool			Init(void);
+	void			Clear(void);
+	MySQLConnPtr	GetMySQLConn(void);
 
 private:
-	std::vector<std::shared_ptr<MySQLConn>>	mysql_conn_vec_;
-	int32_t									pool_count_;
+	std::vector<MySQLConnPtr>	mysql_conn_vec_;
+	int32_t						pool_count_;
 };
 
 

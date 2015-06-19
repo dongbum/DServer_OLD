@@ -11,16 +11,16 @@
 namespace dserver
 {
 
-// »ı¼ºÀÚ
+// ìƒì„±ì
 DServer::DServer(std::string server_port)
 :	session_(nullptr)
 ,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 ,	count_(0)
 {
-	// ¼¼¼ÇÀ» ÇÊ¿äÇÑ¸¸Å­ ¸¸µé¾î¼­ Å¥¿¡ ³Ö´Â´Ù.
+	// ì„¸ì…˜ì„ í•„ìš”í•œë§Œí¼ ë§Œë“¤ì–´ì„œ íì— ë„£ëŠ”ë‹¤.
 	for (int i = 0; i < 8; i++)
 	{
-		std::shared_ptr<Session> session = std::shared_ptr<Session>(new Session(acceptor_.get_io_service(), this));
+		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this));
 		session->Init();
 		// session_queue_.push(session);
 
@@ -30,7 +30,7 @@ DServer::DServer(std::string server_port)
 	IOServiceHandler();
 }
 
-// ¼Ò¸êÀÚ
+// ì†Œë©¸ì
 DServer::~DServer(void)
 {
 
@@ -38,12 +38,12 @@ DServer::~DServer(void)
 
 void DServer::IOServiceHandler(void)
 {
-	std::shared_ptr<Session> new_session = nullptr;
+	SessionPtr new_session = nullptr;
 
-	// Å¥¿¡¼­ ¼¼¼Ç ÇÑ°³¸¦ »«´Ù.
+	// íì—ì„œ ì„¸ì…˜ í•œê°œë¥¼ ëº€ë‹¤.
 	tbb_queue_.try_pop(new_session);
 
-	// ±× ¼¼¼Ç¿¡¼­ accept¸¦ ¹Ş´Â´Ù.
+	// ê·¸ ì„¸ì…˜ì—ì„œ acceptë¥¼ ë°›ëŠ”ë‹¤.
 	acceptor_.async_accept(
 				new_session->GetSocket(),
 				boost::bind(
@@ -55,14 +55,14 @@ void DServer::IOServiceHandler(void)
 				);
 }
 
-// ¼ÒÄÏ accept ÇÚµé·¯
-void DServer::AcceptHandler(std::shared_ptr<Session> session, const boost::system::error_code& error)
+// ì†Œì¼“ accept í•¸ë“¤ëŸ¬
+void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code& error)
 {
 	if (!error)
 	{
 		std::cout << "Client connected" << std::endl;
 
-		// Accept°¡ µÇ¾ú´Ù¸é ¼¼¼ÇÀÇ PostHandler·Î Ã³¸®¸¦ ³Ñ±ä´Ù.
+		// Acceptê°€ ë˜ì—ˆë‹¤ë©´ ì„¸ì…˜ì˜ PostHandlerë¡œ ì²˜ë¦¬ë¥¼ ë„˜ê¸´ë‹¤.
 
 		count_++;
 		std::cout << "count_ : " << count_ << std::endl;
@@ -72,7 +72,7 @@ void DServer::AcceptHandler(std::shared_ptr<Session> session, const boost::syste
 	{
 		std::cout << error.value() << " : " << error.message() << std::endl;
 
-		// Accept¿¡ ¹®Á¦°¡ ÀÖ´Ù¸é ÀÌ ¼¼¼ÇÀ» Á¾·áÇÑ´Ù.
+		// Acceptì— ë¬¸ì œê°€ ìˆë‹¤ë©´ ì´ ì„¸ì…˜ì„ ì¢…ë£Œí•œë‹¤.
 		CloseHandler(session);
 	}
 
@@ -84,10 +84,10 @@ void DServer::Init(void)
 
 }
 
-// ½ÃÀÛ
+// ì‹œì‘
 void DServer::Start(std::string& thread_count)
 {
-	// ¿öÄ¿½º·¹µå ¸Å´ÏÀú »ı¼º
+	// ì›Œì»¤ìŠ¤ë ˆë“œ ë§¤ë‹ˆì € ìƒì„±
 	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
 
 	std::cout << "START" << std::endl;
@@ -102,21 +102,21 @@ void DServer::Stop(void)
 }
 
 
-// ¼¼¼Ç Á¾·á
-void DServer::CloseHandler(std::shared_ptr<Session> session)
+// ì„¸ì…˜ ì¢…ë£Œ
+void DServer::CloseHandler(SessionPtr session)
 {
 	std::cout << "CloseHandler" << std::endl;
 
 	// std::cout << "before push : session_queue_.size() : " << session_queue_.size() << std::endl;
 	std::cout << "before push : tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
 
-	// ¼¼¼ÇÀÇ ¼ÒÄÏÀ» ´İ´Â´Ù.
+	// ì„¸ì…˜ì˜ ì†Œì¼“ì„ ë‹«ëŠ”ë‹¤.
 	session->GetSocket().close();
 
-	// ¼¼¼ÇÅ¥¿¡ ´Ù½Ã ÀÌ ¼¼¼ÇÀ» ³Ö´Â´Ù.
+	// ì„¸ì…˜íì— ë‹¤ì‹œ ì´ ì„¸ì…˜ì„ ë„£ëŠ”ë‹¤.
 	// session_queue_.push(session);
 
-	// tbb Å¥¿¡ ´Ù½Ã ÀÌ ¼¼¼ÇÀ» ³Ö´Â´Ù.
+	// tbb íì— ë‹¤ì‹œ ì´ ì„¸ì…˜ì„ ë„£ëŠ”ë‹¤.
 	tbb_queue_.push(session);
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;

@@ -10,13 +10,13 @@
 
 WorkThreadManager::WorkThreadManager(const unsigned int thread_count)
 {
-	// ¼³Á¤µÈ ½º·¹µå°¹¼ö¸¸Å­
+	// ì„¤ì •ëœ ìŠ¤ë ˆë“œê°¯ìˆ˜ë§Œí¼
 	for (unsigned int i = 0; i < thread_count; i++)
 	{
-		// ½º·¹µå¸¦ »ı¼ºÇÑ´Ù.
+		// ìŠ¤ë ˆë“œë¥¼ ìƒì„±í•œë‹¤.
 		boost::thread thread(boost::bind(&WorkThreadManager::Run, this));
 
-		// ½º·¹µå±×·ì¿¡ Ãß°¡ÇÑ´Ù.
+		// ìŠ¤ë ˆë“œê·¸ë£¹ì— ì¶”ê°€í•œë‹¤.
 		thread_group_.add_thread(&thread);
 	}
 }

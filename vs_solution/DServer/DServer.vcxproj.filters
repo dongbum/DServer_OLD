@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\dserver">
+      <UniqueIdentifier>{8289d5ec-fc36-44ae-8989-18a0107d0cb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\config">
+      <UniqueIdentifier>{1f256067-e242-4577-ac31-f06f742f01b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\utility">
+      <UniqueIdentifier>{7f88a8d7-f4a0-475f-98d4-dce57514bb5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\protocol">
+      <UniqueIdentifier>{d7bce930-373c-4f7e-8790-118672c827ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\user_protocol">
+      <UniqueIdentifier>{469f2d89-ada1-458a-abd9-878631381e36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\user_protocol\echo">
+      <UniqueIdentifier>{a3bca79e-a681-4e38-bd72-dfd63d004d3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\database">
+      <UniqueIdentifier>{0dcfc408-56fb-4ab9-85a8-8e5664d67d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\database\redis">
+      <UniqueIdentifier>{7427c3a5-18c7-489b-bd0f-703937ea5798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\database\mysql">
+      <UniqueIdentifier>{dfa634a0-5bcc-4cc0-923d-5c97f74b82b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\dserver\server.cpp">
+      <Filter>소스 파일\dserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\session.cpp">
+      <Filter>소스 파일\dserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\work_thread_manager.cpp">
+      <Filter>소스 파일\dserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\utility\util.cpp">
+      <Filter>소스 파일\dserver\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\protocol\base_protocol.cpp">
+      <Filter>소스 파일\dserver\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\utility\endian.cpp">
+      <Filter>소스 파일\dserver\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\database\redis\redis.cpp">
+      <Filter>소스 파일\dserver\database\redis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\database\mysql\mysql_conn.cpp">
+      <Filter>소스 파일\dserver\database\mysql</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\database\mysql\mysql_conn_pool.cpp">
+      <Filter>소스 파일\dserver\database\mysql</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\config\config.cpp">
+      <Filter>소스 파일\dserver\config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp">
+      <Filter>소스 파일\user_protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp">
+      <Filter>소스 파일\user_protocol\echo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\dserver\define.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\header.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\server.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\session.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\work_thread_manager.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\utility\util.h">
+      <Filter>소스 파일\dserver\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\protocol\base_protocol.h">
+      <Filter>소스 파일\dserver\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\utility\endian.h">
+      <Filter>소스 파일\dserver\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\database\redis\redis.h">
+      <Filter>소스 파일\dserver\database\redis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\database\mysql\mysql_conn.h">
+      <Filter>소스 파일\dserver\database\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\database\mysql\mysql_conn_pool.h">
+      <Filter>소스 파일\dserver\database\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\config\config.h">
+      <Filter>소스 파일\dserver\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\user_protocol\user_protocol.h">
+      <Filter>소스 파일\user_protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\user_protocol\user_protocol_body.h">
+      <Filter>소스 파일\user_protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\user_protocol\user_protocol_define.h">
+      <Filter>소스 파일\user_protocol</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

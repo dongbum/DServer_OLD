@@ -37,7 +37,6 @@ uint32_t UserProtocol::Echo(uint32_t& protocol_no, unsigned char* data, unsigned
 	std::cout << "Echo" << std::endl;
 
 	PROTOCOL_BODY_ECHO* body_data = (PROTOCOL_BODY_ECHO*)data;
-	USES_CONVERSION;
 	std::cout << "my_name    : " << body_data->my_name << std::endl;
 	std::cout << "test_int16 : " << body_data->test_int16 << std::endl;
 	std::cout << "test_int32 : " << body_data->test_int32 << std::endl;

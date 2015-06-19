@@ -22,15 +22,17 @@ class Config;
 class DServer
 {
 public :
-	typedef boost::asio::io_service IoService;
-	typedef boost::asio::ip::tcp::endpoint EndPoint;
-	typedef boost::asio::ip::tcp::acceptor Acceptor;
-	typedef boost::asio::ip::tcp::socket Socket;
+	typedef boost::asio::io_service			IoService;
+	typedef boost::asio::ip::tcp::endpoint	EndPoint;
+	typedef boost::asio::ip::tcp::acceptor	Acceptor;
+	typedef boost::asio::ip::tcp::socket	Socket;
 
-	// »ı¼ºÀÚ
+	typedef std::shared_ptr<Session>		SessionPtr;
+
+	// ìƒì„±ì
 	DServer(std::string server_port);
 
-	// ¼Ò¸êÀÚ
+	// ì†Œë©¸ì
 	virtual ~DServer(void);
 
 	void Init(void);
@@ -40,24 +42,24 @@ public :
 
 	void Accept(void);
 
-	// ¼ÒÄÏ accept ÇÚµé·¯
-	void AcceptHandler(std::shared_ptr<Session> session, const boost::system::error_code& error);
+	// ì†Œì¼“ accept í•¸ë“¤ëŸ¬
+	void AcceptHandler(SessionPtr session, const boost::system::error_code& error);
 
-	// ¼ÒÄÏ close ÇÚµé·¯
-	void CloseHandler(std::shared_ptr<Session> session);
+	// ì†Œì¼“ close í•¸ë“¤ëŸ¬
+	void CloseHandler(SessionPtr session);
 
 	void IOServiceHandler();
 private :
-	IoService io_service_;
-	Acceptor acceptor_;
-	std::shared_ptr<Session> session_;
-	WorkThreadManager* work_thread_manager_;
+	IoService				io_service_;
+	Acceptor				acceptor_;
+	SessionPtr				session_;
+	WorkThreadManager*		work_thread_manager_;
 
-	// ¼¼¼ÇµéÀ» ´ã¾ÆµÑ Å¥
-	// ÀÌ Å¥¿¡¼­ ¼¼¼ÇÀ» »©¼­ Ã³¸®ÇÑ´Ù.
+	// ì„¸ì…˜ë“¤ì„ ë‹´ì•„ë‘˜ í
+	// ì´ íì—ì„œ ì„¸ì…˜ì„ ë¹¼ì„œ ì²˜ë¦¬í•œë‹¤.
 	// std::queue<Session*> session_queue_;
 
-	tbb::concurrent_queue< std::shared_ptr<Session> > tbb_queue_;
+	tbb::concurrent_queue<SessionPtr> tbb_queue_;
 
 	int count_;
 };
