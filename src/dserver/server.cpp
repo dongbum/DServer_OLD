@@ -6,6 +6,7 @@
  */
 
 #include "server.h"
+#include "work_queue.h"
 #include "work_thread_manager.h"
 
 namespace dserver
@@ -19,15 +20,20 @@ DServer::DServer(std::string server_port)
 {
 	std::cout << "Server port is " << server_port << std::endl;
 
+	// 작업을 넣을 큐 생성
+	work_queue_ = WorkQueuePtr(new WorkQueue);
+
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
 	for (int i = 0; i < 8; i++)
 	{
 		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this));
-		session->Init();
+		session->Init(work_queue_);
 		// session_queue_.push(session);
 
 		tbb_queue_.push(session);
 	}
+
+	std::cout << "tbb_queue_ size : " << tbb_queue_.size() << std::endl;
 
 	IOServiceHandler();
 }
@@ -48,6 +54,8 @@ void DServer::IOServiceHandler(void)
 		std::cout << "Session try_pop failed." << std::endl;
 		exit(1);
 	}
+	
+	std::cout << "tbb_queue_ try_pop() success. size : " << tbb_queue_.size() << std::endl;
 
 	// 그 세션에서 accept를 받는다.
 	acceptor_.async_accept(
@@ -122,19 +130,28 @@ void DServer::CloseHandler(SessionPtr session)
 	std::cout << "CloseHandler" << std::endl;
 
 	// std::cout << "before push : session_queue_.size() : " << session_queue_.size() << std::endl;
-	std::cout << "before push : tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
+	std::cout << "before push : tbb_queue_.size() : " << tbb_queue_.size() << std::endl;
+
+	std::cout << "socket close" << std::endl;
 
 	// 세션의 소켓을 닫는다.
-	session->GetSocket().close();
+	if (true == session->GetSocket().is_open())
+	{
+		boost::system::error_code ignored_error;
+		session->GetSocket().shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_error);
+		session->GetSocket().close();
+	}
 
 	// 세션큐에 다시 이 세션을 넣는다.
 	// session_queue_.push(session);
+
+	std::cout << "push to tbb_queue_" << std::endl;
 
 	// tbb 큐에 다시 이 세션을 넣는다.
 	tbb_queue_.push(session);
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
-	std::cout << "push end : tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
+	std::cout << "push end : tbb_queue_.size() : " << tbb_queue_.size() << std::endl;
 }
 
 }

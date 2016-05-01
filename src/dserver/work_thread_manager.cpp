@@ -28,5 +28,5 @@ WorkThreadManager::~WorkThreadManager(void)
 
 void WorkThreadManager::Run(void)
 {
-	// std::cout << "WorkThreadManager::Run" << std::endl;
+	std::cout << "WorkThreadManager::Run" << std::endl;
 }

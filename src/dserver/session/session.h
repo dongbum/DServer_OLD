@@ -8,24 +8,28 @@
 #ifndef SESSION_H_
 #define SESSION_H_
 
-#include "define.h"
-#include "header.h"
-#include "server.h"
-#include "../user_protocol/user_protocol.h"
+#include "../define.h"
+#include "../header.h"
+#include "../server.h"
+#include "../work_queue.h"
+#include "../../user_protocol/user_protocol.h"
 
 namespace dserver
 {
 
 class DServer;
+class WorkQueue;
 
 class Session : public std::enable_shared_from_this<Session>
 {
 public :
+	typedef std::shared_ptr<WorkQueue>		WorkQueuePtr;
+
 	Session(IoService& io_service, dserver::DServer* server);
 	virtual ~Session();
 
 	void		PostHandler(void);
-	void		Init(void);
+	void		Init(WorkQueuePtr work_queue);
 	void		PacketProcess(uint32_t protocol_no, unsigned char* packet_buffer, unsigned int& packet_length);
 
 	Socket&		GetSocket();
@@ -42,9 +46,10 @@ private :
 	unsigned char packet_buffer_[1024];
 	int packet_buffer_size_;
 
-	char recv_buffer_[1024];
+	unsigned char recv_buffer_[1024];
 
 	user_protocol::UserProtocol user_protocol_manager;
+	WorkQueuePtr work_queue_;
 };
 
 }

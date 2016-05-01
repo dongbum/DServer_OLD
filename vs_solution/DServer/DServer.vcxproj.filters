@@ -40,12 +40,12 @@
     <Filter Include="소스 파일\dserver\database\mysql">
       <UniqueIdentifier>{dfa634a0-5bcc-4cc0-923d-5c97f74b82b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\session">
+      <UniqueIdentifier>{6abd1716-fbe0-4053-8718-412417061151}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
-      <Filter>소스 파일\dserver</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\dserver\session.cpp">
       <Filter>소스 파일\dserver</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\dserver\work_thread_manager.cpp">
@@ -84,6 +84,15 @@
     <ClCompile Include="..\..\src\dserver\work_queue.cpp">
       <Filter>소스 파일\dserver</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\dserver\request_work.cpp">
+      <Filter>소스 파일\dserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\session\session_pool.cpp">
+      <Filter>소스 파일\dserver\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\session\session.cpp">
+      <Filter>소스 파일\dserver\session</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\define.h">
@@ -93,9 +102,6 @@
       <Filter>소스 파일\dserver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\server.h">
-      <Filter>소스 파일\dserver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\dserver\session.h">
       <Filter>소스 파일\dserver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\work_thread_manager.h">
@@ -136,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\request_work.h">
       <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\session\session_pool.h">
+      <Filter>소스 파일\dserver\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\session\session.h">
+      <Filter>소스 파일\dserver\session</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

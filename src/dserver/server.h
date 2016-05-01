@@ -9,8 +9,8 @@
 #define SERVER_H_
 
 #include "define.h"
-#include "session.h"
 #include "work_thread_manager.h"
+#include "session/session.h"
 #include "../user_protocol/user_protocol.h"
 
 namespace dserver
@@ -18,6 +18,7 @@ namespace dserver
 
 class Session;
 class Config;
+class WorkQueue;
 
 class DServer
 {
@@ -28,6 +29,7 @@ public :
 	typedef boost::asio::ip::tcp::socket	Socket;
 
 	typedef std::shared_ptr<Session>		SessionPtr;
+	typedef std::shared_ptr<WorkQueue>		WorkQueuePtr;
 
 	// 생성자
 	DServer(std::string server_port);
@@ -54,12 +56,13 @@ private :
 	Acceptor				acceptor_;
 	SessionPtr				session_;
 	WorkThreadManager*		work_thread_manager_;
+	WorkQueuePtr			work_queue_;				// 세션에서 데이터 수신시 작업 넣어둘 큐
 
 	// 세션들을 담아둘 큐
 	// 이 큐에서 세션을 빼서 처리한다.
-	// std::queue<Session*> session_queue_;
+	// std::queue<SessionPtr> session_queue_;
 
-	tbb::concurrent_queue<SessionPtr> tbb_queue_;
+	tbb::concurrent_bounded_queue<SessionPtr> tbb_queue_;
 
 	int count_;
 };
