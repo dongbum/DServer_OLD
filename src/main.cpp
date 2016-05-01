@@ -65,7 +65,7 @@ int main(void)
 	*/
 
 	// 설정 파일을 로딩한다.
-	dserver::config::Config config("./ServerConfig.ini");
+	dserver::config::Config config("D:\\Work\\DServer.git\\vs_solution\\Bin\\ServerConfig.ini");
 
 	// 서버 객체 생성
 	dserver::DServer server(config.GetValue("DServer", "PORT"));

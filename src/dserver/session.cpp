@@ -31,22 +31,22 @@ Socket& Session::GetSocket()
 // Accept가 되면 처리할 함수
 void Session::PostHandler(void)
 {
-	std::cout << "Session::PostHandler" << std::endl;
+	std::cout << "Session::PostHandler START" << std::endl;
 
 	memset(recv_buffer_, 0, sizeof(recv_buffer_));
 
 	// Recv를 한다.
 	// ReceiveHandler로 처리를 넘긴다.
+
 	socket_.async_read_some(
 			boost::asio::buffer(recv_buffer_),
 			boost::bind(
 					&Session::ReceiveHandler,
-					this,
+					shared_from_this(),
 					boost::asio::placeholders::error,
 					boost::asio::placeholders::bytes_transferred
 					)
 			);
-
 }
 
 void Session::Init(void)
