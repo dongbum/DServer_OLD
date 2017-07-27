@@ -65,16 +65,17 @@ int main(void)
 	*/
 
 	// 설정 파일을 로딩한다.
-	dserver::config::Config config("D:\\Work\\DServer.git\\vs_solution\\Bin\\ServerConfig.ini");
+	if (false == CONFIG_MANAGER_INSTANCE.Initialize("D:\\Work\\DServer.git\\vs_solution\\Bin\\ServerConfig.ini"))
+		return 0;
 
 	// 서버 객체 생성
-	dserver::DServer server(config.GetValue("DServer", "PORT"));
+	dserver::DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"));
 
 	// 서버 초기화
 	server.Init();
 
 	// 서버 시작
-	server.Start(config.GetValue("DServer", "THREAD_COUNT"));
+	server.Start(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "THREAD_COUNT"));
 
 	// 서버 종료
 	std::cout << "서버 종료" << std::endl;

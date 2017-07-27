@@ -12,8 +12,22 @@ namespace dserver
 namespace config
 {
 
-Config::Config(std::string file_name)
+ConfigManager::ConfigManager(void)
 {
+
+}
+
+
+ConfigManager::~ConfigManager(void)
+{
+
+}
+
+
+bool ConfigManager::Initialize(std::string file_name)
+{
+	Lock lock(rw_mutex_, true);
+
 	std::cout << file_name << " Loading..." << std::endl;
 
 	try
@@ -25,19 +39,18 @@ Config::Config(std::string file_name)
 	catch (boost::property_tree::ini_parser_error& error)
 	{
 		std::cout << "Load failed : " << error.message() << std::endl;
+		return false;
 	}
+
+	return true;
 }
 
-Config::~Config(void)
-{
 
-}
-
-Config::INI_Value Config::GetValue(std::string section_name, std::string key_name)
+ConfigManager::INI_Value ConfigManager::GetValue(std::string section_name, std::string key_name)
 {
 	try
 	{
-		return ptree_.get<Config::INI_Value>(section_name + "." + key_name);
+		return ptree_.get<ConfigManager::INI_Value>(section_name + "." + key_name);
 	}
 	catch (boost::property_tree::ptree_bad_path& error)
 	{

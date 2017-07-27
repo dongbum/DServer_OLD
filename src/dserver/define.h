@@ -5,8 +5,7 @@
  *      Author: dongbum
  */
 
-#ifndef DEFINE_H_
-#define DEFINE_H_
+#pragma once
 
 #ifndef _WIN32_WINNT         
 #define _WIN32_WINNT	0x0501
@@ -36,6 +35,10 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
+#include <boost/serialization/singleton.hpp>
+
+#include <tbb/tbb.h>
+#include <tbb/spin_rw_mutex.h>
 #include <tbb/concurrent_queue.h>
 
 typedef boost::asio::io_service IoService;
@@ -47,5 +50,3 @@ const int32_t kEND_MARKER = 19830419;
 
 
 #define MAX_DATETIME_SIZE	(19+1)
-
-#endif /* DEFINE_H_ */
