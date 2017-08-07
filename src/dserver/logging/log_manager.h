@@ -9,16 +9,20 @@ namespace dserver
 namespace logging
 {
 
-class LogManager
+class LogManager : public boost::serialization::singleton<LogManager>
 {
 public:
 	LogManager(void);
 	virtual ~LogManager(void);
 
 	bool Init(void);
+	void Write(const char* format, ...);
 
 private:
 	void Run(void);
+
+public:
+	static LogManager& GetMutableInstance(void) { return LogManager::get_mutable_instance(); }
 
 private:
 	tbb::concurrent_bounded_queue<LogMessage> log_queue_;
@@ -28,3 +32,6 @@ private:
 
 }
 }
+
+#define LOG_MANAGER_INSTANCE dserver::logging::LogManager::GetMutableInstance()
+#define LOG_MANAGER dserver::logging::LogManager::GetMutableInstance()

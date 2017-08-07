@@ -21,7 +21,6 @@
 #include <queue>
 #include <memory>
 
-#include <inttypes.h>
 #include <locale.h>
 #include <concurrent_queue.h>
 
@@ -40,6 +39,8 @@
 #include <tbb/tbb.h>
 #include <tbb/spin_rw_mutex.h>
 #include <tbb/concurrent_queue.h>
+
+#include "logging/log_manager.h"
 
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;

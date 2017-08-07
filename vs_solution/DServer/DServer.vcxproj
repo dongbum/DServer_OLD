@@ -119,6 +119,7 @@
     <ClInclude Include="..\..\src\dserver\database\redis\redis.h" />
     <ClInclude Include="..\..\src\dserver\define.h" />
     <ClInclude Include="..\..\src\dserver\header.h" />
+    <ClInclude Include="..\..\src\dserver\logging\log_define.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_manager.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_message.h" />
     <ClInclude Include="..\..\src\dserver\protocol\base_protocol.h" />

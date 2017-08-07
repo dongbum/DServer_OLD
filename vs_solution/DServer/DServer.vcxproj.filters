@@ -164,5 +164,8 @@
     <ClInclude Include="..\..\src\dserver\logging\log_message.h">
       <Filter>소스 파일\dserver\logging</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_define.h">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
