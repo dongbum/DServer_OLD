@@ -5,12 +5,12 @@
 
 #define MAX_LOG_MESSAGE_LENGTH		1024
 
-#define LL_DEBUG		dserver::logging::LOG_LEVEL_DEBUG
-#define LL_INFO			dserver::logging::LOG_LEVEL_INFO
-#define LL_WARN			dserver::logging::LOG_LEVEL_WARN
-#define LL_ERROR		dserver::logging::LOG_LEVEL_ERROR
-#define LL_FATAL		dserver::logging::LOG_LEVEL_FATAL
-#define LL_MAX			dserver::logging::LOG_LEVEL_MAX
+#define LL_DEBUG(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_DEBUG, __VA_ARGS__);
+#define LL_INFO(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_INFO, __VA_ARGS__);
+#define LL_WARN(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_WARN, __VA_ARGS__);
+#define LL_ERROR(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_ERROR, __VA_ARGS__);
+#define LL_FATAL(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_FATAL, __VA_ARGS__);
+
 
 namespace dserver
 {

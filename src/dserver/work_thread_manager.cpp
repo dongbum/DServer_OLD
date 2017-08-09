@@ -29,5 +29,5 @@ WorkThreadManager::~WorkThreadManager(void)
 
 void WorkThreadManager::Run(void)
 {
-	LOG_MANAGER.Write(LL_DEBUG, "WorkThreadManager::Run");
+	LL_DEBUG("WorkThreadManager::Run");
 }

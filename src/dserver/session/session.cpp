@@ -31,7 +31,7 @@ Socket& Session::GetSocket()
 // Accept가 되면 처리할 함수
 void Session::PostHandler(void)
 {
-	std::cout << "Session::PostHandler START" << std::endl;
+	LL_DEBUG("Session::PostHandler START");
 
 	memset(recv_buffer_, 0, sizeof(recv_buffer_));
 
@@ -58,17 +58,17 @@ void Session::Init(WorkQueuePtr work_queue)
 // Recv를 처리할 함수
 void Session::ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred)
 {
-	std::cout << "Session::ReceiveHandler : bytes_transferred(" << bytes_transferred << ")" << std::endl;
+	LL_DEBUG("Session::ReceiveHandler : bytes_transferred(%d)", bytes_transferred);
 
 	if (error)
 	{
 		if (error == boost::asio::error::eof)
 		{
-			std::cout << "Client connection end" << std::endl;
+			LL_DEBUG("Client connection end");
 		}
 		else
 		{
-			std::cout << "Client connection error : " << error.value() << " - msg : " << error.message() << std::endl;
+			LL_DEBUG("Client connection error : %d - msg : %s", error.value(), error.message().c_str());
 		}
 
 		// Recv가 실패하거나 소켓의 연결이 끊겼다면 소켓을 닫도록 한다.
@@ -100,7 +100,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 				// 엔드마커를 확인해서 틀리다면 처리를 중지한다.
 				if (kEND_MARKER != *end_marker)
 				{
-					std::cout << "END MARKER CHECK : FAIL" << std::endl;
+					LL_DEBUG("END MARKER CHECK : FAIL");
 					break;
 				}
 
@@ -109,9 +109,9 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 
 				// PacketProcess(header->GetProtocolNo(), &packet_buffer_[sizeof(Header)], header->GetDataLength());
 
-				std::cout << "Header.TotalLength : " << header->GetTotalLength() << std::endl;
-				std::cout << "Header.ProtocolNo  : " << header->GetProtocolNo() << std::endl;
-				std::cout << "Header.DataLength  : " << header->GetDataLength() << std::endl;
+				LL_DEBUG("Header.TotalLength : %d", header->GetTotalLength());
+				LL_DEBUG("Header.ProtocolNo  : %d", header->GetProtocolNo());
+				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
 				packet_data_size = packet_data_size - header->GetDataLength();
 				packet_data_size = packet_data_size - sizeof(kEND_MARKER);
@@ -132,7 +132,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 		packet_buffer_size_ = packet_data_size;
 
 		/*
-		std::cout << "Session::async_write" << std::endl;
+		LL_DEBUG("Session::async_write");
 
 		// WriteHandler를 이용해 데이터를 전송한다.
 		char send_buffer[1024] = {0,};
@@ -156,7 +156,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 // 데이터를 전송한다.
 void Session::WriteHandler(const boost::system::error_code& error, size_t bytes_transferred)
 {
-	std::cout << "Session::WriteHandler : bytes_transferred(" << bytes_transferred << ")" << std::endl;
+	LL_DEBUG("Session::WriteHandler : bytes_transferred(%d)", bytes_transferred);
 }
 
 void Session::PacketProcess(uint32_t protocol_no, unsigned char* packet_buffer, unsigned int& packet_length)
@@ -164,7 +164,7 @@ void Session::PacketProcess(uint32_t protocol_no, unsigned char* packet_buffer, 
 	// 프로토콜 바로 처리
 	// user_protocol_manager.ExecuteProtocol(protocol_no, packet_buffer, packet_length);
 
-	std::cout << "Push to work queue" << std::endl;
+	LL_DEBUG("Push to work queue");
 
 	work_queue_->Push(RequestWork(shared_from_this(), recv_buffer_));
 }

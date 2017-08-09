@@ -18,7 +18,7 @@ DServer::DServer(std::string server_port)
 ,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 ,	count_(0)
 {
-	LOG_MANAGER.Write(LL_DEBUG, "Server port is %s", server_port.c_str());
+	LL_DEBUG("Server port is %s", server_port.c_str());
 
 	// 작업을 넣을 큐 생성
 	work_queue_ = WorkQueuePtr(new WorkQueue);
@@ -33,7 +33,7 @@ DServer::DServer(std::string server_port)
 		tbb_queue_.push(session);
 	}
 
-	LOG_MANAGER.Write(LL_DEBUG, "tbb_queue_ size : %d", tbb_queue_.size());
+	LL_DEBUG("tbb_queue_ size : %d", tbb_queue_.size());
 
 	IOServiceHandler();
 }
@@ -51,11 +51,11 @@ void DServer::IOServiceHandler(void)
 	// 큐에서 세션 한개를 뺀다.
 	if (false == tbb_queue_.try_pop(new_session))
 	{
-		LOG_MANAGER.Write(LL_DEBUG, "Session try_pop failed.");
+		LL_DEBUG("Session try_pop failed.");
 		exit(1);
 	}
 	
-	LOG_MANAGER.Write(LL_DEBUG, "tbb_queue_ try_pop() success. size : %d", tbb_queue_.size());
+	LL_DEBUG("tbb_queue_ try_pop() success. size : %d", tbb_queue_.size());
 
 	// 그 세션에서 accept를 받는다.
 	acceptor_.async_accept(
@@ -72,27 +72,27 @@ void DServer::IOServiceHandler(void)
 // 소켓 accept 핸들러
 void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code& error)
 {
-	LOG_MANAGER.Write(LL_DEBUG, "AcceptHandler START");
+	LL_DEBUG("AcceptHandler START");
 
 	if (false == acceptor_.is_open())
 	{
-		LOG_MANAGER.Write(LL_DEBUG, "Acceptor is close.");
+		LL_DEBUG("Acceptor is close.");
 		return;
 	}
 
 	if (!error)
 	{
-		LOG_MANAGER.Write(LL_DEBUG, "Client connected");
+		LL_DEBUG("Client connected");
 
 		// Accept가 되었다면 세션의 PostHandler로 처리를 넘긴다.
 
 		count_++;
-		LOG_MANAGER.Write(LL_DEBUG, "count_ : %d", count_);
+		LL_DEBUG("count_ : %d", count_);
 		session->PostHandler();
 	}
 	else
 	{
-		LOG_MANAGER.Write(LL_DEBUG, "%d : %s", error.value(), error.message().c_str());
+		LL_DEBUG("%d : %s", error.value(), error.message().c_str());
 
 		// Accept에 문제가 있다면 이 세션을 종료한다.
 		CloseHandler(session);
@@ -112,7 +112,7 @@ void DServer::Start(std::string& thread_count)
 	// 워커스레드 매니저 생성
 	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
 
-	LOG_MANAGER.Write(LL_DEBUG, "START");
+	LL_DEBUG("START");
 
 	io_service_.run();
 }
@@ -127,12 +127,12 @@ void DServer::Stop(void)
 // 세션 종료
 void DServer::CloseHandler(SessionPtr session)
 {
-	LOG_MANAGER.Write(LL_DEBUG, "CloseHandler");
+	LL_DEBUG("CloseHandler");
 
 	// std::cout << "before push : session_queue_.size() : " << session_queue_.size() << std::endl;
-	LOG_MANAGER.Write(LL_DEBUG, "before push : tbb_queue_.size() : %d", tbb_queue_.size());
+	LL_DEBUG("before push : tbb_queue_.size() : %d", tbb_queue_.size());
 
-	LOG_MANAGER.Write(LL_DEBUG, "socket close");
+	LL_DEBUG("socket close");
 
 	// 세션의 소켓을 닫는다.
 	if (true == session->GetSocket().is_open())
@@ -145,13 +145,13 @@ void DServer::CloseHandler(SessionPtr session)
 	// 세션큐에 다시 이 세션을 넣는다.
 	// session_queue_.push(session);
 
-	LOG_MANAGER.Write(LL_DEBUG, "push to tbb_queue_");
+	LL_DEBUG("push to tbb_queue_");
 
 	// tbb 큐에 다시 이 세션을 넣는다.
 	tbb_queue_.push(session);
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
-	LOG_MANAGER.Write(LL_DEBUG, "push end : tbb_queue_.size() : %d", tbb_queue_.size());
+	LL_DEBUG("push end : tbb_queue_.size() : %d", tbb_queue_.size());
 }
 
 }

@@ -108,18 +108,10 @@ bool LogManager::CreateLogFile(void)
 		if (true == FindFile(path, log_file_name_, file_path))
 		{
 			ofs_.open(file_path / log_file_name_, boost::filesystem::ofstream::out | boost::filesystem::ofstream::app);
-
-			// ofs_ << "text add" << '\n';
-
-			// ofs_.close();
 		}
 		else
 		{
 			ofs_.open(path / log_file_name_);
-			
-			// ofs_ << "this is test" << '\n';
-
-			// ofs_.close();
 		}
 	}
 	catch (boost::filesystem::filesystem_error& fe)
