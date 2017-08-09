@@ -1,3 +1,4 @@
+#include "../define.h"
 #include "log_manager.h"
 
 
@@ -15,23 +16,31 @@ LogManager::LogManager(void)
 
 LogManager::~LogManager(void)
 {
+	if (log_mode_ & LOG_MODE::LOG_MODE_NONE)
+		return;
+
 	if (ofs_.is_open())
 		ofs_.close();
 }
 
 
-bool LogManager::Init(std::string log_directory_name, std::string log_file_name)
+bool LogManager::Init(void)
 {
-	log_directory_name_ = log_directory_name;
-	log_file_name_ = log_file_name;
+	log_mode_ = GetLogMode(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_MODE"));
+	log_directory_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_PATH");
+	log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE");
 
-	if (false == CreateLogDirectory())
-		return false;
+	if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
+	{
+		if (false == CreateLogDirectory())
+			return false;
 
-	if (false == CreateLogFile())
-		return false;
+		if (false == CreateLogFile())
+			return false;
+	}
 
-	log_thread_ = boost::thread(boost::bind(&LogManager::Run, this));
+	if ((log_mode_ & LOG_MODE::LOG_MODE_DISPLAY) || (log_mode_ & LOG_MODE::LOG_MODE_FILE))
+		log_thread_ = boost::thread(boost::bind(&LogManager::Run, this));
 
 	return true;
 }
@@ -39,6 +48,9 @@ bool LogManager::Init(std::string log_directory_name, std::string log_file_name)
 
 void LogManager::Write(dserver::logging::LOG_LEVEL log_level, const char* format, ...)
 {
+	if (log_mode_ & LOG_MODE::LOG_MODE_NONE)
+		return;
+
 	LogMessage log_message;
 
 	va_list ap;
@@ -60,9 +72,14 @@ void LogManager::Run(void)
 
 		if (log_queue_.try_pop(log_message))
 		{
-			std::cout << log_message.GetBuffer() << std::endl;
+			if (log_mode_ & LOG_MODE::LOG_MODE_DISPLAY)
+				std::cout << log_message.GetBuffer() << std::endl;
 
-			ofs_ << std::string(log_message.GetBuffer()) << '\n';
+			if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
+			{
+				ofs_ << std::string(log_message.GetBuffer()) << '\n';
+				ofs_.flush();
+			}
 		}
 	}
 }
@@ -155,6 +172,20 @@ bool LogManager::FindFile(const boost::filesystem::path& target_path, std::strin
 	return false;
 }
 
+
+short LogManager::GetLogMode(std::string value)
+{
+	if (value == "NONE")
+		return LOG_MODE::LOG_MODE_NONE;
+	else if (value == "FILE")
+		return LOG_MODE::LOG_MODE_FILE;
+	else if (value == "DISPLAY")
+		return LOG_MODE::LOG_MODE_DISPLAY;
+	else if (value == "ALL")
+		return (LOG_MODE::LOG_MODE_FILE | LOG_MODE::LOG_MODE_DISPLAY);
+	else
+		return (LOG_MODE::LOG_MODE_FILE | LOG_MODE::LOG_MODE_DISPLAY);
+}
 
 }
 }

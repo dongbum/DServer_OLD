@@ -7,10 +7,7 @@
 
 #include "dserver/define.h"
 #include "dserver/server.h"
-#include "dserver/config/config.h"
-#include "dserver/logging/log_manager.h"
 #include "user_protocol/user_protocol.h"
-
 #include "dserver/database/mysql/mysql_conn.h"
 #include "dserver/database/mysql/mysql_conn_pool.h"
 
@@ -69,7 +66,7 @@ int main(void)
 	if (false == CONFIG_MANAGER_INSTANCE.Initialize("D:\\Work\\DServer.git\\vs_solution\\Bin\\ServerConfig.ini"))
 		return 0;
 
-	if (false == LOG_MANAGER_INSTANCE.Init("log", "log.txt"))
+	if (false == LOG_MANAGER_INSTANCE.Init())
 		return 0;
 
 	// 서버 객체 생성

@@ -49,6 +49,8 @@
 #include <tbb/spin_rw_mutex.h>
 #include <tbb/concurrent_queue.h>
 
+#include "config/config.h"
+
 #include "logging/log_define.h"
 #include "logging/log_manager.h"
 

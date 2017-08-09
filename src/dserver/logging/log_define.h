@@ -27,5 +27,13 @@ enum LOG_LEVEL : short
 	LOG_LEVEL_MAX
 };
 
+enum LOG_MODE : short
+{
+	LOG_MODE_NONE =			0x00000001,
+	LOG_MODE_FILE =			0x00000010,
+	LOG_MODE_DISPLAY =		0x00000100,
+	LOG_MODE_MAX =			0x00001000,
+};
+
 }
 }
