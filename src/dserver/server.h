@@ -5,8 +5,7 @@
  *      Author: dongbum
  */
 
-#ifndef SERVER_H_
-#define SERVER_H_
+#pragma once
 
 #include "define.h"
 #include "work_thread_manager.h"
@@ -68,5 +67,3 @@ private :
 };
 
 }
-
-#endif /* SERVER_H_ */

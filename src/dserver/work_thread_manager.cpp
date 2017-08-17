@@ -5,6 +5,7 @@
  *      Author: dongbum
  */
 
+#include "define.h"
 #include "work_thread_manager.h"
 
 
@@ -28,5 +29,5 @@ WorkThreadManager::~WorkThreadManager(void)
 
 void WorkThreadManager::Run(void)
 {
-	std::cout << "WorkThreadManager::Run" << std::endl;
+	LL_DEBUG("WorkThreadManager::Run");
 }

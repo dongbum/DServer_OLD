@@ -46,6 +46,9 @@
     <Filter Include="소스 파일\dserver\interface">
       <UniqueIdentifier>{86e3c83c-5393-4f54-9fdc-61b2c18b84a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\logging">
+      <UniqueIdentifier>{6805a70e-76a0-4de9-b3f0-863088ebdc7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
@@ -95,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\dserver\session\session.cpp">
       <Filter>소스 파일\dserver\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\logging\log_manager.cpp">
+      <Filter>소스 파일\dserver\logging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +157,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\session\session.h">
       <Filter>소스 파일\dserver\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_manager.h">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_message.h">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_define.h">
+      <Filter>소스 파일\dserver\logging</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

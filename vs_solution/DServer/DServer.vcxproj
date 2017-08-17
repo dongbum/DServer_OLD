@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\src\dserver\database\mysql\mysql_conn.cpp" />
     <ClCompile Include="..\..\src\dserver\database\mysql\mysql_conn_pool.cpp" />
     <ClCompile Include="..\..\src\dserver\database\redis\redis.cpp" />
+    <ClCompile Include="..\..\src\dserver\logging\log_manager.cpp" />
     <ClCompile Include="..\..\src\dserver\protocol\base_protocol.cpp" />
     <ClCompile Include="..\..\src\dserver\request_work.cpp" />
     <ClCompile Include="..\..\src\dserver\server.cpp" />
@@ -118,6 +119,9 @@
     <ClInclude Include="..\..\src\dserver\database\redis\redis.h" />
     <ClInclude Include="..\..\src\dserver\define.h" />
     <ClInclude Include="..\..\src\dserver\header.h" />
+    <ClInclude Include="..\..\src\dserver\logging\log_define.h" />
+    <ClInclude Include="..\..\src\dserver\logging\log_manager.h" />
+    <ClInclude Include="..\..\src\dserver\logging\log_message.h" />
     <ClInclude Include="..\..\src\dserver\protocol\base_protocol.h" />
     <ClInclude Include="..\..\src\dserver\request_work.h" />
     <ClInclude Include="..\..\src\dserver\server.h" />

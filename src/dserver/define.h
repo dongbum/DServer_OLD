@@ -15,13 +15,20 @@
 #define CPPCONN_LIB_BUILD True
 #endif
 
+#ifndef IN
+#define IN
+#endif
+
+#ifndef OUT
+#define OUT
+#endif
+
 #include <iostream>
 #include <map>
 #include <string>
 #include <queue>
 #include <memory>
 
-#include <inttypes.h>
 #include <locale.h>
 #include <concurrent_queue.h>
 
@@ -31,6 +38,7 @@
 #include <boost/functional.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
+#include <boost/filesystem.hpp>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
@@ -40,6 +48,11 @@
 #include <tbb/tbb.h>
 #include <tbb/spin_rw_mutex.h>
 #include <tbb/concurrent_queue.h>
+
+#include "config/config.h"
+
+#include "logging/log_define.h"
+#include "logging/log_manager.h"
 
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;
