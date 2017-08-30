@@ -9,6 +9,7 @@ namespace logging
 
 
 LogManager::LogManager(void)
+	: today_(0)
 {
 
 }
@@ -26,9 +27,11 @@ LogManager::~LogManager(void)
 
 bool LogManager::Init(void)
 {
+	today_ = utility::GetTodayInt();
+
 	log_mode_ = GetLogMode(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_MODE"));
 	log_directory_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_PATH");
-	log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE");
+	log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + utility::GetTodayStr() + ".log";
 
 	if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
 	{
@@ -53,10 +56,15 @@ void LogManager::Write(dserver::logging::LOG_LEVEL log_level, const char* format
 
 	LogMessage log_message;
 
+	std::string date_str = "[" + dserver::utility::GetTimeStr() + "] ";
+
+	memcpy(log_message.GetBuffer(), date_str.c_str(), date_str.length());
+	log_message.AddPosition(date_str.length());
+
 	va_list ap;
 	va_start(ap, format);
 	
-	vsnprintf_s(log_message.GetBuffer(), MAX_LOG_MESSAGE_LENGTH, MAX_LOG_MESSAGE_LENGTH, format, ap);
+	vsprintf_s(log_message.GetBuffer(), MAX_LOG_MESSAGE_LENGTH - log_message.GetPosition(), format, ap);
 
 	va_end(ap);
 
@@ -73,11 +81,34 @@ void LogManager::Run(void)
 		if (log_queue_.try_pop(log_message))
 		{
 			if (log_mode_ & LOG_MODE::LOG_MODE_DISPLAY)
-				std::cout << log_message.GetBuffer() << std::endl;
+				std::cout << log_message.GetBufferStart() << std::endl;
 
 			if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
 			{
-				ofs_ << std::string(log_message.GetBuffer()) << '\n';
+				// 현재 날짜를 구하여 날짜가 지났는지 판단한다.
+				if (today_ != utility::GetTodayInt())
+				{
+					if (ofs_.is_open())
+						ofs_.close();
+
+					log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + utility::GetTodayStr() + ".log";
+
+					boost::filesystem::path path("./" + log_directory_name_);
+
+					boost::filesystem::path file_path;
+					if (true == FindFile(path, log_file_name_, file_path))
+					{
+						ofs_.open(file_path / log_file_name_, boost::filesystem::ofstream::out | boost::filesystem::ofstream::app);
+					}
+					else
+					{
+						ofs_.open(path / log_file_name_);
+					}
+
+					today_ = utility::GetTodayInt();
+				}
+
+				ofs_ << std::string(log_message.GetBufferStart()) << '\n';
 				ofs_.flush();
 			}
 		}
