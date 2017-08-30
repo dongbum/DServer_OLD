@@ -40,6 +40,8 @@ private:
 
 	boost::filesystem::ofstream		ofs_;
 
+	unsigned int	today_;
+
 };
 
 }

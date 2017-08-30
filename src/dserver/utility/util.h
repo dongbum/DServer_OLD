@@ -18,7 +18,7 @@ static std::string GetTodayStr(void)
 }
 
 
-static int GetTodayInt(void)
+static unsigned int GetTodayInt(void)
 {
 	const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
 	const boost::format f = boost::format("%s%02d%02d")
