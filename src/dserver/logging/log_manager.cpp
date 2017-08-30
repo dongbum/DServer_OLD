@@ -53,10 +53,15 @@ void LogManager::Write(dserver::logging::LOG_LEVEL log_level, const char* format
 
 	LogMessage log_message;
 
+	std::string date_str = "[" + dserver::utility::GetTimeStr() + "] ";
+
+	memcpy(log_message.GetBuffer(), date_str.c_str(), date_str.length());
+	log_message.AddPosition(date_str.length());
+
 	va_list ap;
 	va_start(ap, format);
 	
-	vsnprintf_s(log_message.GetBuffer(), MAX_LOG_MESSAGE_LENGTH, MAX_LOG_MESSAGE_LENGTH, format, ap);
+	vsprintf_s(log_message.GetBuffer(), MAX_LOG_MESSAGE_LENGTH - log_message.GetPosition(), format, ap);
 
 	va_end(ap);
 
@@ -73,11 +78,11 @@ void LogManager::Run(void)
 		if (log_queue_.try_pop(log_message))
 		{
 			if (log_mode_ & LOG_MODE::LOG_MODE_DISPLAY)
-				std::cout << log_message.GetBuffer() << std::endl;
+				std::cout << log_message.GetBufferStart() << std::endl;
 
 			if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
 			{
-				ofs_ << std::string(log_message.GetBuffer()) << '\n';
+				ofs_ << std::string(log_message.GetBufferStart()) << '\n';
 				ofs_.flush();
 			}
 		}

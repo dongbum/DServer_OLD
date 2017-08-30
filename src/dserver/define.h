@@ -59,6 +59,8 @@
 #include "logging/log_define.h"
 #include "logging/log_manager.h"
 
+#include "utility/util.h"
+
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;
 typedef boost::asio::ip::tcp::acceptor Acceptor;
