@@ -90,33 +90,17 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 			// 헤더구하기
 			Header* header = (Header*)&packet_buffer_[read_data];
 
-			if (sizeof(Header) + header->GetDataLength() + sizeof(kEND_MARKER) <= packet_data_size)
+			if (header->GetTotalLength() <= packet_data_size)
 			{
-				int32_t end_marker_pos = sizeof(Header) + header->GetDataLength();
-
-				// 엔드마커를 구한다.
-				int32_t* end_marker = (int32_t*)(&packet_buffer_[end_marker_pos]);
-
-				// 엔드마커를 확인해서 틀리다면 처리를 중지한다.
-				if (kEND_MARKER != *end_marker)
-				{
-					LL_DEBUG("END MARKER CHECK : FAIL");
-					break;
-				}
-
-				// 데이터 처리
-				// packet_buffer_[read_data];
-
-				// PacketProcess(header->GetProtocolNo(), &packet_buffer_[sizeof(Header)], header->GetDataLength());
-
 				LL_DEBUG("Header.TotalLength : %d", header->GetTotalLength());
 				LL_DEBUG("Header.ProtocolNo  : %d", header->GetProtocolNo());
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
-				packet_data_size = packet_data_size - header->GetDataLength();
-				packet_data_size = packet_data_size - sizeof(kEND_MARKER);
+				// 데이터 처리
+				work_queue_.get()->Push(RequestWork(shared_from_this(), &packet_buffer_[read_data], header->GetTotalLength()));
 
-				read_data = read_data + header->GetDataLength() + sizeof(kEND_MARKER);
+				packet_data_size -= header->GetTotalLength();
+				read_data += header->GetTotalLength();
 			}
 			else
 			{
@@ -126,27 +110,15 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 
 		if (packet_data_size > 0)
 		{
+			if (packet_data_size > RECV_BUFFER_SIZE)
+				packet_data_size = RECV_BUFFER_SIZE;
 
+			char TempBuffer[RECV_BUFFER_SIZE] = { 0, };
+			memcpy(&TempBuffer[0], &packet_buffer_[read_data], packet_data_size);
+			memcpy(&packet_buffer_[0], &TempBuffer[0], packet_data_size);
 		}
 
 		packet_buffer_size_ = packet_data_size;
-
-		/*
-		LL_DEBUG("Session::async_write");
-
-		// WriteHandler를 이용해 데이터를 전송한다.
-		char send_buffer[1024] = {0,};
-		boost::asio::async_write(
-				socket_,
-				boost::asio::buffer(send_buffer),
-				boost::bind(
-						&Session::WriteHandler,
-						this,
-						boost::asio::placeholders::error,
-						boost::asio::placeholders::bytes_transferred
-						)
-				);
-		*/
 
 		// 다시 PostHandler를 호출해서 Recv를 받는다.
 		PostHandler();
@@ -159,14 +131,5 @@ void Session::WriteHandler(const boost::system::error_code& error, size_t bytes_
 	LL_DEBUG("Session::WriteHandler : bytes_transferred(%d)", bytes_transferred);
 }
 
-void Session::PacketProcess(uint32_t protocol_no, unsigned char* packet_buffer, unsigned int& packet_length)
-{
-	// 프로토콜 바로 처리
-	// user_protocol_manager.ExecuteProtocol(protocol_no, packet_buffer, packet_length);
-
-	LL_DEBUG("Push to work queue");
-
-	work_queue_->Push(RequestWork(shared_from_this(), recv_buffer_));
-}
 
 }
