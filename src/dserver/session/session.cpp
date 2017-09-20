@@ -90,20 +90,8 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 			// 헤더구하기
 			Header* header = (Header*)&packet_buffer_[read_data];
 
-			if (sizeof(Header) + header->GetDataLength() + sizeof(kEND_MARKER) <= packet_data_size)
+			if (header->GetTotalLength() <= packet_data_size)
 			{
-				int32_t end_marker_pos = sizeof(Header) + header->GetDataLength();
-
-				// 엔드마커를 구한다.
-				int32_t* end_marker = (int32_t*)(&packet_buffer_[end_marker_pos]);
-
-				// 엔드마커를 확인해서 틀리다면 처리를 중지한다.
-				if (kEND_MARKER != *end_marker)
-				{
-					LL_DEBUG("END MARKER CHECK : FAIL");
-					break;
-				}
-
 				// 데이터 처리
 				// packet_buffer_[read_data];
 
@@ -113,10 +101,8 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 				LL_DEBUG("Header.ProtocolNo  : %d", header->GetProtocolNo());
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
-				packet_data_size = packet_data_size - header->GetDataLength();
-				packet_data_size = packet_data_size - sizeof(kEND_MARKER);
-
-				read_data = read_data + header->GetDataLength() + sizeof(kEND_MARKER);
+				packet_data_size -= header->GetTotalLength();
+				read_data += header->GetTotalLength();
 			}
 			else
 			{
@@ -126,7 +112,12 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 
 		if (packet_data_size > 0)
 		{
+			if (packet_data_size > RECV_BUFFER_SIZE)
+				packet_data_size = RECV_BUFFER_SIZE;
 
+			char TempBuffer[RECV_BUFFER_SIZE] = { 0, };
+			memcpy(&TempBuffer[0], &packet_buffer_[read_data], packet_data_size);
+			memcpy(&packet_buffer_[0], &TempBuffer[0], packet_data_size);
 		}
 
 		packet_buffer_size_ = packet_data_size;
