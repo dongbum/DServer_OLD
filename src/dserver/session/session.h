@@ -30,15 +30,12 @@ public :
 
 	void		PostHandler(void);
 	void		Init(WorkQueuePtr work_queue);
-	void		PacketProcess(uint32_t protocol_no, unsigned char* packet_buffer, unsigned int& packet_length);
 
 	Socket&		GetSocket();
 
 private :
 	void		ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred);
 	void		WriteHandler(const boost::system::error_code& error, size_t bytes_transferred);
-
-	
 
 	std::shared_ptr<dserver::DServer> server_;
 	Socket socket_;

@@ -69,4 +69,6 @@ typedef boost::asio::ip::tcp::socket Socket;
 const int32_t kEND_MARKER = 19830419;
 
 
-#define MAX_DATETIME_SIZE	(19+1)
+#define RECV_BUFFER_SIZE			1024 * 64		// 수신용 버퍼 크기
+#define SEND_BUFFER_SIZE			1024 * 64		// 송신용 버퍼 크기
+#define MAX_DATETIME_SIZE			(19+1)
