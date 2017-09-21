@@ -1,7 +1,5 @@
 #include "work_queue.h"
 
-namespace dserver
-{
 
 RequestWorkQueue::RequestWorkQueue(void)
 {
@@ -23,6 +21,4 @@ void RequestWorkQueue::Push(const RequestWork& message)
 void RequestWorkQueue::Pop(RequestWork& message)
 {
 	request_work_queue_.try_pop(message);
-}
-
 }

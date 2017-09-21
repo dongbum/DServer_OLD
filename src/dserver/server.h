@@ -2,15 +2,12 @@
 
 #include "define.h"
 #include "work_thread_manager.h"
-#include "session/session.h"
-#include "../user_protocol/user_protocol.h"
 
-namespace dserver
-{
 
 class Session;
 class Config;
 class RequestWorkQueue;
+class UserProtocol;
 
 class DServer
 {
@@ -29,7 +26,7 @@ public :
 	// 소멸자
 	virtual ~DServer(void);
 
-	void Init(void);
+	void Init(UserProtocol* user_protocol);
 	void Start(std::string& thread_count);
 	void Start(Config& config);
 	void Stop(void);
@@ -43,7 +40,17 @@ public :
 	void CloseHandler(SessionPtr session);
 
 	void IOServiceHandler();
-private :
+
+public:
+	static std::shared_ptr<DServer> server_instance_ptr_;
+
+	static void SetServerInstance(std::shared_ptr<DServer>& server_instance_ptr) { server_instance_ptr_ = server_instance_ptr; }
+	static std::shared_ptr<DServer>& GetServerInstance(void) { return server_instance_ptr_; }
+
+public:
+	UserProtocol*			GetUserProtocol(void) { return user_protocol_; }
+
+private:
 	IoService				io_service_;
 	Acceptor				acceptor_;
 	SessionPtr				session_;
@@ -57,6 +64,8 @@ private :
 	tbb::concurrent_bounded_queue<SessionPtr> tbb_queue_;
 
 	int count_;
-};
 
-}
+private:
+	UserProtocol*			user_protocol_;
+
+};

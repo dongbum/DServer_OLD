@@ -2,8 +2,7 @@
 
 #include "define.h"
 
-namespace dserver
-{
+
 class Header
 {
 public:
@@ -26,5 +25,3 @@ private:
 	int32_t			protocol_no_;
 	unsigned int	data_length_;
 };
-
-}

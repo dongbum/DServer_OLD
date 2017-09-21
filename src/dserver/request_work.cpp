@@ -1,7 +1,5 @@
 #include "request_work.h"
 
-namespace dserver
-{
 
 RequestWork::RequestWork(void)
 	: session_(nullptr)
@@ -22,7 +20,5 @@ RequestWork::RequestWork(SessionPtr session, unsigned char buffer[], uint32_t le
 
 RequestWork::~RequestWork(void)
 {
-
-}
 
 }

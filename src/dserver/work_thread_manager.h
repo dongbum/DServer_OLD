@@ -1,12 +1,4 @@
-/*
- * work_thread_manager.h
- *
- *  Created on: 2013. 12. 4.
- *      Author: dongbum
- */
-
-#ifndef WORKTHREADMANAGER_H_
-#define WORKTHREADMANAGER_H_
+#pragma once
 
 #include <boost/thread.hpp>
 
@@ -20,5 +12,3 @@ public:
 private:
 	boost::thread_group thread_group_;
 };
-
-#endif /* WORKTHREADMANAGER_H_ */

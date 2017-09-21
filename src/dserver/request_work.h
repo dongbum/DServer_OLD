@@ -1,12 +1,9 @@
-#ifndef __C_REQUEST_WORK_H__
-#define __C_REQUEST_WORK_H__
+#pragma once
 
 #include "define.h"
 #include "server.h"
 #include "session/session.h"
 
-namespace dserver
-{
 
 class DServer;
 class Session;
@@ -25,8 +22,3 @@ private:
 	unsigned char		buffer_[1024];
 	uint32_t			data_length_;
 };
-
-}
-
-
-#endif

@@ -1,16 +1,7 @@
-/*
- * server.cpp
- *
- *  Created on: 2013. 11. 26.
- *      Author: dongbum
- */
-
 #include "server.h"
 #include "work_queue.h"
 #include "work_thread_manager.h"
 
-namespace dserver
-{
 
 // 생성자
 DServer::DServer(std::string server_port)
@@ -101,9 +92,9 @@ void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code&
 	IOServiceHandler();
 }
 
-void DServer::Init(void)
+void DServer::Init(UserProtocol* user_protocol)
 {
-
+	user_protocol_ = user_protocol;
 }
 
 // 시작
@@ -152,6 +143,4 @@ void DServer::CloseHandler(SessionPtr session)
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
 	LL_DEBUG("push end : tbb_queue_.size() : %d", tbb_queue_.size());
-}
-
 }

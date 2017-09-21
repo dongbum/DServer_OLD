@@ -1,10 +1,3 @@
-/*
- * Define.h
- *
- *  Created on: 2013. 11. 28.
- *      Author: dongbum
- */
-
 #pragma once
 
 #ifndef _WIN32_WINNT         
@@ -68,6 +61,8 @@ typedef boost::asio::ip::tcp::socket Socket;
 
 const int32_t kEND_MARKER = 19830419;
 
+#define SVR							DServer::GetServerInstance()
+#define GAME_SVR					std::static_pointer_cast<DServer>(SVR)
 
 #define RECV_BUFFER_SIZE			1024 * 64		// 수신용 버퍼 크기
 #define SEND_BUFFER_SIZE			1024 * 64		// 송신용 버퍼 크기

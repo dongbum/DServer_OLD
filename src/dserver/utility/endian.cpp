@@ -1,9 +1,5 @@
 #include "endian.h"
 
-namespace dserver
-{
-namespace utility
-{
 
 int8_t ntoh(int8_t value)
 {
@@ -85,7 +81,4 @@ uint32_t hton(uint32_t value)
 uint64_t hton(uint64_t value)
 {
 	return boost::endian::endian_reverse(value);
-}
-
-}
 }

@@ -1,9 +1,8 @@
 #include "user_protocol.h"
+#include "../dserver/session/session.h"
 
-namespace user_protocol
-{
 
-uint32_t UserProtocol::Echo(uint32_t& protocol_no, unsigned char* data, unsigned int& data_length)
+uint32_t UserProtocol::Echo(Session* session, uint32_t& protocol_no, unsigned char* data, unsigned int& data_length)
 {
 	/*
 	wchar_t my_name[10 + 1] = { 0, };
@@ -37,6 +36,4 @@ uint32_t UserProtocol::Echo(uint32_t& protocol_no, unsigned char* data, unsigned
 	LL_DEBUG("test_int64 : %d", body_data->test_int64);
 
 	return 0;
-}
-
 }

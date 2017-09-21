@@ -4,10 +4,7 @@
 #include "../header.h"
 #include "../server.h"
 #include "../work_queue.h"
-#include "../../user_protocol/user_protocol.h"
 
-namespace dserver
-{
 
 class DServer;
 class RequestWorkQueue;
@@ -17,7 +14,7 @@ class Session : public std::enable_shared_from_this<Session>
 public :
 	typedef std::shared_ptr<RequestWorkQueue>		RequestWorkQueuePtr;
 
-	Session(IoService& io_service, dserver::DServer* server);
+	Session(IoService& io_service, DServer* server);
 	virtual ~Session();
 
 	void		PostReceive(void);
@@ -34,7 +31,7 @@ private :
 	unsigned char* send_data = nullptr;
 	unsigned int send_data_size = 0;
 
-	std::shared_ptr<dserver::DServer> server_;
+	std::shared_ptr<DServer> server_;
 	Socket socket_;
 
 	unsigned char packet_buffer_[RECV_BUFFER_SIZE];
@@ -42,8 +39,5 @@ private :
 
 	unsigned char recv_buffer_[RECV_BUFFER_SIZE];
 
-	user_protocol::UserProtocol user_protocol_manager;
 	RequestWorkQueuePtr request_work_queue_;
 };
-
-}

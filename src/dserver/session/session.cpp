@@ -1,7 +1,6 @@
 #include "session.h"
+#include "../../user_protocol/user_protocol.h"
 
-namespace dserver
-{
 
 Session::Session(IoService& io_service, DServer* server)
 :	socket_(io_service)
@@ -132,7 +131,6 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 void Session::Init(RequestWorkQueuePtr request_work_queue)
 {
 	request_work_queue_ = request_work_queue;
-	user_protocol_manager.Initialize();
 }
 
 // Recv를 처리할 함수
@@ -253,7 +251,4 @@ void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_t
 	Header* header = (Header*)next_data;
 
 	PostSend(true, header->GetTotalLength(), next_data);
-}
-
-
 }

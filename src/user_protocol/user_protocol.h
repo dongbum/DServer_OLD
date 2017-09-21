@@ -1,5 +1,4 @@
-#ifndef _USER_PROTOCOL_H_
-#define _USER_PROTOCOL_H_
+#pragma once
 
 #include "../dserver/define.h"
 #include "../dserver/protocol/base_protocol.h"
@@ -7,9 +6,9 @@
 #include "user_protocol_define.h"
 #include "user_protocol_body.h"
 
-namespace user_protocol
-{
-class UserProtocol : public dserver::protocol::BaseProtocol
+
+class Session;
+class UserProtocol : public BaseProtocol
 {
 public:
 	UserProtocol(void);
@@ -17,8 +16,5 @@ public:
 
 	void		Initialize(void);
 
-	uint32_t	Echo(uint32_t& protocol_no, unsigned char* data, unsigned int& data_length);
+	uint32_t	Echo(Session* session, uint32_t& protocol_no, unsigned char* data, unsigned int& data_length);
 };
-}
-
-#endif

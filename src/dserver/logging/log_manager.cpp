@@ -2,12 +2,6 @@
 #include "log_manager.h"
 
 
-namespace dserver
-{
-namespace logging
-{
-
-
 LogManager::LogManager(void)
 	: today_(0)
 {
@@ -27,11 +21,11 @@ LogManager::~LogManager(void)
 
 bool LogManager::Init(void)
 {
-	today_ = utility::GetTodayInt();
+	today_ = GetTodayInt();
 
 	log_mode_ = GetLogMode(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_MODE"));
 	log_directory_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_PATH");
-	log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + utility::GetTodayStr() + ".log";
+	log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + GetTodayStr() + ".log";
 
 	if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
 	{
@@ -49,14 +43,14 @@ bool LogManager::Init(void)
 }
 
 
-void LogManager::Write(dserver::logging::LOG_LEVEL log_level, const char* format, ...)
+void LogManager::Write(LOG_LEVEL log_level, const char* format, ...)
 {
 	if (log_mode_ & LOG_MODE::LOG_MODE_NONE)
 		return;
 
 	LogMessage log_message;
 
-	std::string date_str = "[" + dserver::utility::GetTimeStr() + "] ";
+	std::string date_str = "[" + GetTimeStr() + "] ";
 
 	memcpy(log_message.GetBuffer(), date_str.c_str(), date_str.length());
 	log_message.AddPosition(date_str.length());
@@ -86,12 +80,12 @@ void LogManager::Run(void)
 			if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
 			{
 				// 현재 날짜를 구하여 날짜가 지났는지 판단한다.
-				if (today_ != utility::GetTodayInt())
+				if (today_ != GetTodayInt())
 				{
 					if (ofs_.is_open())
 						ofs_.close();
 
-					log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + utility::GetTodayStr() + ".log";
+					log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + GetTodayStr() + ".log";
 
 					boost::filesystem::path path("./" + log_directory_name_);
 
@@ -105,7 +99,7 @@ void LogManager::Run(void)
 						ofs_.open(path / log_file_name_);
 					}
 
-					today_ = utility::GetTodayInt();
+					today_ = GetTodayInt();
 				}
 
 				ofs_ << std::string(log_message.GetBufferStart()) << '\n';
@@ -216,7 +210,4 @@ short LogManager::GetLogMode(std::string value)
 		return (LOG_MODE::LOG_MODE_FILE | LOG_MODE::LOG_MODE_DISPLAY);
 	else
 		return (LOG_MODE::LOG_MODE_FILE | LOG_MODE::LOG_MODE_DISPLAY);
-}
-
-}
 }
