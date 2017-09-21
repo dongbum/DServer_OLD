@@ -4,10 +4,11 @@
 
 
 // 생성자
-DServer::DServer(std::string server_port)
-:	session_(nullptr)
-,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
-,	count_(0)
+DServer::DServer(std::string server_port, UserProtocol* user_protocol)
+	: session_(nullptr)
+	, acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
+	, count_(0)
+	, user_protocol_(user_protocol)
 {
 	LL_DEBUG("Server port is %s", server_port.c_str());
 
@@ -25,6 +26,14 @@ DServer::DServer(std::string server_port)
 	}
 
 	LL_DEBUG("tbb_queue_ size : %d", tbb_queue_.size());
+
+	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOGIC_THREAD_COUNT"));
+	if (0 == thread_count)
+		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
+
+	// 워커스레드 매니저 생성
+	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
+	work_thread_manager_->SetUp(work_queue_, user_protocol_);
 
 	IOServiceHandler();
 }
@@ -92,18 +101,13 @@ void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code&
 	IOServiceHandler();
 }
 
-void DServer::Init(UserProtocol* user_protocol)
-{
-	user_protocol_ = user_protocol;
-}
 
 // 시작
 void DServer::Start(std::string& thread_count)
 {
-	// 워커스레드 매니저 생성
-	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
-
 	LL_DEBUG("START");
+
+	work_thread_manager_->Start();
 
 	io_service_.run();
 }

@@ -11,14 +11,22 @@ RequestWorkQueue::~RequestWorkQueue(void)
 
 }
 
-// 큐에 작업을 집어넣는다.
+
 void RequestWorkQueue::Push(const RequestWork& message)
 {
 	request_work_queue_.push(message);
 }
 
-// 큐에서 작업을 빼온다.
-void RequestWorkQueue::Pop(RequestWork& message)
+
+bool RequestWorkQueue::Pop(RequestWork& message)
 {
-	request_work_queue_.try_pop(message);
+	request_work_queue_.pop(message);
+
+	return true;
+}
+
+
+size_t RequestWorkQueue::RequestWorkQueue::Size(void)
+{
+	return request_work_queue_.size();
 }

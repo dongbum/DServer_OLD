@@ -121,7 +121,7 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 		LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
 
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
-		boost::bind(&Session::HandleWrite, this,
+		boost::bind(&Session::HandleWrite, shared_from_this(),
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred)
 	);
@@ -175,7 +175,7 @@ void Session::HandleReceive(const boost::system::error_code& error, size_t bytes
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
 				// 데이터 처리
-				request_work_queue_.get()->Push(RequestWork(shared_from_this(), &packet_buffer_[read_data], header->GetTotalLength()));
+				request_work_queue_.get()->Push(RequestWork(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetTotalLength()));
 
 				packet_data_size -= header->GetTotalLength();
 				read_data += header->GetTotalLength();

@@ -1,10 +1,3 @@
-/*
- * config.cpp
- *
- *  Created on: 2013. 11. 30.
- *      Author: dongbum
- */
-
 #include "config.h"
 
 

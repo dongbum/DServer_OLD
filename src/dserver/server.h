@@ -17,16 +17,15 @@ public :
 	typedef boost::asio::ip::tcp::acceptor	Acceptor;
 	typedef boost::asio::ip::tcp::socket	Socket;
 
-	typedef std::shared_ptr<Session>		SessionPtr;
-	typedef std::shared_ptr<RequestWorkQueue>		WorkQueuePtr;
+	typedef std::shared_ptr<Session>			SessionPtr;
+	typedef std::shared_ptr<RequestWorkQueue>	WorkQueuePtr;
 
 	// 생성자
-	DServer(std::string server_port);
+	DServer(std::string server_port, UserProtocol* user_protocol);
 
 	// 소멸자
 	virtual ~DServer(void);
 
-	void Init(UserProtocol* user_protocol);
 	void Start(std::string& thread_count);
 	void Start(Config& config);
 	void Stop(void);

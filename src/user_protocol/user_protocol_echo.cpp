@@ -2,7 +2,7 @@
 #include "../dserver/session/session.h"
 
 
-uint32_t UserProtocol::Echo(Session* session, uint32_t& protocol_no, unsigned char* data, unsigned int& data_length)
+uint32_t UserProtocol::Echo(std::shared_ptr<Session> session, uint32_t& protocol_no, unsigned char* data, uint32_t data_length)
 {
 	/*
 	wchar_t my_name[10 + 1] = { 0, };

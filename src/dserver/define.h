@@ -59,6 +59,9 @@ typedef boost::asio::ip::tcp::endpoint EndPoint;
 typedef boost::asio::ip::tcp::acceptor Acceptor;
 typedef boost::asio::ip::tcp::socket Socket;
 
+typedef boost::mutex					Mutex;
+typedef boost::lock_guard<Mutex>		LockGuard;
+
 const int32_t kEND_MARKER = 19830419;
 
 #define SVR							DServer::GetServerInstance()

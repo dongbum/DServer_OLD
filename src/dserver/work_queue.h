@@ -13,7 +13,8 @@ public:
 	virtual ~RequestWorkQueue(void);
 
 	void Push(const RequestWork& message);
-	void Pop(RequestWork& message);
+	bool Pop(RequestWork& message);
+	size_t Size(void);
 
 private:
 	tbb::concurrent_bounded_queue<RequestWork> request_work_queue_;

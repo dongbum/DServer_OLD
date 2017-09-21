@@ -69,14 +69,11 @@ int main(void)
 	if (false == LOG_MANAGER_INSTANCE.Init())
 		return 0;
 
-	// 서버 객체 생성
-	DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"));
-
 	UserProtocol user_protocol;
 	user_protocol.Initialize();
 
-	// 서버 초기화
-	server.Init(&user_protocol);
+	// 서버 객체 생성
+	DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol);
 
 	// 서버 시작
 	server.Start(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "THREAD_COUNT"));

@@ -16,5 +16,5 @@ public:
 
 	void		Initialize(void);
 
-	uint32_t	Echo(Session* session, uint32_t& protocol_no, unsigned char* data, unsigned int& data_length);
+	uint32_t	Echo(std::shared_ptr<Session> session, uint32_t& protocol_no, unsigned char* data, uint32_t data_length);
 };

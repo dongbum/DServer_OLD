@@ -18,7 +18,7 @@ void BaseProtocol::AddProtocol(uint32_t protocol_no, BaseProtocol::ProtocolFunct
 	protocol_map.insert(BaseProtocol::ProtocolMap::value_type(protocol_no, protocol_function));
 }
 
-bool BaseProtocol::ExecuteProtocol(Session* session, uint32_t protocol_no, unsigned char* data, unsigned int& data_length)
+bool BaseProtocol::ExecuteProtocol(std::shared_ptr<Session> session, uint32_t protocol_no, unsigned char* data, uint32_t data_length)
 {
 	// 프로토콜 검색
 	BaseProtocol::ProtocolMap::iterator iter = protocol_map.find(protocol_no);
