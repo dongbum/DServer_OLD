@@ -53,6 +53,7 @@
 #include "logging/log_manager.h"
 
 #include "utility/util.h"
+#include "utility/endian.h"
 
 typedef boost::asio::io_service IoService;
 typedef boost::asio::ip::tcp::endpoint EndPoint;
