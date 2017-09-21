@@ -1,5 +1,4 @@
-#ifndef __C_WORK_QUEUE_H__
-#define __C_WORK_QUEUE_H__
+#pragma once
 
 #include "define.h"
 #include "request_work.h"
@@ -9,14 +8,14 @@ namespace dserver
 
 class RequestWork;
 
-class WorkQueue
+class RequestWorkQueue
 {
 public:
-	WorkQueue(void);
-	virtual ~WorkQueue(void);
+	RequestWorkQueue(void);
+	virtual ~RequestWorkQueue(void);
 
 	void Push(const RequestWork& message);
-	void Task(RequestWork& message);
+	void Pop(RequestWork& message);
 
 private:
 	tbb::concurrent_bounded_queue<RequestWork> request_work_queue_;
@@ -24,6 +23,3 @@ private:
 };
 
 }
-
-
-#endif

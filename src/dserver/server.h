@@ -17,7 +17,7 @@ namespace dserver
 
 class Session;
 class Config;
-class WorkQueue;
+class RequestWorkQueue;
 
 class DServer
 {
@@ -28,7 +28,7 @@ public :
 	typedef boost::asio::ip::tcp::socket	Socket;
 
 	typedef std::shared_ptr<Session>		SessionPtr;
-	typedef std::shared_ptr<WorkQueue>		WorkQueuePtr;
+	typedef std::shared_ptr<RequestWorkQueue>		WorkQueuePtr;
 
 	// 생성자
 	DServer(std::string server_port);

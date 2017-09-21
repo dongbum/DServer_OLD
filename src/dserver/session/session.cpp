@@ -29,19 +29,19 @@ Socket& Session::GetSocket()
 }
 
 // Accept가 되면 처리할 함수
-void Session::PostHandler(void)
+void Session::PostReceive(void)
 {
-	LL_DEBUG("Session::PostHandler START");
+	LL_DEBUG("Session::PostReceive START");
 
 	memset(recv_buffer_, 0, sizeof(recv_buffer_));
 
 	// Recv를 한다.
-	// ReceiveHandler로 처리를 넘긴다.
+	// HandleReceive로 처리를 넘긴다.
 
 	socket_.async_read_some(
 			boost::asio::buffer(recv_buffer_),
 			boost::bind(
-					&Session::ReceiveHandler,
+					&Session::HandleReceive,
 					shared_from_this(),
 					boost::asio::placeholders::error,
 					boost::asio::placeholders::bytes_transferred
@@ -49,16 +49,16 @@ void Session::PostHandler(void)
 			);
 }
 
-void Session::Init(WorkQueuePtr work_queue)
+void Session::Init(RequestWorkQueuePtr request_work_queue)
 {
-	work_queue_ = work_queue;
+	request_work_queue_ = request_work_queue;
 	user_protocol_manager.Initialize();
 }
 
 // Recv를 처리할 함수
-void Session::ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred)
+void Session::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
 {
-	LL_DEBUG("Session::ReceiveHandler : bytes_transferred(%d)", bytes_transferred);
+	LL_DEBUG("Session::HandleReceive : bytes_transferred(%d)", bytes_transferred);
 
 	if (error)
 	{
@@ -97,7 +97,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
 				// 데이터 처리
-				work_queue_.get()->Push(RequestWork(shared_from_this(), &packet_buffer_[read_data], header->GetTotalLength()));
+				request_work_queue_.get()->Push(RequestWork(shared_from_this(), &packet_buffer_[read_data], header->GetTotalLength()));
 
 				packet_data_size -= header->GetTotalLength();
 				read_data += header->GetTotalLength();
@@ -120,8 +120,8 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 
 		packet_buffer_size_ = packet_data_size;
 
-		// 다시 PostHandler를 호출해서 Recv를 받는다.
-		PostHandler();
+		// 다시 PostReceive를 호출해서 Recv를 받는다.
+		PostReceive();
 	}
 }
 

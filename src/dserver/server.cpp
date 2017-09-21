@@ -21,7 +21,7 @@ DServer::DServer(std::string server_port)
 	LL_DEBUG("Server port is %s", server_port.c_str());
 
 	// 작업을 넣을 큐 생성
-	work_queue_ = WorkQueuePtr(new WorkQueue);
+	work_queue_ = WorkQueuePtr(new RequestWorkQueue);
 
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
 	for (int i = 0; i < 8; i++)
@@ -84,11 +84,11 @@ void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code&
 	{
 		LL_DEBUG("Client connected");
 
-		// Accept가 되었다면 세션의 PostHandler로 처리를 넘긴다.
+		// Accept가 되었다면 세션의 PostReceive로 처리를 넘긴다.
 
 		count_++;
 		LL_DEBUG("count_ : %d", count_);
-		session->PostHandler();
+		session->PostReceive();
 	}
 	else
 	{

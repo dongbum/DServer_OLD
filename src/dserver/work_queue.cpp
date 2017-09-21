@@ -3,24 +3,24 @@
 namespace dserver
 {
 
-WorkQueue::WorkQueue(void)
+RequestWorkQueue::RequestWorkQueue(void)
 {
 
 }
 
-WorkQueue::~WorkQueue(void)
+RequestWorkQueue::~RequestWorkQueue(void)
 {
 
 }
 
-// Å¥¿¡ ÀÛ¾÷À» Áı¾î³Ö´Â´Ù.
-void WorkQueue::Push(const RequestWork& message)
+// íì— ì‘ì—…ì„ ì§‘ì–´ë„£ëŠ”ë‹¤.
+void RequestWorkQueue::Push(const RequestWork& message)
 {
 	request_work_queue_.push(message);
 }
 
-// Å¥¿¡¼­ ÀÛ¾÷À» »©¿Â´Ù.
-void WorkQueue::Task(RequestWork& message)
+// íì—ì„œ ì‘ì—…ì„ ë¹¼ì˜¨ë‹¤.
+void RequestWorkQueue::Pop(RequestWork& message)
 {
 	request_work_queue_.try_pop(message);
 }
