@@ -30,7 +30,6 @@ uint32_t UserProtocol::Echo(std::shared_ptr<Session> session, uint32_t& protocol
 	LL_DEBUG("Echo");
 
 	PROTOCOL_BODY_ECHO* body_data = (PROTOCOL_BODY_ECHO*)data;
-	LL_DEBUG("my_name    : %s", body_data->my_name);
 	LL_DEBUG("test_int16 : %d", body_data->test_int16);
 	LL_DEBUG("test_int32 : %d", body_data->test_int32);
 	LL_DEBUG("test_int64 : %d", body_data->test_int64);

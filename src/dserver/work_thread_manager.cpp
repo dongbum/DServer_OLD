@@ -49,8 +49,6 @@ void WorkThreadManager::Run(int16_t thread_no)
 		return;
 	}
 
-	LL_DEBUG("WorkThreadManager::Run - START");
-
 	{
 		LockGuard lock(logic_thread_mutex_);
 		LL_DEBUG("WorkThreadManager::Run - ThreadNo:[%d]", thread_no);

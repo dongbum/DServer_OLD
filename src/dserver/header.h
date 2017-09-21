@@ -2,11 +2,12 @@
 
 #include "define.h"
 
+#pragma pack(push, 1)
 
-class Header
+typedef struct _Header
 {
 public:
-	Header(void)
+	_Header(void)
 	{
 		total_length_ = 0;
 		protocol_no_ = 0;
@@ -24,4 +25,6 @@ private:
 	int32_t			total_length_;
 	int32_t			protocol_no_;
 	unsigned int	data_length_;
-};
+} Header;
+
+#pragma pack(pop)
