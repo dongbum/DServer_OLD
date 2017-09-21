@@ -1,10 +1,3 @@
-/*
- * Session.cpp
- *
- *  Created on: 2013. 11. 28.
- *      Author: dongbum
- */
-
 #include "session.h"
 
 namespace dserver
@@ -71,9 +64,6 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 	unsigned char* target_data = nullptr;
 	unsigned int target_data_size = size + sizeof(Header);
 
-	unsigned char* encrypted_data = nullptr;
-	unsigned int encrypted_data_size = 0;
-
 	unsigned char* send_data = nullptr;
 	unsigned int send_data_size = 0;
 
@@ -84,11 +74,10 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 			LL_DEBUG("new error");
 
 		Header header;
-		header.identifier = 0xFFFF;
-		header.length = static_cast<int16_t>(target_data_size);
+		header.SetTotalLength(target_data_size);
 
-		memcpy(target_data, &header, sizeof(HEADER));
-		memcpy(target_data + sizeof(HEADER), data, size);
+		memcpy(target_data, &header, sizeof(Header));
+		memcpy(target_data + sizeof(Header), data, size);
 
 		send_data = new unsigned char[target_data_size];
 		if (nullptr == send_data)
@@ -263,7 +252,7 @@ void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_t
 
 	Header* header = (Header*)next_data;
 
-	PostSend(true, header->length, next_data);
+	PostSend(true, header->GetTotalLength(), next_data);
 }
 
 

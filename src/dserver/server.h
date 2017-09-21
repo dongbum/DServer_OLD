@@ -1,10 +1,3 @@
-/*
- * server.h
- *
- *  Created on: 2013. 11. 26.
- *      Author: dongbum
- */
-
 #pragma once
 
 #include "define.h"
