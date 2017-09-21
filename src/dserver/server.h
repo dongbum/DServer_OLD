@@ -1,23 +1,13 @@
-/*
- * server.h
- *
- *  Created on: 2013. 11. 26.
- *      Author: dongbum
- */
-
 #pragma once
 
 #include "define.h"
 #include "work_thread_manager.h"
-#include "session/session.h"
-#include "../user_protocol/user_protocol.h"
 
-namespace dserver
-{
 
 class Session;
 class Config;
-class WorkQueue;
+class RequestWorkQueue;
+class UserProtocol;
 
 class DServer
 {
@@ -27,16 +17,15 @@ public :
 	typedef boost::asio::ip::tcp::acceptor	Acceptor;
 	typedef boost::asio::ip::tcp::socket	Socket;
 
-	typedef std::shared_ptr<Session>		SessionPtr;
-	typedef std::shared_ptr<WorkQueue>		WorkQueuePtr;
+	typedef std::shared_ptr<Session>			SessionPtr;
+	typedef std::shared_ptr<RequestWorkQueue>	WorkQueuePtr;
 
 	// 생성자
-	DServer(std::string server_port);
+	DServer(std::string server_port, UserProtocol* user_protocol);
 
 	// 소멸자
 	virtual ~DServer(void);
 
-	void Init(void);
 	void Start(std::string& thread_count);
 	void Start(Config& config);
 	void Stop(void);
@@ -50,7 +39,17 @@ public :
 	void CloseHandler(SessionPtr session);
 
 	void IOServiceHandler();
-private :
+
+public:
+	static std::shared_ptr<DServer> server_instance_ptr_;
+
+	static void SetServerInstance(std::shared_ptr<DServer>& server_instance_ptr) { server_instance_ptr_ = server_instance_ptr; }
+	static std::shared_ptr<DServer>& GetServerInstance(void) { return server_instance_ptr_; }
+
+public:
+	UserProtocol*			GetUserProtocol(void) { return user_protocol_; }
+
+private:
 	IoService				io_service_;
 	Acceptor				acceptor_;
 	SessionPtr				session_;
@@ -64,6 +63,8 @@ private :
 	tbb::concurrent_bounded_queue<SessionPtr> tbb_queue_;
 
 	int count_;
-};
 
-}
+private:
+	UserProtocol*			user_protocol_;
+
+};

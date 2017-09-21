@@ -2,10 +2,7 @@
 
 #include "../define.h"
 
-namespace dserver
-{
-namespace utility
-{
+
 static std::string GetTodayStr(void)
 {
 	const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
@@ -39,6 +36,4 @@ static std::string GetTimeStr(void)
 		% now.time_of_day().seconds();
 
 	return f.str();
-}
-}
 }

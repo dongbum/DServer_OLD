@@ -1,18 +1,7 @@
-/*
- * config.h
- *
- *  Created on: 2013. 11. 30.
- *      Author: dongbum
- */
-
 #pragma once
 
 #include "../define.h"
 
-namespace dserver
-{
-namespace config
-{
 
 class ConfigManager : public boost::serialization::singleton<ConfigManager>
 {
@@ -43,7 +32,4 @@ private:
 };
 
 
-}
-}
-
-#define CONFIG_MANAGER_INSTANCE dserver::config::ConfigManager::GetMutableInstance()
+#define CONFIG_MANAGER_INSTANCE ConfigManager::GetMutableInstance()

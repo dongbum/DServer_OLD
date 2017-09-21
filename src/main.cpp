@@ -21,12 +21,12 @@ int main(void)
 	/*
 	// MySQL 커넥션풀 테스트
 	int32_t thread_count = 4;
-	std::shared_ptr<dserver::database::mysql::MySQLConnPool> pool;
+	std::shared_ptr<MySQLConnPool> pool;
 
-	pool = std::shared_ptr<dserver::database::mysql::MySQLConnPool>(new dserver::database::mysql::MySQLConnPool(thread_count));
+	pool = std::shared_ptr<MySQLConnPool>(new MySQLConnPool(thread_count));
 	pool->Init();
 	
-	std::shared_ptr<dserver::database::mysql::MySQLConn> conn = pool->GetMySQLConn();
+	std::shared_ptr<MySQLConn> conn = pool->GetMySQLConn();
 	conn->PrepareQuery("SELECT 19830419");
 	conn->Execute();
 
@@ -40,7 +40,7 @@ int main(void)
 
 	/*
 	// MySQL 커넥션 테스트
-	dserver::database::mysql::MysqlConn conn;
+	MysqlConn conn;
 	conn.Connect();
 	conn.PrepareQuery("SELECT 19830419");
 	conn.Execute();
@@ -69,11 +69,11 @@ int main(void)
 	if (false == LOG_MANAGER_INSTANCE.Init())
 		return 0;
 
-	// 서버 객체 생성
-	dserver::DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"));
+	UserProtocol user_protocol;
+	user_protocol.Initialize();
 
-	// 서버 초기화
-	server.Init();
+	// 서버 객체 생성
+	DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol);
 
 	// 서버 시작
 	server.Start(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "THREAD_COUNT"));

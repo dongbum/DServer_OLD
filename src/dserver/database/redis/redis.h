@@ -1,14 +1,7 @@
-#ifndef _REDIS_H_
-#define _REDIS_H_
+#pragma once
 
 #include "../../define.h"
 
-namespace dserver
-{
-namespace database
-{
-namespace redis
-{
 
 class Redis
 {
@@ -22,9 +15,3 @@ protected:
 private:
 	boost::asio::io_service		io_service_;
 };
-
-}
-}
-}
-
-#endif

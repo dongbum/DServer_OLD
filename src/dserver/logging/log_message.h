@@ -3,11 +3,6 @@
 #include "../define.h"
 #include "log_define.h"
 
-namespace dserver
-{
-namespace logging
-{
-
 	
 class LogMessage
 {
@@ -38,7 +33,3 @@ private:
 	unsigned int	position_;
 
 };
-
-
-}
-}

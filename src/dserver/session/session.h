@@ -1,54 +1,43 @@
-/*
- * Session.h
- *
- *  Created on: 2013. 11. 28.
- *      Author: dongbum
- */
-
-#ifndef SESSION_H_
-#define SESSION_H_
+#pragma once
 
 #include "../define.h"
 #include "../header.h"
 #include "../server.h"
 #include "../work_queue.h"
-#include "../../user_protocol/user_protocol.h"
 
-namespace dserver
-{
 
 class DServer;
-class WorkQueue;
+class RequestWorkQueue;
 
 class Session : public std::enable_shared_from_this<Session>
 {
 public :
-	typedef std::shared_ptr<WorkQueue>		WorkQueuePtr;
+	typedef std::shared_ptr<RequestWorkQueue>		RequestWorkQueuePtr;
 
-	Session(IoService& io_service, dserver::DServer* server);
+	Session(IoService& io_service, DServer* server);
 	virtual ~Session();
 
-	void		PostHandler(void);
-	void		Init(WorkQueuePtr work_queue);
+	void		PostReceive(void);
+	void		PostSend(const bool bImmediately, const int nSize, unsigned char* pData);
+	void		Init(RequestWorkQueuePtr request_work_queue);
 
 	Socket&		GetSocket();
 
 private :
-	void		ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred);
-	void		WriteHandler(const boost::system::error_code& error, size_t bytes_transferred);
+	void		HandleReceive(const boost::system::error_code& error, size_t bytes_transferred);
+	void		HandleWrite(const boost::system::error_code& error, size_t bytes_transferred);
 
-	std::shared_ptr<dserver::DServer> server_;
+	std::deque< unsigned char* > send_data_queue_;
+	unsigned char* send_data = nullptr;
+	unsigned int send_data_size = 0;
+
+	std::shared_ptr<DServer> server_;
 	Socket socket_;
 
-	unsigned char packet_buffer_[1024];
+	unsigned char packet_buffer_[RECV_BUFFER_SIZE];
 	int packet_buffer_size_;
 
-	unsigned char recv_buffer_[1024];
+	unsigned char recv_buffer_[RECV_BUFFER_SIZE];
 
-	user_protocol::UserProtocol user_protocol_manager;
-	WorkQueuePtr work_queue_;
+	RequestWorkQueuePtr request_work_queue_;
 };
-
-}
-
-#endif /* SESSION_H_ */

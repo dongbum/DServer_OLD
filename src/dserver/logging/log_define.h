@@ -5,17 +5,12 @@
 
 #define MAX_LOG_MESSAGE_LENGTH		1024
 
-#define LL_DEBUG(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_DEBUG, __VA_ARGS__);
-#define LL_INFO(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_INFO, __VA_ARGS__);
-#define LL_WARN(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_WARN, __VA_ARGS__);
-#define LL_ERROR(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_ERROR, __VA_ARGS__);
-#define LL_FATAL(...)		LOG_MANAGER.Write(dserver::logging::LOG_LEVEL_FATAL, __VA_ARGS__);
+#define LL_DEBUG(...)		LOG_MANAGER.Write(LOG_LEVEL_DEBUG, __VA_ARGS__);
+#define LL_INFO(...)		LOG_MANAGER.Write(LOG_LEVEL_INFO, __VA_ARGS__);
+#define LL_WARN(...)		LOG_MANAGER.Write(LOG_LEVEL_WARN, __VA_ARGS__);
+#define LL_ERROR(...)		LOG_MANAGER.Write(LOG_LEVEL_ERROR, __VA_ARGS__);
+#define LL_FATAL(...)		LOG_MANAGER.Write(LOG_LEVEL_FATAL, __VA_ARGS__);
 
-
-namespace dserver
-{
-namespace logging
-{
 
 enum LOG_LEVEL : short
 {
@@ -34,6 +29,3 @@ enum LOG_MODE : short
 	LOG_MODE_DISPLAY =		0x00000100,
 	LOG_MODE_MAX =			0x00001000,
 };
-
-}
-}

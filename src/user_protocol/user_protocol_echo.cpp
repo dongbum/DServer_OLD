@@ -1,9 +1,8 @@
 #include "user_protocol.h"
+#include "../dserver/session/session.h"
 
-namespace user_protocol
-{
 
-uint32_t UserProtocol::Echo(uint32_t& protocol_no, unsigned char* data, unsigned int& data_length)
+uint32_t UserProtocol::Echo(std::shared_ptr<Session> session, uint32_t& protocol_no, unsigned char* data, uint32_t data_length)
 {
 	/*
 	wchar_t my_name[10 + 1] = { 0, };
@@ -31,12 +30,27 @@ uint32_t UserProtocol::Echo(uint32_t& protocol_no, unsigned char* data, unsigned
 	LL_DEBUG("Echo");
 
 	PROTOCOL_BODY_ECHO* body_data = (PROTOCOL_BODY_ECHO*)data;
-	LL_DEBUG("my_name    : %s", body_data->my_name);
 	LL_DEBUG("test_int16 : %d", body_data->test_int16);
 	LL_DEBUG("test_int32 : %d", body_data->test_int32);
 	LL_DEBUG("test_int64 : %d", body_data->test_int64);
 
-	return 0;
-}
+	unsigned char send_buffer[SEND_BUFFER_SIZE] = { 0, };
+	int index = 0;
 
+	int test = 7;
+
+	Header header;
+	header.SetDataLength(4);
+	header.SetTotalLength(16);
+
+	memcpy(&send_buffer[index], &header, sizeof(header));
+	index += sizeof(header);
+	memcpy(&send_buffer[index], &test, sizeof(test));
+	index += sizeof(test);
+
+	int send_length = index;
+
+	session->PostSend(false, send_length, send_buffer);
+
+	return 0;
 }

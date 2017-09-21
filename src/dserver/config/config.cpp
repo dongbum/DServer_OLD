@@ -1,16 +1,5 @@
-/*
- * config.cpp
- *
- *  Created on: 2013. 11. 30.
- *      Author: dongbum
- */
-
 #include "config.h"
 
-namespace dserver
-{
-namespace config
-{
 
 ConfigManager::ConfigManager(void)
 {
@@ -58,9 +47,3 @@ ConfigManager::INI_Value ConfigManager::GetValue(std::string section_name, std::
 		exit(1);
 	}
 }
-
-
-}
-}
-
-

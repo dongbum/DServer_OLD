@@ -4,10 +4,6 @@
 #include "../define.h"
 #include "log_message.h"
 
-namespace dserver
-{
-namespace logging
-{
 
 class LogManager : public boost::serialization::singleton<LogManager>
 {
@@ -16,7 +12,7 @@ public:
 	virtual ~LogManager(void);
 
 	bool Init(void);
-	void Write(dserver::logging::LOG_LEVEL log_level, const char* format, ...);
+	void Write(LOG_LEVEL log_level, const char* format, ...);
 
 private:
 	void Run(void);
@@ -44,8 +40,6 @@ private:
 
 };
 
-}
-}
 
-#define LOG_MANAGER_INSTANCE dserver::logging::LogManager::GetMutableInstance()
-#define LOG_MANAGER dserver::logging::LogManager::GetMutableInstance()
+#define LOG_MANAGER_INSTANCE LogManager::GetMutableInstance()
+#define LOG_MANAGER LogManager::GetMutableInstance()

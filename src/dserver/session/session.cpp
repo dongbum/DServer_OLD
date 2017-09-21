@@ -1,14 +1,6 @@
-/*
- * Session.cpp
- *
- *  Created on: 2013. 11. 28.
- *      Author: dongbum
- */
-
 #include "session.h"
+#include "../../user_protocol/user_protocol.h"
 
-namespace dserver
-{
 
 Session::Session(IoService& io_service, DServer* server)
 :	socket_(io_service)
@@ -29,19 +21,19 @@ Socket& Session::GetSocket()
 }
 
 // Accept가 되면 처리할 함수
-void Session::PostHandler(void)
+void Session::PostReceive(void)
 {
-	LL_DEBUG("Session::PostHandler START");
+	LL_DEBUG("Session::PostReceive START");
 
 	memset(recv_buffer_, 0, sizeof(recv_buffer_));
 
 	// Recv를 한다.
-	// ReceiveHandler로 처리를 넘긴다.
+	// HandleReceive로 처리를 넘긴다.
 
 	socket_.async_read_some(
 			boost::asio::buffer(recv_buffer_),
 			boost::bind(
-					&Session::ReceiveHandler,
+					&Session::HandleReceive,
 					shared_from_this(),
 					boost::asio::placeholders::error,
 					boost::asio::placeholders::bytes_transferred
@@ -49,16 +41,102 @@ void Session::PostHandler(void)
 			);
 }
 
-void Session::Init(WorkQueuePtr work_queue)
+
+void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
 {
-	work_queue_ = work_queue;
-	user_protocol_manager.Initialize();
+	boost::system::error_code error;
+	boost::asio::ip::tcp::endpoint endpoint = socket_.remote_endpoint(error);
+	if (error)
+	{
+		LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error.value(), error.message().c_str());
+
+		while (send_data_queue_.empty() == false)
+		{
+			delete[] send_data_queue_.front();
+			send_data_queue_.pop_front();
+		}
+
+		server_->CloseHandler(shared_from_this());
+		return;
+	}
+
+	unsigned char* target_data = nullptr;
+	unsigned int target_data_size = size + sizeof(Header);
+
+	unsigned char* send_data = nullptr;
+	unsigned int send_data_size = 0;
+
+	if (bImmediately == false)
+	{
+		target_data = new unsigned char[target_data_size];
+		if (nullptr == target_data)
+			LL_DEBUG("new error");
+
+		Header header;
+		header.SetTotalLength(target_data_size);
+
+		memcpy(target_data, &header, sizeof(Header));
+		memcpy(target_data + sizeof(Header), data, size);
+
+		send_data = new unsigned char[target_data_size];
+		if (nullptr == send_data)
+			LL_DEBUG("new error");
+
+		memset(send_data, 0, target_data_size);
+		memcpy(send_data, target_data, target_data_size);
+
+		send_data_size = target_data_size;
+
+		send_data_queue_.push_back(send_data);
+		// send_data_queue_.push(send_data);
+		LL_DEBUG("Send target data push : %d", send_data_queue_.size());
+
+		delete[] target_data;
+	}
+	else
+	{
+		target_data = data;
+		send_data = new unsigned char[size];
+		if (nullptr == send_data)
+			LL_DEBUG("new error");
+
+		memset(send_data, 0, size);
+		memcpy(send_data, data, size);
+
+		send_data_size = size;
+
+		send_data_queue_.push_back(send_data);
+		//send_data_queue_.push(send_data);
+	}
+
+	if (bImmediately == false && send_data_queue_.size() > 1)
+	{
+		LL_DEBUG("bImmediately is false and send_data_queue.size : %d", send_data_queue_.size());
+		return;
+	}
+
+	LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
+
+	if (send_data_size <= 0)
+		LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
+
+	boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
+		boost::bind(&Session::HandleWrite, shared_from_this(),
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred)
+	);
+}
+
+
+void Session::Init(RequestWorkQueuePtr request_work_queue)
+{
+	request_work_queue_ = request_work_queue;
 }
 
 // Recv를 처리할 함수
-void Session::ReceiveHandler(const boost::system::error_code& error, size_t bytes_transferred)
+void Session::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
 {
-	LL_DEBUG("Session::ReceiveHandler : bytes_transferred(%d)", bytes_transferred);
+	LL_DEBUG("Session::HandleReceive : bytes_transferred(%d)", bytes_transferred);
 
 	if (error)
 	{
@@ -97,7 +175,7 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
 				// 데이터 처리
-				work_queue_.get()->Push(RequestWork(shared_from_this(), &packet_buffer_[read_data], header->GetTotalLength()));
+				request_work_queue_.get()->Push(RequestWork(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetTotalLength()));
 
 				packet_data_size -= header->GetTotalLength();
 				read_data += header->GetTotalLength();
@@ -120,16 +198,57 @@ void Session::ReceiveHandler(const boost::system::error_code& error, size_t byte
 
 		packet_buffer_size_ = packet_data_size;
 
-		// 다시 PostHandler를 호출해서 Recv를 받는다.
-		PostHandler();
+		// 다시 PostReceive를 호출해서 Recv를 받는다.
+		PostReceive();
 	}
 }
 
 // 데이터를 전송한다.
-void Session::WriteHandler(const boost::system::error_code& error, size_t bytes_transferred)
+void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_transferred)
 {
-	LL_DEBUG("Session::WriteHandler : bytes_transferred(%d)", bytes_transferred);
-}
+	LL_DEBUG("Session::HandleWrite : bytes_transferred(%d)", bytes_transferred);
 
+	unsigned char* next_data = nullptr;
 
+	{
+		// LockGuard lock(rw_mutex_);
+
+		if (error)
+		{
+			LL_DEBUG("HandleWrite error : %d - message : %s", error.value(), error.message().c_str());
+			return;
+		}
+
+		LL_DEBUG("Send Complete!!! bytes_transferred : %d", bytes_transferred);
+
+		if (send_data_queue_.empty() == true)
+			return;
+
+		delete[] send_data_queue_.front();
+		send_data_queue_.pop_front();
+
+		/*
+		unsigned char* front_data = nullptr;
+		send_data_queue_.pop(front_data);
+		delete[] front_data;
+		*/
+
+		LL_DEBUG("send_data_queue_ size : %d", send_data_queue_.size());
+
+		if (send_data_queue_.empty() == false)
+		{
+			// send_data_queue_.pop(next_data);
+			next_data = send_data_queue_.front();
+			send_data_queue_.pop_front();
+
+			LL_DEBUG("Found next data!!!");
+		}
+	}
+
+	if (nullptr == next_data)
+		return;
+
+	Header* header = (Header*)next_data;
+
+	PostSend(true, header->GetTotalLength(), next_data);
 }

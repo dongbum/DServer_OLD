@@ -1,27 +1,19 @@
-/*
- * server.cpp
- *
- *  Created on: 2013. 11. 26.
- *      Author: dongbum
- */
-
 #include "server.h"
 #include "work_queue.h"
 #include "work_thread_manager.h"
 
-namespace dserver
-{
 
 // 생성자
-DServer::DServer(std::string server_port)
-:	session_(nullptr)
-,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
-,	count_(0)
+DServer::DServer(std::string server_port, UserProtocol* user_protocol)
+	: session_(nullptr)
+	, acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
+	, count_(0)
+	, user_protocol_(user_protocol)
 {
 	LL_DEBUG("Server port is %s", server_port.c_str());
 
 	// 작업을 넣을 큐 생성
-	work_queue_ = WorkQueuePtr(new WorkQueue);
+	work_queue_ = WorkQueuePtr(new RequestWorkQueue);
 
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
 	for (int i = 0; i < 8; i++)
@@ -34,6 +26,14 @@ DServer::DServer(std::string server_port)
 	}
 
 	LL_DEBUG("tbb_queue_ size : %d", tbb_queue_.size());
+
+	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOGIC_THREAD_COUNT"));
+	if (0 == thread_count)
+		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
+
+	// 워커스레드 매니저 생성
+	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
+	work_thread_manager_->SetUp(work_queue_, user_protocol_);
 
 	IOServiceHandler();
 }
@@ -84,11 +84,11 @@ void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code&
 	{
 		LL_DEBUG("Client connected");
 
-		// Accept가 되었다면 세션의 PostHandler로 처리를 넘긴다.
+		// Accept가 되었다면 세션의 PostReceive로 처리를 넘긴다.
 
 		count_++;
 		LL_DEBUG("count_ : %d", count_);
-		session->PostHandler();
+		session->PostReceive();
 	}
 	else
 	{
@@ -101,18 +101,13 @@ void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code&
 	IOServiceHandler();
 }
 
-void DServer::Init(void)
-{
-
-}
 
 // 시작
 void DServer::Start(std::string& thread_count)
 {
-	// 워커스레드 매니저 생성
-	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
-
 	LL_DEBUG("START");
+
+	work_thread_manager_->Start();
 
 	io_service_.run();
 }
@@ -152,6 +147,4 @@ void DServer::CloseHandler(SessionPtr session)
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
 	LL_DEBUG("push end : tbb_queue_.size() : %d", tbb_queue_.size());
-}
-
 }

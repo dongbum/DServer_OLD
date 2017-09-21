@@ -1,11 +1,8 @@
-#ifndef SESSION_POOL_H_
-#define SESSION_POOL_H_
+#pragma once
 
 #include "../define.h"
 #include "session.h"
 
-namespace dserver
-{
 
 class Session;
 
@@ -21,7 +18,3 @@ public:
 	void GetSession(void);
 	void ReleaseSession(void);
 };
-
-}
-
-#endif
