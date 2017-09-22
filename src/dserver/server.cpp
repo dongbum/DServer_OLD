@@ -16,7 +16,11 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	work_queue_ = WorkQueuePtr(new RequestWorkQueue);
 
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
-	for (int i = 0; i < 8; i++)
+
+	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
+	max_session_count = std::max(max_session_count, 100);
+
+	for (int i = 0; i < max_session_count; i++)
 	{
 		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this));
 		session->Init(work_queue_);
