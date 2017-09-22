@@ -41,7 +41,7 @@ void Session::PostReceive(void)
 			);
 }
 
-
+/*
 void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
 {
 	boost::system::error_code error;
@@ -126,6 +126,31 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 			boost::asio::placeholders::bytes_transferred)
 	);
 }
+*/
+
+void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
+{
+	boost::system::error_code error;
+	boost::asio::ip::tcp::endpoint endpoint = socket_.remote_endpoint(error);
+	if (error)
+	{
+		LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error.value(), error.message().c_str());
+
+		server_->CloseHandler(shared_from_this());
+		return;
+	}
+
+	int32_t send_data_size = size;
+
+	unsigned char send_data[SEND_BUFFER_SIZE] = { 0, };
+	memcpy(send_data, data, size);
+
+	boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
+		boost::bind(&Session::HandleWrite, shared_from_this(),
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred)
+	);
+}
 
 
 void Session::Init(RequestWorkQueuePtr request_work_queue)
@@ -203,6 +228,7 @@ void Session::HandleReceive(const boost::system::error_code& error, size_t bytes
 	}
 }
 
+/*
 // 데이터를 전송한다.
 void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_transferred)
 {
@@ -227,11 +253,9 @@ void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_t
 		delete[] send_data_queue_.front();
 		send_data_queue_.pop_front();
 
-		/*
-		unsigned char* front_data = nullptr;
-		send_data_queue_.pop(front_data);
-		delete[] front_data;
-		*/
+		// unsigned char* front_data = nullptr;
+		// send_data_queue_.pop(front_data);
+		// delete[] front_data;
 
 		LL_DEBUG("send_data_queue_ size : %d", send_data_queue_.size());
 
@@ -251,4 +275,10 @@ void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_t
 	Header* header = (Header*)next_data;
 
 	PostSend(true, header->GetTotalLength(), next_data);
+}
+*/
+
+void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_transferred)
+{
+	LL_DEBUG("Session::HandleWrite : bytes_transferred(%d)", bytes_transferred);
 }
