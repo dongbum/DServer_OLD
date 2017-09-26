@@ -14,7 +14,7 @@ class Session : public std::enable_shared_from_this<Session>
 public :
 	typedef std::shared_ptr<RequestWorkQueue>		RequestWorkQueuePtr;
 
-	Session(IoService& io_service, DServer* server);
+	Session(IoService& io_service, DServer* server, UserProtocol* user_protocol);
 	virtual ~Session();
 
 	void		PostReceive(void);
@@ -40,4 +40,5 @@ private :
 	unsigned char recv_buffer_[RECV_BUFFER_SIZE];
 
 	RequestWorkQueuePtr request_work_queue_;
+	UserProtocol* user_protocol_;
 };

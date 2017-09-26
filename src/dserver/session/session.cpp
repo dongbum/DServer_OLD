@@ -2,10 +2,11 @@
 #include "../../user_protocol/user_protocol.h"
 
 
-Session::Session(IoService& io_service, DServer* server)
+Session::Session(IoService& io_service, DServer* server, UserProtocol* user_protocol)
 :	socket_(io_service)
 ,	server_(server)
 ,	packet_buffer_size_(0)
+,	user_protocol_(user_protocol)
 {
 	// TODO Auto-generated constructor stub
 }
@@ -200,7 +201,8 @@ void Session::HandleReceive(const boost::system::error_code& error, size_t bytes
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
 				// 데이터 처리
-				request_work_queue_.get()->Push(RequestWork(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetTotalLength()));
+				// request_work_queue_.get()->Push(RequestWork(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetTotalLength()));
+				user_protocol_->ExecuteProtocol(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
 
 				packet_data_size -= header->GetTotalLength();
 				read_data += header->GetTotalLength();

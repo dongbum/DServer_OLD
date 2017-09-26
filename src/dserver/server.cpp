@@ -22,7 +22,7 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 
 	for (int i = 0; i < max_session_count; i++)
 	{
-		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this));
+		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this, user_protocol));
 		session->Init(work_queue_);
 		// session_queue_.push(session);
 
