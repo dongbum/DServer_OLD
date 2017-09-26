@@ -202,7 +202,28 @@ void Session::HandleReceive(const boost::system::error_code& error, size_t bytes
 
 				// 데이터 처리
 				// request_work_queue_.get()->Push(RequestWork(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetTotalLength()));
-				user_protocol_->ExecuteProtocol(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
+				// user_protocol_->ExecuteProtocol(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
+
+				// 
+				unsigned char send_buffer[SEND_BUFFER_SIZE] = { 0, };
+				int index = 0;
+
+				int test = 7;
+
+				Header send_header;
+				send_header.SetDataLength(4);
+				send_header.SetTotalLength(16);
+
+				memcpy(&send_buffer[index], &send_header, sizeof(send_header));
+				index += sizeof(send_header);
+				memcpy(&send_buffer[index], &test, sizeof(test));
+				index += sizeof(test);
+
+				int send_length = index;
+
+				PostSend(false, send_length, send_buffer);
+
+				//
 
 				packet_data_size -= header->GetTotalLength();
 				read_data += header->GetTotalLength();
