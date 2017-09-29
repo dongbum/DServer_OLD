@@ -113,7 +113,16 @@ void DServer::Start(std::string& thread_count)
 
 	work_thread_manager_->Start();
 
-	io_service_.run();
+	// io_service_.run();
+
+	// io_service 처리 멀티스레드화
+	for (int i = 0; i < 8; ++i)
+	{
+		boost::thread io_thread(boost::bind(&boost::asio::io_service::run, &io_service_));
+		io_thread_group_.add_thread(&io_thread);
+	}
+
+	io_thread_group_.join_all();
 }
 
 
