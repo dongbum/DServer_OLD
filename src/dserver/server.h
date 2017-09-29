@@ -55,6 +55,7 @@ private:
 	SessionPtr				session_;
 	WorkThreadManager*		work_thread_manager_;
 	WorkQueuePtr			work_queue_;				// 세션에서 데이터 수신시 작업 넣어둘 큐
+	boost::thread_group		io_thread_group_;
 
 	// 세션들을 담아둘 큐
 	// 이 큐에서 세션을 빼서 처리한다.
