@@ -53,12 +53,8 @@ void DServer::IOServiceHandler(void)
 	SessionPtr new_session = nullptr;
 
 	// 큐에서 세션 한개를 뺀다.
-	if (false == tbb_queue_.try_pop(new_session))
-	{
-		LL_DEBUG("Session try_pop failed.");
-		exit(1);
-	}
-	
+	tbb_queue_.pop(new_session);
+
 	LL_DEBUG("tbb_queue_ try_pop() success. size : %d", tbb_queue_.size());
 
 	// 그 세션에서 accept를 받는다.
