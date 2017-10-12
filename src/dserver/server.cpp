@@ -118,7 +118,7 @@ void DServer::Start(std::string& thread_count)
 		io_thread_group_.add_thread(&io_thread);
 	}
 
-	io_thread_group_.join_all();
+	// io_thread_group_.join_all();
 }
 
 

@@ -70,7 +70,7 @@ private:
 	}
 
 private:
-	IoService&		io_service_;
+	IoService&						io_service_;
 	boost::asio::ip::tcp::acceptor	acceptor_;
 	std::atomic<bool>				is_stopped_;
 };
