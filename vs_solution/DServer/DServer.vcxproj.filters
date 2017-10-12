@@ -167,5 +167,8 @@
     <ClInclude Include="..\..\src\dserver\logging\log_define.h">
       <Filter>소스 파일\dserver\logging</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\acceptor.h">
+      <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

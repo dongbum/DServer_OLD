@@ -130,7 +130,7 @@ bool LogManager::CreateLogDirectory(void)
 		std::cout << fe.code() << " - " << fe.what() << std::endl;
 		return false;
 	}
-	catch (boost::system::error_code& ec)
+	catch (ErrorCode& ec)
 	{
 		std::cout << ec.value() << " - " << ec.message() << std::endl;
 		return false;
@@ -161,7 +161,7 @@ bool LogManager::CreateLogFile(void)
 		std::cout << fe.code() << " - " << fe.what() << std::endl;
 		return false;
 	}
-	catch (boost::system::error_code& ec)
+	catch (ErrorCode& ec)
 	{
 		std::cout << ec.value() << " - " << ec.message() << std::endl;
 		return false;

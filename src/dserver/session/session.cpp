@@ -160,7 +160,7 @@ void Session::Init(RequestWorkQueuePtr request_work_queue)
 }
 
 // Recv를 처리할 함수
-void Session::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
+void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 {
 	LL_DEBUG("Session::HandleReceive : bytes_transferred(%d)", bytes_transferred);
 
@@ -301,7 +301,7 @@ void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_t
 }
 */
 
-void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_transferred)
+void Session::HandleWrite(const ErrorCode& error, size_t bytes_transferred)
 {
 	LL_DEBUG("Session::HandleWrite : bytes_transferred(%d)", bytes_transferred);
 }

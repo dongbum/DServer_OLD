@@ -74,7 +74,7 @@ void DServer::IOServiceHandler(void)
 }
 
 // 소켓 accept 핸들러
-void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code& error)
+void DServer::AcceptHandler(SessionPtr session, const ErrorCode& error)
 {
 	LL_DEBUG("AcceptHandler START");
 
@@ -145,7 +145,7 @@ void DServer::CloseHandler(SessionPtr session)
 	// 세션의 소켓을 닫는다.
 	if (true == session->GetSocket().is_open())
 	{
-		boost::system::error_code ignored_error;
+		ErrorCode ignored_error;
 		session->GetSocket().shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_error);
 		session->GetSocket().close();
 	}

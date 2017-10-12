@@ -113,6 +113,7 @@
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\dserver\acceptor.h" />
     <ClInclude Include="..\..\src\dserver\config\config.h" />
     <ClInclude Include="..\..\src\dserver\database\mysql\mysql_conn.h" />
     <ClInclude Include="..\..\src\dserver\database\mysql\mysql_conn_pool.h" />

@@ -24,8 +24,8 @@ public :
 	Socket&		GetSocket();
 
 private :
-	void		HandleReceive(const boost::system::error_code& error, size_t bytes_transferred);
-	void		HandleWrite(const boost::system::error_code& error, size_t bytes_transferred);
+	void		HandleReceive(const ErrorCode& error, size_t bytes_transferred);
+	void		HandleWrite(const ErrorCode& error, size_t bytes_transferred);
 
 	std::deque< unsigned char* > send_data_queue_;
 	unsigned char* send_data = nullptr;

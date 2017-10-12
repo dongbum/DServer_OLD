@@ -33,7 +33,7 @@ public :
 	void Accept(void);
 
 	// 소켓 accept 핸들러
-	void AcceptHandler(SessionPtr session, const boost::system::error_code& error);
+	void AcceptHandler(SessionPtr session, const ErrorCode& error);
 
 	// 소켓 close 핸들러
 	void CloseHandler(SessionPtr session);

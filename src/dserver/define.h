@@ -55,10 +55,11 @@
 #include "utility/util.h"
 #include "utility/endian.h"
 
-typedef boost::asio::io_service IoService;
-typedef boost::asio::ip::tcp::endpoint EndPoint;
-typedef boost::asio::ip::tcp::acceptor Acceptor;
-typedef boost::asio::ip::tcp::socket Socket;
+typedef boost::asio::io_service			IoService;
+typedef boost::asio::ip::tcp::endpoint	EndPoint;
+typedef boost::asio::ip::tcp::acceptor	Acceptor;
+typedef boost::asio::ip::tcp::socket	Socket;
+typedef boost::system::error_code		ErrorCode;
 
 typedef boost::mutex					Mutex;
 typedef boost::lock_guard<Mutex>		LockGuard;
