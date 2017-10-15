@@ -151,7 +151,7 @@ void DServer::CloseHandler(SessionPtr session)
 
 	LL_DEBUG("push to session_queue_");
 
-	// tbb 큐에 다시 이 세션을 넣는다.
+	// 세션큐에 다시 이 세션을 넣는다.
 	session_queue_.Push(session);
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;

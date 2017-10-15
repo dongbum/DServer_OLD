@@ -1,9 +1,8 @@
 #pragma once
 
-
 #include "../define.h"
+#include "../container/thread_safe_queue.h"
 #include "log_message.h"
-
 
 class LogManager : public boost::serialization::singleton<LogManager>
 {
@@ -27,7 +26,7 @@ public:
 	static LogManager& GetMutableInstance(void) { return LogManager::get_mutable_instance(); }
 
 private:
-	tbb::concurrent_bounded_queue<LogMessage> log_queue_;
+	ThreadSafeQueue<LogMessage> log_queue_;
 	boost::thread log_thread_;
 
 	std::string		log_directory_name_;

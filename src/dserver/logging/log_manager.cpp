@@ -62,7 +62,7 @@ void LogManager::Write(LOG_LEVEL log_level, const char* format, ...)
 
 	va_end(ap);
 
-	log_queue_.try_push(log_message);
+	log_queue_.Push(log_message);
 }
 
 
@@ -72,39 +72,38 @@ void LogManager::Run(void)
 	{
 		LogMessage log_message;
 
-		if (log_queue_.try_pop(log_message))
+		log_message = log_queue_.Pop();
+
+		if (log_mode_ & LOG_MODE::LOG_MODE_DISPLAY)
+			std::cout << log_message.GetBufferStart() << std::endl;
+
+		if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
 		{
-			if (log_mode_ & LOG_MODE::LOG_MODE_DISPLAY)
-				std::cout << log_message.GetBufferStart() << std::endl;
-
-			if (log_mode_ & LOG_MODE::LOG_MODE_FILE)
+			// 현재 날짜를 구하여 날짜가 지났는지 판단한다.
+			if (today_ != GetTodayInt())
 			{
-				// 현재 날짜를 구하여 날짜가 지났는지 판단한다.
-				if (today_ != GetTodayInt())
+				if (ofs_.is_open())
+					ofs_.close();
+
+				log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + GetTodayStr() + ".log";
+
+				boost::filesystem::path path("./" + log_directory_name_);
+
+				boost::filesystem::path file_path;
+				if (true == FindFile(path, log_file_name_, file_path))
 				{
-					if (ofs_.is_open())
-						ofs_.close();
-
-					log_file_name_ = CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOG_FILE") + "_" + GetTodayStr() + ".log";
-
-					boost::filesystem::path path("./" + log_directory_name_);
-
-					boost::filesystem::path file_path;
-					if (true == FindFile(path, log_file_name_, file_path))
-					{
-						ofs_.open(file_path / log_file_name_, boost::filesystem::ofstream::out | boost::filesystem::ofstream::app);
-					}
-					else
-					{
-						ofs_.open(path / log_file_name_);
-					}
-
-					today_ = GetTodayInt();
+					ofs_.open(file_path / log_file_name_, boost::filesystem::ofstream::out | boost::filesystem::ofstream::app);
+				}
+				else
+				{
+					ofs_.open(path / log_file_name_);
 				}
 
-				ofs_ << std::string(log_message.GetBufferStart()) << '\n';
-				ofs_.flush();
+				today_ = GetTodayInt();
 			}
+
+			ofs_ << std::string(log_message.GetBufferStart()) << '\n';
+			ofs_.flush();
 		}
 	}
 }
