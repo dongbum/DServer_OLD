@@ -26,10 +26,10 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 		session->Init(work_queue_);
 		// session_queue_.push(session);
 
-		tbb_queue_.push(session);
+		session_queue_.Push(session);
 	}
 
-	LL_DEBUG("tbb_queue_ size : %d", tbb_queue_.size());
+	LL_DEBUG("session_queue_ size : %d", session_queue_.Size());
 
 	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOGIC_THREAD_COUNT"));
 	if (0 == thread_count)
@@ -53,9 +53,9 @@ void DServer::IOServiceHandler(void)
 	SessionPtr new_session = nullptr;
 
 	// 큐에서 세션 한개를 뺀다.
-	tbb_queue_.pop(new_session);
+	new_session = session_queue_.Pop();
 
-	LL_DEBUG("tbb_queue_ try_pop() success. size : %d", tbb_queue_.size());
+	LL_DEBUG("session_queue_ try_pop() success. size : %d", session_queue_.Size());
 
 	// 그 세션에서 accept를 받는다.
 	acceptor_.async_accept(
@@ -134,7 +134,7 @@ void DServer::CloseHandler(SessionPtr session)
 	LL_DEBUG("CloseHandler");
 
 	// std::cout << "before push : session_queue_.size() : " << session_queue_.size() << std::endl;
-	LL_DEBUG("before push : tbb_queue_.size() : %d", tbb_queue_.size());
+	LL_DEBUG("before push : session_queue_.size() : %d", session_queue_.Size());
 
 	LL_DEBUG("socket close");
 
@@ -149,11 +149,11 @@ void DServer::CloseHandler(SessionPtr session)
 	// 세션큐에 다시 이 세션을 넣는다.
 	// session_queue_.push(session);
 
-	LL_DEBUG("push to tbb_queue_");
+	LL_DEBUG("push to session_queue_");
 
-	// tbb 큐에 다시 이 세션을 넣는다.
-	tbb_queue_.push(session);
+	// 세션큐에 다시 이 세션을 넣는다.
+	session_queue_.Push(session);
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
-	LL_DEBUG("push end : tbb_queue_.size() : %d", tbb_queue_.size());
+	LL_DEBUG("push end : session_queue_.size() : %d", session_queue_.Size());
 }

@@ -44,6 +44,11 @@ public:
 		return result;
 	}
 
+	size_t Size(void)
+	{
+		return queue_.size();
+	}
+
 	
 private:
 	std::deque<TaskType>		queue_;

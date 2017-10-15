@@ -61,7 +61,8 @@ private:
 	// 이 큐에서 세션을 빼서 처리한다.
 	// std::queue<SessionPtr> session_queue_;
 
-	tbb::concurrent_bounded_queue<SessionPtr> tbb_queue_;
+	// tbb::concurrent_bounded_queue<SessionPtr> tbb_queue_;
+	ThreadSafeQueue<SessionPtr>		session_queue_;
 
 	int count_;
 
