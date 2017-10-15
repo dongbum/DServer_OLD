@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\acceptor.h" />
     <ClInclude Include="..\..\src\dserver\config\config.h" />
+    <ClInclude Include="..\..\src\dserver\container\thread_safe_queue.h" />
     <ClInclude Include="..\..\src\dserver\database\mysql\mysql_conn.h" />
     <ClInclude Include="..\..\src\dserver\database\mysql\mysql_conn_pool.h" />
     <ClInclude Include="..\..\src\dserver\database\redis\redis.h" />
