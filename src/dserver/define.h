@@ -55,6 +55,8 @@
 #include "utility/util.h"
 #include "utility/endian.h"
 
+#include "container/thread_safe_queue.h"
+
 typedef boost::asio::io_service			IoService;
 typedef boost::asio::ip::tcp::endpoint	EndPoint;
 typedef boost::asio::ip::tcp::acceptor	Acceptor;
