@@ -49,6 +49,9 @@
     <Filter Include="소스 파일\dserver\logging">
       <UniqueIdentifier>{6805a70e-76a0-4de9-b3f0-863088ebdc7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\container">
+      <UniqueIdentifier>{169dda63-f901-463a-aae3-71139797fd9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\acceptor.h">
       <Filter>소스 파일\dserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\container\thread_safe_queue.h">
+      <Filter>소스 파일\dserver\container</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
