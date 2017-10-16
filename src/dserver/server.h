@@ -1,12 +1,13 @@
 #pragma once
 
 #include "define.h"
+#include "session/session_pool.h"
 
 
-class Session;
 class Config;
 class UserProtocol;
-
+class Session;
+class SessionPool;
 class DServer
 {
 public :
@@ -15,7 +16,7 @@ public :
 	typedef boost::asio::ip::tcp::acceptor	Acceptor;
 	typedef boost::asio::ip::tcp::socket	Socket;
 
-	typedef std::shared_ptr<Session>			SessionPtr;
+	typedef std::shared_ptr<Session>		SessionPtr;
 
 	// 생성자
 	DServer(std::string server_port, UserProtocol* user_protocol);
@@ -48,10 +49,9 @@ public:
 private:
 	IoService				io_service_;
 	Acceptor				acceptor_;
-	SessionPtr				session_;
 	boost::thread_group		io_thread_group_;
 
-	ThreadSafeQueue<SessionPtr>		session_queue_;
+	SessionPool				session_pool_;
 
 	int count_;
 

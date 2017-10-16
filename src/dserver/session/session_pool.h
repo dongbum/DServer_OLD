@@ -1,19 +1,23 @@
 #pragma once
 
 #include "../define.h"
+#include "../../user_protocol/user_protocol.h"
 #include "session.h"
 
 
+class DServer;
 class Session;
-
+class UserProtocol;
 class SessionPool
 {
 public:
 	typedef std::shared_ptr<Session>		SessionPtr;
 	typedef ThreadSafeQueue<SessionPtr>		SessionQueue;
 
-	SessionPool(Acceptor& acceptor, DServer* server, UserProtocol* user_protocol, const uint32_t session_pool_count);
+	SessionPool(void);
 	virtual ~SessionPool(void);
+
+	void Init(Acceptor& acceptor, DServer* server, UserProtocol* user_protocol, uint32_t session_pool_count);
 
 	std::shared_ptr<Session>	GetSession(void);
 	void						ReleaseSession(SessionPtr& session_ptr);

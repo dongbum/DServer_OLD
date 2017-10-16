@@ -1,7 +1,19 @@
 #include "session_pool.h"
 
 
-SessionPool::SessionPool(Acceptor& acceptor, DServer* server, UserProtocol* user_protocol, const uint32_t session_pool_count)
+SessionPool::SessionPool(void)
+{
+
+}
+
+
+SessionPool::~SessionPool(void)
+{
+	
+}
+
+
+void SessionPool::Init(Acceptor& acceptor, DServer* server, UserProtocol* user_protocol, uint32_t session_pool_count)
 {
 	for (int i = 0; i < session_pool_count; i++)
 	{
@@ -9,12 +21,6 @@ SessionPool::SessionPool(Acceptor& acceptor, DServer* server, UserProtocol* user
 
 		session_queue_.Push(session);
 	}
-}
-
-
-SessionPool::~SessionPool(void)
-{
-	
 }
 
 

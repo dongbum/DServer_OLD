@@ -1,11 +1,11 @@
 #include "server.h"
 #include "session/session.h"
+#include "session/session_pool.h"
 
 
 // 생성자
 DServer::DServer(std::string server_port, UserProtocol* user_protocol)
-	: session_(nullptr)
-	, acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
+	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 	, count_(0)
 	, user_protocol_(user_protocol)
 {
@@ -16,6 +16,7 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
 	max_session_count = std::max(max_session_count, 100);
 
+	/*
 	for (int i = 0; i < max_session_count; i++)
 	{
 		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this, user_protocol));
@@ -23,8 +24,11 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 
 		session_queue_.Push(session);
 	}
+	*/
 
-	LL_DEBUG("session_queue_ size : %d", session_queue_.Size());
+	session_pool_.Init(acceptor_, this, user_protocol, max_session_count);
+
+	LL_DEBUG("session_pool_ size : %d", session_pool_.Size());
 
 	IOServiceHandler();
 }
@@ -40,9 +44,9 @@ void DServer::IOServiceHandler(void)
 	SessionPtr new_session = nullptr;
 
 	// 큐에서 세션 한개를 뺀다.
-	new_session = session_queue_.Pop();
+	new_session = session_pool_.GetSession();
 
-	LL_DEBUG("session_queue_ try_pop() success. size : %d", session_queue_.Size());
+	LL_DEBUG("session_pool_ try_pop() success. size : %d", session_pool_.Size());
 
 	// 그 세션에서 accept를 받는다.
 	acceptor_.async_accept(
@@ -123,7 +127,7 @@ void DServer::CloseHandler(SessionPtr session)
 	LL_DEBUG("CloseHandler");
 
 	// std::cout << "before push : session_queue_.size() : " << session_queue_.size() << std::endl;
-	LL_DEBUG("before push : session_queue_.size() : %d", session_queue_.Size());
+	LL_DEBUG("before push : session_pool_.size() : %d", session_pool_.Size());
 
 	LL_DEBUG("socket close");
 
@@ -141,8 +145,8 @@ void DServer::CloseHandler(SessionPtr session)
 	LL_DEBUG("push to session_queue_");
 
 	// 세션큐에 다시 이 세션을 넣는다.
-	session_queue_.Push(session);
+	session_pool_.ReleaseSession(session);
 
 	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
-	LL_DEBUG("push end : session_queue_.size() : %d", session_queue_.Size());
+	LL_DEBUG("push end : session_pool_.size() : %d", session_pool_.Size());
 }
