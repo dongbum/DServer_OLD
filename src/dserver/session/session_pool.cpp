@@ -1,22 +1,33 @@
 #include "session_pool.h"
 
 
-SessionPool::SessionPool(void)
+SessionPool::SessionPool(Acceptor& acceptor, DServer* server, UserProtocol* user_protocol, const uint32_t session_pool_count)
 {
+	for (int i = 0; i < session_pool_count; i++)
+	{
+		SessionPtr session = SessionPtr(new Session(acceptor.get_io_service(), server, user_protocol));
 
+		session_queue_.Push(session);
+	}
 }
+
 
 SessionPool::~SessionPool(void)
 {
-
+	
 }
 
-void SessionPool::GetSession(void)
-{
 
+std::shared_ptr<Session> SessionPool::GetSession(void)
+{
+	SessionPtr session_ptr;
+	session_ptr = session_queue_.Pop();
+
+	return session_ptr;
 }
 
-void SessionPool::ReleaseSession(void)
-{
 
+void SessionPool::ReleaseSession(SessionPtr& session_ptr)
+{
+	session_queue_.Push(session_ptr);
 }

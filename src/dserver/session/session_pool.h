@@ -12,9 +12,14 @@ public:
 	typedef std::shared_ptr<Session>		SessionPtr;
 	typedef ThreadSafeQueue<SessionPtr>		SessionQueue;
 
-	SessionPool(void);
+	SessionPool(Acceptor& acceptor, DServer* server, UserProtocol* user_protocol, const uint32_t session_pool_count);
 	virtual ~SessionPool(void);
 
-	void GetSession(void);
-	void ReleaseSession(void);
+	std::shared_ptr<Session>	GetSession(void);
+	void						ReleaseSession(SessionPtr& session_ptr);
+	size_t						Size(void) { return session_queue_.Size(); }
+
+private:
+	ThreadSafeQueue<SessionPtr>		session_queue_;
+
 };
