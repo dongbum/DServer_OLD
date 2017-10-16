@@ -1,12 +1,10 @@
 #pragma once
 
 #include "define.h"
-#include "work_thread_manager.h"
 
 
 class Session;
 class Config;
-class RequestWorkQueue;
 class UserProtocol;
 
 class DServer
@@ -18,7 +16,6 @@ public :
 	typedef boost::asio::ip::tcp::socket	Socket;
 
 	typedef std::shared_ptr<Session>			SessionPtr;
-	typedef std::shared_ptr<RequestWorkQueue>	WorkQueuePtr;
 
 	// 생성자
 	DServer(std::string server_port, UserProtocol* user_protocol);
@@ -26,8 +23,7 @@ public :
 	// 소멸자
 	virtual ~DServer(void);
 
-	void Start(std::string& thread_count);
-	void Start(Config& config);
+	void Start(void);
 	void Stop(void);
 
 	void Accept(void);
@@ -53,15 +49,8 @@ private:
 	IoService				io_service_;
 	Acceptor				acceptor_;
 	SessionPtr				session_;
-	WorkThreadManager*		work_thread_manager_;
-	WorkQueuePtr			work_queue_;				// 세션에서 데이터 수신시 작업 넣어둘 큐
 	boost::thread_group		io_thread_group_;
 
-	// 세션들을 담아둘 큐
-	// 이 큐에서 세션을 빼서 처리한다.
-	// std::queue<SessionPtr> session_queue_;
-
-	// tbb::concurrent_bounded_queue<SessionPtr> tbb_queue_;
 	ThreadSafeQueue<SessionPtr>		session_queue_;
 
 	int count_;

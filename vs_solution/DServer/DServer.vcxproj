@@ -61,7 +61,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Library\mysql-connector-c++-noinstall-1.1.7-winx64\include;D:\Library\tbb44_20160128oss\include;D:\Library\boost_1_60_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Library\mysql-connector-c++-noinstall-1.1.7-winx64\include;D:\Library\boost_1_60_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <IntrinsicFunctions>false</IntrinsicFunctions>
@@ -70,7 +70,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Library\mysql-connector-c++-noinstall-1.1.7-winx64\lib;D:\Library\boost_1_60_0\stage\lib;D:\Library\tbb44_20160128oss\lib\intel64\vc14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Library\mysql-connector-c++-noinstall-1.1.7-winx64\lib;D:\Library\boost_1_60_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -84,7 +84,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Library\mysql-connector-c++-noinstall-1.1.6-winx64\include;D:\Library\tbb43_20150424oss\include;D:\Library\boost_1_58_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Library\mysql-connector-c++-noinstall-1.1.6-winx64\include;D:\Library\boost_1_58_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,8 +106,6 @@
     <ClCompile Include="..\..\src\dserver\session\session_pool.cpp" />
     <ClCompile Include="..\..\src\dserver\utility\endian.cpp" />
     <ClCompile Include="..\..\src\dserver\utility\util.cpp" />
-    <ClCompile Include="..\..\src\dserver\work_queue.cpp" />
-    <ClCompile Include="..\..\src\dserver\work_thread_manager.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
@@ -131,8 +129,6 @@
     <ClInclude Include="..\..\src\dserver\session\session_pool.h" />
     <ClInclude Include="..\..\src\dserver\utility\endian.h" />
     <ClInclude Include="..\..\src\dserver\utility\util.h" />
-    <ClInclude Include="..\..\src\dserver\work_queue.h" />
-    <ClInclude Include="..\..\src\dserver\work_thread_manager.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_body.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_define.h" />

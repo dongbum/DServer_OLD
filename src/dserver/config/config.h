@@ -6,9 +6,6 @@
 class ConfigManager : public boost::serialization::singleton<ConfigManager>
 {
 public:
-	typedef tbb::spin_rw_mutex Mutex;
-	typedef Mutex::scoped_lock Lock;
-
 	typedef std::pair<std::string, std::string> INI_Key;
 	typedef std::string INI_Value;
 	typedef std::map<INI_Key, INI_Value> INI_Container;
@@ -25,9 +22,6 @@ public:
 private:
 	boost::property_tree::ptree ptree_;
 	INI_Container ini_data_;
-
-private:
-	Mutex rw_mutex_;
 
 };
 
