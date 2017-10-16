@@ -1,6 +1,5 @@
 #include "server.h"
 #include "session/session.h"
-#include "session/session_pool.h"
 
 
 // 생성자

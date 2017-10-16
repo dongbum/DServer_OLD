@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../define.h"
-#include "../../user_protocol/user_protocol.h"
-#include "session.h"
 
 
 class DServer;
