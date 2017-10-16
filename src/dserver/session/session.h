@@ -6,8 +6,7 @@
 
 
 class DServer;
-class RequestWorkQueue;
-
+class UserProtocol;
 class Session : public std::enable_shared_from_this<Session>
 {
 public :
