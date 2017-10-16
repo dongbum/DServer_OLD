@@ -15,8 +15,6 @@ ConfigManager::~ConfigManager(void)
 
 bool ConfigManager::Initialize(std::string file_name)
 {
-	Lock lock(rw_mutex_, true);
-
 	std::cout << file_name << " Loading..." << std::endl;
 
 	try
