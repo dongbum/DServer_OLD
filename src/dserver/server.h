@@ -23,8 +23,7 @@ public :
 	// 소멸자
 	virtual ~DServer(void);
 
-	void Start(std::string& thread_count);
-	void Start(Config& config);
+	void Start(void);
 	void Stop(void);
 
 	void Accept(void);

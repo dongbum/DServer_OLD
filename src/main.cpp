@@ -76,7 +76,7 @@ int main(void)
 	DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol);
 
 	// 서버 시작
-	server.Start(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "THREAD_COUNT"));
+	server.Start();
 
 	// 서버 종료
 	std::cout << "서버 종료" << std::endl;

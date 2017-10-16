@@ -26,10 +26,6 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 
 	LL_DEBUG("session_queue_ size : %d", session_queue_.Size());
 
-	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOGIC_THREAD_COUNT"));
-	if (0 == thread_count)
-		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
-
 	IOServiceHandler();
 }
 
@@ -94,12 +90,16 @@ void DServer::AcceptHandler(SessionPtr session, const ErrorCode& error)
 
 
 // 시작
-void DServer::Start(std::string& thread_count)
+void DServer::Start(void)
 {
 	LL_DEBUG("START");
 
+	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "THREAD_COUNT"));
+	if (0 == thread_count)
+		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
+
 	// io_service 처리 멀티스레드화
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < thread_count; ++i)
 	{
 		boost::thread io_thread(boost::bind(&boost::asio::io_service::run, &io_service_));
 		io_thread_group_.add_thread(&io_thread);
