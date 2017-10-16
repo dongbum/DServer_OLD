@@ -98,6 +98,8 @@ void DServer::Start(void)
 	if (0 == thread_count)
 		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
 
+	LL_DEBUG("ThreadCount:[%d]", thread_count);
+
 	// io_service 처리 멀티스레드화
 	for (int i = 0; i < thread_count; ++i)
 	{
