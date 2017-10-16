@@ -154,11 +154,6 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 }
 
 
-void Session::Init(RequestWorkQueuePtr request_work_queue)
-{
-	request_work_queue_ = request_work_queue;
-}
-
 // Recv를 처리할 함수
 void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 {
@@ -201,7 +196,6 @@ void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
 				// 데이터 처리
-				// request_work_queue_.get()->Push(RequestWork(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetTotalLength()));
 				// user_protocol_->ExecuteProtocol(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
 
 				// 

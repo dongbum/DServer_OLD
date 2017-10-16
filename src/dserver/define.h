@@ -43,9 +43,6 @@
 
 #include <boost/serialization/singleton.hpp>
 
-#include <tbb/tbb.h>
-#include <tbb/concurrent_queue.h>
-
 #include "config/config.h"
 
 #include "logging/log_define.h"

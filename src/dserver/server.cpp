@@ -1,6 +1,5 @@
 #include "server.h"
-#include "work_queue.h"
-#include "work_thread_manager.h"
+#include "session/session.h"
 
 
 // 생성자
@@ -12,9 +11,6 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 {
 	LL_DEBUG("Server port is %s", server_port.c_str());
 
-	// 작업을 넣을 큐 생성
-	work_queue_ = WorkQueuePtr(new RequestWorkQueue);
-
 	// 세션을 필요한만큼 만들어서 큐에 넣는다.
 
 	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
@@ -23,7 +19,6 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	for (int i = 0; i < max_session_count; i++)
 	{
 		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this, user_protocol));
-		session->Init(work_queue_);
 		// session_queue_.push(session);
 
 		session_queue_.Push(session);
@@ -34,10 +29,6 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "LOGIC_THREAD_COUNT"));
 	if (0 == thread_count)
 		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
-
-	// 워커스레드 매니저 생성
-	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
-	work_thread_manager_->SetUp(work_queue_, user_protocol_);
 
 	IOServiceHandler();
 }
@@ -106,10 +97,6 @@ void DServer::AcceptHandler(SessionPtr session, const ErrorCode& error)
 void DServer::Start(std::string& thread_count)
 {
 	LL_DEBUG("START");
-
-	work_thread_manager_->Start();
-
-	// io_service_.run();
 
 	// io_service 처리 멀티스레드화
 	for (int i = 0; i < 8; ++i)
