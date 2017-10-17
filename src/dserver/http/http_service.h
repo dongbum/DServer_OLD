@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../define.h"
+#include "http_define.h"
 
 class HTTPService
 {
@@ -12,12 +13,20 @@ public:
 
 	void StartHandler(void);
 	void RequestHandler(const ErrorCode& ec, size_t bytes_transferred);
-	std::string ProcessRequest(StreamBuf& request);
+	void HeaderReceiveHandler(const ErrorCode& ec, size_t bytes_transferred);
+	void ProcessRequest(void);
+
+	void SendResponse(void);
 	void ResponseHandler(const ErrorCode& ec, size_t bytes_transferred);
 	void Finish(void);
 
 private:
 	std::shared_ptr<Socket>		socket_ptr_;
+
 	std::string					response_;
+	HTTP_STATUS_CODE			response_status_code_;
+
 	StreamBuf					request_;
+	std::string					request_resource_;
+	std::map<std::string, std::string>		request_header_;
 };
