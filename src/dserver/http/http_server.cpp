@@ -11,6 +11,11 @@ HTTPServer::~HTTPServer(void)
 
 }
 
+void HTTPServer::Start(void)
+{
+	IoServiceHandler();
+}
+
 void HTTPServer::IoServiceHandler(void)
 {
 	std::shared_ptr<Socket> socket_ptr(new Socket(io_service_));
@@ -24,11 +29,18 @@ void HTTPServer::IoServiceHandler(void)
 			boost::asio::placeholders::error
 		)
 	);
-
-
 }
 
-void HTTPServer::AcceptHandler(std::shared_ptr<Socket> socket_ptr, const ErrorCode & error)
+void HTTPServer::AcceptHandler(std::shared_ptr<Socket> socket_ptr, const ErrorCode& ec)
 {
-	(new HTTPService(socket_ptr))->StartHandler();
+	if (0 == ec)
+	{
+		(new HTTPService(socket_ptr))->StartHandler();
+	}
+	else
+	{
+		std::cout << "Error" << ec.value() << ec.message() << std::endl;
+	}
+
+	IoServiceHandler();
 }

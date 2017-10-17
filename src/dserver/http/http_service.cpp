@@ -15,15 +15,12 @@ void HTTPService::StartHandler(void)
 		*socket_ptr_,
 		request_,
 		'\n',
-		[this](
-			const ErrorCode& ec,
-			size_t bytes_transferred)
-	{
-		RequestHandler(
-			ec,
-			bytes_transferred
-		);
-	}
+		boost::bind(
+			&HTTPService::RequestHandler,
+			this,
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred
+		)
 	);
 }
 
@@ -42,13 +39,12 @@ void HTTPService::RequestHandler(const ErrorCode & ec, size_t bytes_transferred)
 	boost::asio::async_write(
 		*socket_ptr_,
 		boost::asio::buffer(response_),
-		[this](
-			const ErrorCode& ec,
-			size_t bytes_transferred
-			)
-	{
-
-	}
+		boost::bind(
+			&HTTPService::ResponseHandler,
+			this,
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred
+		)
 	);
 }
 
@@ -62,7 +58,7 @@ void HTTPService::ResponseHandler(const ErrorCode& ec, size_t bytes_transferred)
 {
 	if (0 != ec)
 	{
-
+		std::cout << "Error" << ec.value() << ec.message() << std::endl;
 	}
 
 	Finish();
