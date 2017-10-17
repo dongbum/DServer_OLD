@@ -102,6 +102,12 @@
     <ClCompile Include="..\..\src\dserver\logging\log_manager.cpp">
       <Filter>소스 파일\dserver\logging</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\dserver\http\http_server.cpp">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\http\http_service.cpp">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\define.h">
@@ -168,6 +174,12 @@
       <Filter>소스 파일\dserver\container</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\http\http_server.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_service.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_define.h">
       <Filter>소스 파일\dserver\http</Filter>
     </ClInclude>
   </ItemGroup>
