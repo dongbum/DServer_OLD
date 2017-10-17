@@ -15,3 +15,6 @@ vs_solution/Bin/DServer64D.ilk
 vs_solution/Bin/DServer64D.pdb
 vs_solution/DServer.VC.VC.opendb
 vs_solution/DServer.VC.db
+vs_solution/DServer/log/
+vs_solution/Bin/DServer64D.lib
+vs_solution/Bin/DServer64D.exp
