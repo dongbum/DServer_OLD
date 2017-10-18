@@ -146,8 +146,6 @@ void HTTPService::SendResponse(void)
 			boost::asio::placeholders::bytes_transferred
 		)
 	);
-
-	Finish();
 }
 
 void HTTPService::ResponseHandler(const ErrorCode & ec, size_t bytes_transferred)

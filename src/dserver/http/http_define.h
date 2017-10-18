@@ -47,6 +47,7 @@ struct HTTP_RESPONSE
 	HTTP_STATUS_CODE status;
 	std::vector<HTTP_HEADER> headers;
 	std::string content;
+	std::string http_status_message;
 
 	void to_buffers(std::vector<boost::asio::const_buffer>& buffer)
 	{
@@ -56,13 +57,11 @@ struct HTTP_RESPONSE
 		headers[1].name = "Content-Length";
 		headers[1].value = std::to_string(content.size());
 
-		std::string http_status_message;
-
 		std::map<unsigned int, std::string>::const_iterator iter = http_status_table.find(status);
 		if (http_status_table.end() == iter)
-			http_status_message = std::string("HTTP/1.1 500 Server Error") + "\r\n";
+			http_status_message = std::string("HTTP/1.1 500 Server Error");
 		else
-			http_status_message = std::string("HTTP/1.1 ") + (iter->second) + "\r\n";
+			http_status_message = std::string("HTTP/1.1 ") + std::string(iter->second);
 
 		buffer.push_back(boost::asio::buffer(http_status_message));
 		buffer.push_back(boost::asio::buffer(crlf));
