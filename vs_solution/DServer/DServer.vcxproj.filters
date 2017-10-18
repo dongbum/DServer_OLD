@@ -182,5 +182,8 @@
     <ClInclude Include="..\..\src\dserver\http\http_define.h">
       <Filter>소스 파일\dserver\http</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_response.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

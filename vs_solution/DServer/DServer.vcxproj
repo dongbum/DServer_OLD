@@ -122,6 +122,7 @@
     <ClInclude Include="..\..\src\dserver\define.h" />
     <ClInclude Include="..\..\src\dserver\header.h" />
     <ClInclude Include="..\..\src\dserver\http\http_define.h" />
+    <ClInclude Include="..\..\src\dserver\http\http_response.h" />
     <ClInclude Include="..\..\src\dserver\http\http_server.h" />
     <ClInclude Include="..\..\src\dserver\http\http_service.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_define.h" />

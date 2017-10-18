@@ -20,13 +20,14 @@ public:
 	void ResponseHandler(const ErrorCode& ec, size_t bytes_transferred);
 	void Finish(void);
 
+	std::string extension_to_type(const std::string& extension);
+
 private:
 	std::shared_ptr<Socket>		socket_ptr_;
 
-	std::string					response_;
+	HTTP_RESPONSE				response_;
 	HTTP_STATUS_CODE			response_status_code_;
-	std::string					response_status_line_;
-	std::string					response_header_;
+	std::vector<boost::asio::const_buffer>	response_buffer_;
 
 	StreamBuf					request_;
 	std::string					request_resource_;

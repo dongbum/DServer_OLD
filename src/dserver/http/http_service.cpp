@@ -117,7 +117,7 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 
 void HTTPService::ProcessRequest(void)
 {
-	
+	response_status_code_ = HTTP_STATUS_NOT_FOUND;
 }
 
 
@@ -133,18 +133,12 @@ void HTTPService::SendResponse(void)
 		return;
 	}
 
-	response_status_line_ = std::string("HTTP/1.1 ") + (iter->second) + "\r\n";
-	response_header_ = response_header_ + "\r\n";
-
-	std::vector<boost::asio::const_buffer> response_buffer_vec;
-	response_buffer_vec.push_back(boost::asio::buffer(response_status_line_));
-
-	if (response_header_.length() > 0)
-		response_buffer_vec.push_back(boost::asio::buffer(response_header_));
+	response_.status = response_status_code_;
+	response_.to_buffers(response_buffer_);
 
 	boost::asio::async_write(
 		*socket_ptr_,
-		response_buffer_vec,
+		response_buffer_,
 		boost::bind(
 			&HTTPService::ResponseHandler,
 			this,
@@ -171,4 +165,13 @@ void HTTPService::Finish(void)
 	}
 
 	delete this;
+}
+
+std::string HTTPService::extension_to_type(const std::string & extension)
+{
+	std::map<std::string, std::string>::const_iterator iter = mapping_table.find(extension);
+	if (mapping_table.end() == iter)
+		return "text/plain";
+
+	return iter->second;
 }
