@@ -17,7 +17,6 @@ public:
 	void ProcessRequest(void);
 
 	void SendResponse(void);
-	void ResponseHandler(const ErrorCode& ec, size_t bytes_transferred);
 	void Finish(void);
 
 private:

@@ -93,11 +93,6 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 			return;
 		}
 	}
-	else
-	{
-		Finish();
-		return;
-	}
 
 	std::istream request_stream(&request_);
 	std::string header_name;
@@ -127,21 +122,28 @@ void HTTPService::ProcessRequest(void)
 
 void HTTPService::SendResponse(void)
 {
-}
-
-void HTTPService::ResponseHandler(const ErrorCode& ec, size_t bytes_transferred)
-{
-	if (0 != ec)
+	socket_ptr_->shutdown(boost::asio::ip::tcp::socket::shutdown_receive);
+	
+	std::map<unsigned int, std::string>::const_iterator iter = http_status_table.find(response_status_code_);
+	if (http_status_table.end() == iter)
 	{
-		LL_DEBUG("ErrorCode:[%d] ErrorMessage:[%s]", ec.value(), ec.message().c_str());
+		Finish();
+		return;
 	}
+
+	response_ = std::string("HTTP/1.1 ") + (iter->second);
 
 	Finish();
 }
 
-
-
 void HTTPService::Finish(void)
 {
+	if (true == socket_ptr_->is_open())
+	{
+		ErrorCode ignored_error;
+		socket_ptr_->shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_error);
+		socket_ptr_->close();
+	}
+
 	delete this;
 }
