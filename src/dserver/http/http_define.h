@@ -44,6 +44,15 @@ const char crlf[] = { '\r', '\n' };
 
 struct HTTP_RESPONSE
 {
+	HTTP_RESPONSE(void)
+	{
+		headers.resize(2);
+		headers[0].name = "Content-Type";
+		headers[0].value = "text/html";
+		headers[1].name = "Content-Length";
+		headers[1].value = "0";
+	}
+
 	HTTP_STATUS_CODE status;
 	std::vector<HTTP_HEADER> headers;
 	std::string content;

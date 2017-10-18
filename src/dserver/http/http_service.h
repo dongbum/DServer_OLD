@@ -32,4 +32,7 @@ private:
 	StreamBuf					request_;
 	std::string					request_resource_;
 	std::map<std::string, std::string>		request_header_;
+
+	size_t			resource_size_bytes_;
+	std::unique_ptr<char[]>	resource_buffer_;
 };

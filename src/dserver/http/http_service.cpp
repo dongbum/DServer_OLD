@@ -112,12 +112,36 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 	}
 
 	ProcessRequest();
+
 	SendResponse();
 }
 
 void HTTPService::ProcessRequest(void)
 {
-	response_status_code_ = HTTP_STATUS_NOT_FOUND;
+	std::string resource_file_path = request_resource_;
+
+	if (false == boost::filesystem::exists(resource_file_path))
+	{
+		response_status_code_ = HTTP_STATUS_NOT_FOUND;
+		return;
+	}
+
+	std::ifstream resource_fstream(resource_file_path, std::ifstream::binary);
+
+	if (false == resource_fstream.is_open())
+	{
+		response_status_code_ = HTTP_STATUS_SERVER_ERROR;
+		return;
+	}
+
+	resource_fstream.seekg(0, std::ifstream::end);
+	resource_size_bytes_ = static_cast<size_t>(resource_fstream.tellg());
+
+	resource_buffer_.reset(new char[resource_size_bytes_]);
+
+	resource_fstream.seekg(std::ifstream::beg);
+	resource_fstream.read(resource_buffer_.get(), resource_size_bytes_);
+
 }
 
 
