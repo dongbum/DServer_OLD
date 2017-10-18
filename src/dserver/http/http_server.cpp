@@ -3,7 +3,7 @@
 HTTPServer::HTTPServer(std::string server_port)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 {
-
+	http_server_thread_ = boost::thread(boost::bind(&HTTPServer::IoServiceHandler, this));
 }
 
 HTTPServer::~HTTPServer(void)
@@ -13,7 +13,7 @@ HTTPServer::~HTTPServer(void)
 
 void HTTPServer::Start(void)
 {
-	IoServiceHandler();
+	io_service_.run();
 }
 
 void HTTPServer::IoServiceHandler(void)
@@ -39,7 +39,7 @@ void HTTPServer::AcceptHandler(std::shared_ptr<Socket> socket_ptr, const ErrorCo
 	}
 	else
 	{
-		std::cout << "Error" << ec.value() << ec.message() << std::endl;
+		LL_DEBUG("ErrorCode:[%d] ErrorMessage:[%s]", ec.value(), ec.message().c_str());
 	}
 
 	IoServiceHandler();

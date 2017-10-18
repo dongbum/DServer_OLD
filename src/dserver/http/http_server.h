@@ -19,4 +19,6 @@ private:
 	IoService		io_service_;
 	Acceptor		acceptor_;
 
+	boost::thread	http_server_thread_;
+
 };

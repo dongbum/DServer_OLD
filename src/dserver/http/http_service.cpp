@@ -29,7 +29,7 @@ void HTTPService::RequestHandler(const ErrorCode & ec, size_t bytes_transferred)
 {
 	if (0 != ec)
 	{
-		std::cout << "Error" << ec.value() << ec.message() << std::endl;
+		LL_DEBUG("ErrorCode:[%d] ErrorMessage:[%s]", ec.value(), ec.message().c_str());
 
 		if (boost::asio::error::not_found == ec)
 		{
@@ -37,11 +37,6 @@ void HTTPService::RequestHandler(const ErrorCode & ec, size_t bytes_transferred)
 			SendResponse();
 			return;
 		}
-	}
-	else
-	{
-		Finish();
-		return;
 	}
 
 	std::string request_line;
@@ -89,7 +84,7 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 {
 	if (0 != ec)
 	{
-		std::cout << "Error" << ec.value() << ec.message() << std::endl;
+		LL_DEBUG("ErrorCode:[%d] ErrorMessage:[%s]", ec.value(), ec.message().c_str());
 
 		if (boost::asio::error::not_found == ec)
 		{
@@ -138,7 +133,7 @@ void HTTPService::ResponseHandler(const ErrorCode& ec, size_t bytes_transferred)
 {
 	if (0 != ec)
 	{
-		std::cout << "Error" << ec.value() << ec.message() << std::endl;
+		LL_DEBUG("ErrorCode:[%d] ErrorMessage:[%s]", ec.value(), ec.message().c_str());
 	}
 
 	Finish();
