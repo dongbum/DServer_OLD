@@ -17,6 +17,7 @@ public:
 	void ProcessRequest(void);
 
 	void SendResponse(void);
+	void ResponseHandler(const ErrorCode& ec, size_t bytes_transferred);
 	void Finish(void);
 
 private:
@@ -24,6 +25,8 @@ private:
 
 	std::string					response_;
 	HTTP_STATUS_CODE			response_status_code_;
+	std::string					response_status_line_;
+	std::string					response_header_;
 
 	StreamBuf					request_;
 	std::string					request_resource_;

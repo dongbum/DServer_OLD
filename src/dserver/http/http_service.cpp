@@ -120,6 +120,8 @@ void HTTPService::ProcessRequest(void)
 	
 }
 
+
+
 void HTTPService::SendResponse(void)
 {
 	socket_ptr_->shutdown(boost::asio::ip::tcp::socket::shutdown_receive);
@@ -131,8 +133,31 @@ void HTTPService::SendResponse(void)
 		return;
 	}
 
-	response_ = std::string("HTTP/1.1 ") + (iter->second);
+	response_status_line_ = std::string("HTTP/1.1 ") + (iter->second) + "\r\n";
+	response_header_ = response_header_ + "\r\n";
 
+	std::vector<boost::asio::const_buffer> response_buffer_vec;
+	response_buffer_vec.push_back(boost::asio::buffer(response_status_line_));
+
+	if (response_header_.length() > 0)
+		response_buffer_vec.push_back(boost::asio::buffer(response_header_));
+
+	boost::asio::async_write(
+		*socket_ptr_,
+		response_buffer_vec,
+		boost::bind(
+			&HTTPService::ResponseHandler,
+			this,
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred
+		)
+	);
+
+	Finish();
+}
+
+void HTTPService::ResponseHandler(const ErrorCode & ec, size_t bytes_transferred)
+{
 	Finish();
 }
 
