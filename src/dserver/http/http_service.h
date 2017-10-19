@@ -2,13 +2,14 @@
 
 #include "../define.h"
 #include "http_define.h"
+#include "../../web_protocol/web_protocol.h"
 
 class HTTPService
 {
 public:
 	typedef boost::asio::streambuf	StreamBuf;
 
-	HTTPService(std::shared_ptr<Socket> socket_ptr);
+	HTTPService(std::shared_ptr<Socket> socket_ptr, WebProtocol* web_protocol);
 	virtual ~HTTPService(void);
 
 	void StartHandler(void);
@@ -35,4 +36,6 @@ private:
 
 	size_t			resource_size_bytes_;
 	std::unique_ptr<char[]>	resource_buffer_;
+
+	WebProtocol*	web_protocol_;
 };

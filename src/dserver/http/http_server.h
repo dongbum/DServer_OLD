@@ -1,7 +1,10 @@
 #pragma once
 
 #include "../define.h"
+
+#include "http_base_protocol.h"
 #include "http_service.h"
+#include "../../web_protocol/web_protocol.h"
 
 class HTTPServer
 {
@@ -20,5 +23,7 @@ private:
 	Acceptor		acceptor_;
 
 	boost::thread	http_server_thread_;
+
+	WebProtocol		web_protocol_;
 
 };

@@ -100,7 +100,11 @@
     <ClCompile Include="..\..\src\dserver\database\redis\redis.cpp" />
     <ClCompile Include="..\..\src\dserver\http\http_server.cpp" />
     <ClCompile Include="..\..\src\dserver\http\http_service.cpp" />
+    <ClCompile Include="..\..\src\dserver\json\json_reader.cpp" />
+    <ClCompile Include="..\..\src\dserver\json\json_value.cpp" />
+    <ClCompile Include="..\..\src\dserver\json\json_writer.cpp" />
     <ClCompile Include="..\..\src\dserver\logging\log_manager.cpp" />
+    <ClCompile Include="..\..\src\dserver\monitor\system_resource_monitor.cpp" />
     <ClCompile Include="..\..\src\dserver\protocol\base_protocol.cpp" />
     <ClCompile Include="..\..\src\dserver\request_work.cpp" />
     <ClCompile Include="..\..\src\dserver\server.cpp" />
@@ -111,6 +115,8 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
+    <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp" />
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\acceptor.h" />
@@ -121,13 +127,27 @@
     <ClInclude Include="..\..\src\dserver\database\redis\redis.h" />
     <ClInclude Include="..\..\src\dserver\define.h" />
     <ClInclude Include="..\..\src\dserver\header.h" />
+    <ClInclude Include="..\..\src\dserver\http\http_base_protocol.h" />
     <ClInclude Include="..\..\src\dserver\http\http_define.h" />
     <ClInclude Include="..\..\src\dserver\http\http_response.h" />
     <ClInclude Include="..\..\src\dserver\http\http_server.h" />
     <ClInclude Include="..\..\src\dserver\http\http_service.h" />
+    <ClInclude Include="..\..\src\dserver\json\allocator.h" />
+    <ClInclude Include="..\..\src\dserver\json\assertions.h" />
+    <ClInclude Include="..\..\src\dserver\json\autolink.h" />
+    <ClInclude Include="..\..\src\dserver\json\config.h" />
+    <ClInclude Include="..\..\src\dserver\json\features.h" />
+    <ClInclude Include="..\..\src\dserver\json\forwards.h" />
+    <ClInclude Include="..\..\src\dserver\json\json.h" />
+    <ClInclude Include="..\..\src\dserver\json\json_tool.h" />
+    <ClInclude Include="..\..\src\dserver\json\reader.h" />
+    <ClInclude Include="..\..\src\dserver\json\value.h" />
+    <ClInclude Include="..\..\src\dserver\json\version.h" />
+    <ClInclude Include="..\..\src\dserver\json\writer.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_define.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_manager.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_message.h" />
+    <ClInclude Include="..\..\src\dserver\monitor\system_resource_monitor.h" />
     <ClInclude Include="..\..\src\dserver\protocol\base_protocol.h" />
     <ClInclude Include="..\..\src\dserver\request_work.h" />
     <ClInclude Include="..\..\src\dserver\server.h" />
@@ -138,6 +158,10 @@
     <ClInclude Include="..\..\src\user_protocol\user_protocol.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_body.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_define.h" />
+    <ClInclude Include="..\..\src\web_protocol\web_protocol.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\dserver\json\json_valueiterator.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

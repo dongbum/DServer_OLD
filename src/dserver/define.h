@@ -43,6 +43,8 @@
 
 #include <boost/serialization/singleton.hpp>
 
+#include "json/json.h"
+
 #include "config/config.h"
 
 #include "logging/log_define.h"
@@ -52,6 +54,8 @@
 #include "utility/endian.h"
 
 #include "container/thread_safe_queue.h"
+
+#include "monitor/system_resource_monitor.h"
 
 typedef boost::asio::io_service			IoService;
 typedef boost::asio::ip::tcp::endpoint	EndPoint;
