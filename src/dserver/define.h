@@ -43,6 +43,8 @@
 
 #include <boost/serialization/singleton.hpp>
 
+#include "json/json.h"
+
 #include "config/config.h"
 
 #include "logging/log_define.h"

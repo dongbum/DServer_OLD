@@ -55,6 +55,9 @@
     <Filter Include="소스 파일\dserver\http">
       <UniqueIdentifier>{932d853b-3b79-4cc5-9fd0-8eedd1c36a87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\json">
+      <UniqueIdentifier>{a2c2413a-2347-406b-900b-b125b65c3d80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
@@ -107,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\dserver\http\http_service.cpp">
       <Filter>소스 파일\dserver\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\json\json_reader.cpp">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\json\json_value.cpp">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\json\json_writer.cpp">
+      <Filter>소스 파일\dserver\json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,5 +197,46 @@
     <ClInclude Include="..\..\src\dserver\http\http_response.h">
       <Filter>소스 파일\dserver\http</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\json_tool.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\reader.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\value.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\version.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\writer.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\allocator.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\assertions.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\autolink.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\config.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\features.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\forwards.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\json.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\dserver\json\json_valueiterator.inl">
+      <Filter>소스 파일\dserver\json</Filter>
+    </None>
   </ItemGroup>
 </Project>
