@@ -67,6 +67,9 @@
     <Filter Include="소스 파일\web_protocol\index">
       <UniqueIdentifier>{eaa5d5d1-4d41-46e5-aec7-db19b08efbe0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\monitor">
+      <UniqueIdentifier>{a79c7910-06fb-4424-ab7a-f11c18d16790}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
@@ -134,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp">
       <Filter>소스 파일\web_protocol\info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\monitor\system_resource_monitor.cpp">
+      <Filter>소스 파일\dserver\monitor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\web_protocol\web_protocol.h">
       <Filter>소스 파일\web_protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\monitor\system_resource_monitor.h">
+      <Filter>소스 파일\dserver\monitor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

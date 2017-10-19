@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\src\dserver\json\json_value.cpp" />
     <ClCompile Include="..\..\src\dserver\json\json_writer.cpp" />
     <ClCompile Include="..\..\src\dserver\logging\log_manager.cpp" />
+    <ClCompile Include="..\..\src\dserver\monitor\system_resource_monitor.cpp" />
     <ClCompile Include="..\..\src\dserver\protocol\base_protocol.cpp" />
     <ClCompile Include="..\..\src\dserver\request_work.cpp" />
     <ClCompile Include="..\..\src\dserver\server.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="..\..\src\dserver\logging\log_define.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_manager.h" />
     <ClInclude Include="..\..\src\dserver\logging\log_message.h" />
+    <ClInclude Include="..\..\src\dserver\monitor\system_resource_monitor.h" />
     <ClInclude Include="..\..\src\dserver\protocol\base_protocol.h" />
     <ClInclude Include="..\..\src\dserver\request_work.h" />
     <ClInclude Include="..\..\src\dserver\server.h" />

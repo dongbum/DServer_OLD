@@ -55,6 +55,8 @@
 
 #include "container/thread_safe_queue.h"
 
+#include "monitor/system_resource_monitor.h"
+
 typedef boost::asio::io_service			IoService;
 typedef boost::asio::ip::tcp::endpoint	EndPoint;
 typedef boost::asio::ip::tcp::acceptor	Acceptor;

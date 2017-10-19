@@ -120,6 +120,7 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 
 void HTTPService::ProcessRequest(void)
 {
+	response_status_code_ = HTTP_STATUS_OK;
 	response_.content = web_protocol_->ExecuteProtocol(request_resource_);
 	return;
 
