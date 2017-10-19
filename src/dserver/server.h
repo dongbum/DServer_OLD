@@ -2,6 +2,7 @@
 
 #include "define.h"
 #include "session/session_pool.h"
+#include "http/http_server.h"
 
 
 class Config;
@@ -54,6 +55,9 @@ private:
 	SessionPool				session_pool_;
 
 	int count_;
+
+private:
+	HTTPServer				http_server_;
 
 private:
 	UserProtocol*			user_protocol_;

@@ -53,7 +53,7 @@ void LogManager::Write(LOG_LEVEL log_level, const char* format, ...)
 	std::string date_str = "[" + GetTimeStr() + "] ";
 
 	memcpy(log_message.GetBuffer(), date_str.c_str(), date_str.length());
-	log_message.AddPosition(date_str.length());
+	log_message.AddPosition(static_cast<unsigned int>(date_str.length()));
 
 	va_list ap;
 	va_start(ap, format);

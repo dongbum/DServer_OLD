@@ -7,6 +7,7 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 	, count_(0)
 	, user_protocol_(user_protocol)
+	, http_server_("40000")
 {
 	LL_DEBUG("Server port is %s", server_port.c_str());
 
@@ -111,6 +112,8 @@ void DServer::Start(void)
 	}
 
 	// io_thread_group_.join_all();
+
+	http_server_.Start();
 }
 
 
