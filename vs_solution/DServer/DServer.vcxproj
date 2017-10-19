@@ -114,6 +114,9 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
+    <ClCompile Include="..\..\src\web_monitor\web_monitor.cpp" />
+    <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp" />
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\acceptor.h" />
@@ -154,6 +157,7 @@
     <ClInclude Include="..\..\src\user_protocol\user_protocol.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_body.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol_define.h" />
+    <ClInclude Include="..\..\src\web_protocol\web_protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\dserver\json\json_valueiterator.inl" />

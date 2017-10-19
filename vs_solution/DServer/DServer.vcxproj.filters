@@ -58,6 +58,15 @@
     <Filter Include="소스 파일\dserver\json">
       <UniqueIdentifier>{a2c2413a-2347-406b-900b-b125b65c3d80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\web_protocol">
+      <UniqueIdentifier>{2e9ca56b-c5d7-4df7-9ca3-1f11992bcb2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\web_protocol\info">
+      <UniqueIdentifier>{03dec4cf-d937-4ad4-adae-43d01afcecdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\web_protocol\index">
+      <UniqueIdentifier>{eaa5d5d1-4d41-46e5-aec7-db19b08efbe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
@@ -119,6 +128,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\dserver\json\json_writer.cpp">
       <Filter>소스 파일\dserver\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\web_monitor\web_monitor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp">
+      <Filter>소스 파일\web_protocol\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp">
+      <Filter>소스 파일\web_protocol\info</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\http\http_base_protocol.h">
       <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\web_protocol\web_protocol.h">
+      <Filter>소스 파일\web_protocol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

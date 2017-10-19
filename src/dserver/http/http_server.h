@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../define.h"
+
+#include "http_base_protocol.h"
 #include "http_service.h"
 
 class HTTPServer
@@ -20,5 +22,7 @@ private:
 	Acceptor		acceptor_;
 
 	boost::thread	http_server_thread_;
+
+	
 
 };

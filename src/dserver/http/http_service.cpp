@@ -118,6 +118,8 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 
 void HTTPService::ProcessRequest(void)
 {
+	
+
 	std::string resource_file_path = request_resource_;
 
 	if (false == boost::filesystem::exists(resource_file_path))
