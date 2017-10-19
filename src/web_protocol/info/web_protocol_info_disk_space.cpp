@@ -68,6 +68,8 @@ std::string WebProtocol::GetDiskSpace(void)
 
 		disk_info_node.append(disk_info);
 	}
+#else
+	root["error"] = "This is an unsupported system.";
 
 #endif
 
