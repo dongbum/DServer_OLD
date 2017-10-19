@@ -3,6 +3,8 @@
 HTTPServer::HTTPServer(std::string server_port)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 {
+	web_protocol_.Initialize();
+
 	http_server_thread_ = boost::thread(boost::bind(&HTTPServer::IoServiceHandler, this));
 }
 
@@ -35,7 +37,7 @@ void HTTPServer::AcceptHandler(std::shared_ptr<Socket> socket_ptr, const ErrorCo
 {
 	if (0 == ec)
 	{
-		(new HTTPService(socket_ptr))->StartHandler();
+		(new HTTPService(socket_ptr, &web_protocol_))->StartHandler();
 	}
 	else
 	{

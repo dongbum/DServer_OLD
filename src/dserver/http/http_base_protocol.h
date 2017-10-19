@@ -15,7 +15,7 @@ public:
 	{
 		HTTPBaseProtocol::HTTPProtocolMap::iterator iter = http_protocol_map.find(reques_uri);
 		if (iter == http_protocol_map.end())
-			return std::string();
+			return std::string("Error!!!");
 
 		HTTPProtocolFunction protocol_function = (*iter).second;
 

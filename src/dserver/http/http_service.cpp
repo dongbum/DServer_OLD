@@ -1,7 +1,9 @@
 #include "http_service.h"
+#include "../../web_protocol/web_protocol.h"
 
-HTTPService::HTTPService(std::shared_ptr<Socket> socket_ptr)
+HTTPService::HTTPService(std::shared_ptr<Socket> socket_ptr, WebProtocol* web_protocol)
 	: socket_ptr_(socket_ptr)
+	, web_protocol_(web_protocol)
 	, response_status_code_(HTTP_STATUS_OK)
 {
 }
@@ -118,8 +120,10 @@ void HTTPService::HeaderReceiveHandler(const ErrorCode & ec, size_t bytes_transf
 
 void HTTPService::ProcessRequest(void)
 {
-	
+	response_.content = web_protocol_->ExecuteProtocol(request_resource_);
+	return;
 
+	/*
 	std::string resource_file_path = request_resource_;
 
 	if (false == boost::filesystem::exists(resource_file_path))
@@ -143,7 +147,7 @@ void HTTPService::ProcessRequest(void)
 
 	resource_fstream.seekg(std::ifstream::beg);
 	resource_fstream.read(resource_buffer_.get(), resource_size_bytes_);
-
+	*/
 }
 
 

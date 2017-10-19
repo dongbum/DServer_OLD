@@ -129,9 +129,6 @@
     <ClCompile Include="..\..\src\dserver\json\json_writer.cpp">
       <Filter>소스 파일\dserver\json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\web_monitor\web_monitor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp">
       <Filter>소스 파일\web_protocol\index</Filter>
     </ClCompile>

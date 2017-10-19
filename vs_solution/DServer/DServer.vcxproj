@@ -114,7 +114,6 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp" />
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
-    <ClCompile Include="..\..\src\web_monitor\web_monitor.cpp" />
     <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp" />
     <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp" />
   </ItemGroup>
