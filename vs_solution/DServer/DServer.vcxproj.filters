@@ -233,6 +233,9 @@
     <ClInclude Include="..\..\src\dserver\json\json.h">
       <Filter>소스 파일\dserver\json</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_base_protocol.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\dserver\json\json_valueiterator.inl">

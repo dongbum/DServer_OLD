@@ -124,6 +124,7 @@
     <ClInclude Include="..\..\src\dserver\database\redis\redis.h" />
     <ClInclude Include="..\..\src\dserver\define.h" />
     <ClInclude Include="..\..\src\dserver\header.h" />
+    <ClInclude Include="..\..\src\dserver\http\http_base_protocol.h" />
     <ClInclude Include="..\..\src\dserver\http\http_define.h" />
     <ClInclude Include="..\..\src\dserver\http\http_response.h" />
     <ClInclude Include="..\..\src\dserver\http\http_server.h" />
