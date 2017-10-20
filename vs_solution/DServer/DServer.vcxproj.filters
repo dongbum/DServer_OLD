@@ -99,12 +99,6 @@
     <ClCompile Include="..\..\src\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp">
-      <Filter>소스 파일\user_protocol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp">
-      <Filter>소스 파일\user_protocol\echo</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\dserver\request_work.cpp">
       <Filter>소스 파일\dserver</Filter>
     </ClCompile>
@@ -143,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_memory.cpp">
       <Filter>소스 파일\web_protocol\info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\user_protocol\echo\user_protocol_echo.cpp">
+      <Filter>소스 파일\user_protocol\echo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
