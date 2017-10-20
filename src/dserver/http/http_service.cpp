@@ -123,7 +123,7 @@ void HTTPService::ProcessRequest(void)
 	LL_DEBUG("IP:[%s] RequestURI:[%s]", socket_ptr_->remote_endpoint().address().to_string().c_str(), request_resource_.c_str());
 
 	response_status_code_ = HTTP_STATUS_OK;
-	response_.content = web_protocol_->ExecuteProtocol(request_resource_);
+	response_.SetContent(web_protocol_->ExecuteProtocol(request_resource_));
 	return;
 
 	/*
@@ -166,8 +166,8 @@ void HTTPService::SendResponse(void)
 		return;
 	}
 
-	response_.status = response_status_code_;
-	response_.to_buffers(response_buffer_);
+	response_.SetStatus(response_status_code_);
+	response_.ToBuffers(response_buffer_);
 
 	boost::asio::async_write(
 		*socket_ptr_,

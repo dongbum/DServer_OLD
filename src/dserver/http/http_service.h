@@ -2,6 +2,7 @@
 
 #include "../define.h"
 #include "http_define.h"
+#include "http_response.h"
 #include "../../web_protocol/web_protocol.h"
 
 class HTTPService
@@ -26,7 +27,7 @@ public:
 private:
 	std::shared_ptr<Socket>		socket_ptr_;
 
-	HTTP_RESPONSE				response_;
+	HTTPResponse				response_;
 	HTTP_STATUS_CODE			response_status_code_;
 	std::vector<boost::asio::const_buffer>	response_buffer_;
 
