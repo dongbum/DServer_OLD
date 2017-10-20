@@ -263,6 +263,9 @@
     <ClInclude Include="..\..\src\dserver\monitor\system_resource_monitor.h">
       <Filter>소스 파일\dserver\monitor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_util.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\dserver\json\json_valueiterator.inl">

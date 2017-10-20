@@ -3,6 +3,7 @@
 #include "../define.h"
 #include "http_define.h"
 #include "http_response.h"
+#include "http_util.h"
 #include "../../web_protocol/web_protocol.h"
 
 class HTTPService

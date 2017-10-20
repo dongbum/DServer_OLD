@@ -132,6 +132,7 @@
     <ClInclude Include="..\..\src\dserver\http\http_response.h" />
     <ClInclude Include="..\..\src\dserver\http\http_server.h" />
     <ClInclude Include="..\..\src\dserver\http\http_service.h" />
+    <ClInclude Include="..\..\src\dserver\http\http_util.h" />
     <ClInclude Include="..\..\src\dserver\json\allocator.h" />
     <ClInclude Include="..\..\src\dserver\json\assertions.h" />
     <ClInclude Include="..\..\src\dserver\json\autolink.h" />
