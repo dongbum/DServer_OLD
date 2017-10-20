@@ -11,13 +11,12 @@ public:
 
 	void Initialize(void)
 	{
-		// AddProtocol("/",						boost::bind(&WebProtocol::GetIndex, this, _1, _2, _3, _4));
-		// AddProtocol("/info/disk_space",			boost::bind(&WebProtocol::GetDiskSpace, this, _1, _2, _3, _4));
-
 		AddProtocol("/", boost::bind(&WebProtocol::GetIndex, this));
 		AddProtocol("/info/disk_space", boost::bind(&WebProtocol::GetDiskSpace, this));
+		AddProtocol("/info/memory", boost::bind(&WebProtocol::GetMemoryInfo, this));
 	};
 
 	std::string GetIndex(void);
 	std::string GetDiskSpace(void);
+	std::string GetMemoryInfo(void);
 };

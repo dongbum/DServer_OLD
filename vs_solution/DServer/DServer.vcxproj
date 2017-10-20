@@ -113,10 +113,10 @@
     <ClCompile Include="..\..\src\dserver\utility\endian.cpp" />
     <ClCompile Include="..\..\src\dserver\utility\util.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp" />
-    <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
+    <ClCompile Include="..\..\src\user_protocol\echo\user_protocol_echo.cpp" />
     <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp" />
     <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp" />
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_memory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\acceptor.h" />
@@ -132,6 +132,7 @@
     <ClInclude Include="..\..\src\dserver\http\http_response.h" />
     <ClInclude Include="..\..\src\dserver\http\http_server.h" />
     <ClInclude Include="..\..\src\dserver\http\http_service.h" />
+    <ClInclude Include="..\..\src\dserver\http\http_util.h" />
     <ClInclude Include="..\..\src\dserver\json\allocator.h" />
     <ClInclude Include="..\..\src\dserver\json\assertions.h" />
     <ClInclude Include="..\..\src\dserver\json\autolink.h" />
