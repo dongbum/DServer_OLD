@@ -117,6 +117,7 @@
     <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp" />
     <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp" />
     <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp" />
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_memory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\acceptor.h" />

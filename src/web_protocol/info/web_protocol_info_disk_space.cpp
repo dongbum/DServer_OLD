@@ -1,5 +1,4 @@
 #include "../web_protocol.h"
-#include <Windows.h>
 
 std::string WebProtocol::GetDiskSpace(void)
 {

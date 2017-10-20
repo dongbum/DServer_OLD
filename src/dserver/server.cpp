@@ -2,7 +2,6 @@
 #include "session/session.h"
 
 
-// 생성자
 DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 	, count_(0)
@@ -33,7 +32,6 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	IOServiceHandler();
 }
 
-// 소멸자
 DServer::~DServer(void)
 {
 

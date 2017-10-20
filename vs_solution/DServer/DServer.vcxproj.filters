@@ -141,6 +141,9 @@
     <ClCompile Include="..\..\src\dserver\monitor\system_resource_monitor.cpp">
       <Filter>소스 파일\dserver\monitor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_memory.cpp">
+      <Filter>소스 파일\web_protocol\info</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\define.h">

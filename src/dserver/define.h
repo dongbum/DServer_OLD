@@ -25,6 +25,17 @@
 #include <locale.h>
 #include <concurrent_queue.h>
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+
+#include <Windows.h>
+#include <Psapi.h>
+
+#pragma comment(lib, "psapi.lib")
+
+#endif
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/endian/conversion.hpp>
