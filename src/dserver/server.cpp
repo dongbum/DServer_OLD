@@ -7,9 +7,10 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 	, count_(0)
 	, user_protocol_(user_protocol)
-	, http_server_("40000")
+	, http_server_(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT"))
 {
-	LL_DEBUG("Server port is %s", server_port.c_str());
+	LL_DEBUG("Server Port:[%s]", server_port.c_str());
+	LL_DEBUG("WebServer Port:[%s]", server_port.c_str());
 
 	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
 	max_session_count = std::max(max_session_count, 100);
@@ -26,7 +27,7 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 
 	session_pool_.Init(acceptor_, this, user_protocol, max_session_count);
 
-	LL_DEBUG("session_pool_ size : %d", session_pool_.Size());
+	LL_DEBUG("SessionPool Size:[%d]", session_pool_.Size());
 
 	IOServiceHandler();
 }
@@ -43,7 +44,7 @@ void DServer::IOServiceHandler(void)
 	SessionPtr new_session = nullptr;
 	new_session = session_pool_.GetSession();
 
-	LL_DEBUG("session_pool_ try_pop() success. size : %d", session_pool_.Size());
+	LL_DEBUG("SessionPool GetSession() success. Size:[%d]", session_pool_.Size());
 
 	acceptor_.async_accept(
 				new_session->GetSocket(),
