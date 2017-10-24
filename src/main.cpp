@@ -11,10 +11,6 @@
 #include "dserver/database/mysql/mysql_conn.h"
 #include "dserver/database/mysql/mysql_conn_pool.h"
 
-int test(int a, int b)
-{
-	return a + b;
-}
 
 int main(void)
 {
