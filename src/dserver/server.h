@@ -9,7 +9,7 @@ class Config;
 class UserProtocol;
 class Session;
 class SessionPool;
-class DServer
+class DServer : public std::enable_shared_from_this<DServer>
 {
 public :
 	typedef boost::asio::io_service			IoService;
@@ -19,10 +19,7 @@ public :
 
 	typedef std::shared_ptr<Session>		SessionPtr;
 
-	// 생성자
 	DServer(std::string server_port, UserProtocol* user_protocol);
-
-	// 소멸자
 	virtual ~DServer(void);
 
 	void Start(void);
@@ -30,12 +27,8 @@ public :
 
 	void Accept(void);
 
-	// 소켓 accept 핸들러
 	void AcceptHandler(SessionPtr session, const ErrorCode& error);
-
-	// 소켓 close 핸들러
 	void CloseHandler(SessionPtr session);
-
 	void IOServiceHandler();
 
 public:

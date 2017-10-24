@@ -62,7 +62,6 @@ int main(void)
 	return 0;
 	*/
 
-	// 설정 파일을 로딩한다.
 	if (false == CONFIG_MANAGER_INSTANCE.Initialize("D:\\Work\\DServer.git\\vs_solution\\Bin\\ServerConfig.ini"))
 		return 0;
 
@@ -72,14 +71,11 @@ int main(void)
 	UserProtocol user_protocol;
 	user_protocol.Initialize();
 
-	// 서버 객체 생성
-	DServer server(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol);
+	std::shared_ptr<DServer> server(new DServer(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol));
+	DServer::SetServerInstance(server);
+	server->Start();
 
-	// 서버 시작
-	server.Start();
-
-	// 서버 종료
-	std::cout << "서버 종료" << std::endl;
+	LL_DEBUG("Server Shutdown");
 
 	getchar();
 

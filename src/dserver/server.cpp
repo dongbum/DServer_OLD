@@ -1,6 +1,7 @@
 #include "server.h"
 #include "session/session.h"
 
+std::shared_ptr<DServer> DServer::server_instance_ptr_;
 
 DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
@@ -9,8 +10,6 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	, http_server_("40000")
 {
 	LL_DEBUG("Server port is %s", server_port.c_str());
-
-	// 세션을 필요한만큼 만들어서 큐에 넣는다.
 
 	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
 	max_session_count = std::max(max_session_count, 100);
