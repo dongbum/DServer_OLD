@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\src\dserver\config\config.cpp" />
     <ClCompile Include="..\..\src\dserver\database\mysql\mysql_conn.cpp" />
     <ClCompile Include="..\..\src\dserver\database\mysql\mysql_conn_pool.cpp" />
+    <ClCompile Include="..\..\src\dserver\database\mysql\mysql_example.cpp" />
     <ClCompile Include="..\..\src\dserver\database\redis\redis.cpp" />
     <ClCompile Include="..\..\src\dserver\http\http_server.cpp" />
     <ClCompile Include="..\..\src\dserver\http\http_service.cpp" />

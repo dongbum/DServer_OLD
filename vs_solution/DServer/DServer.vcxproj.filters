@@ -141,6 +141,9 @@
     <ClCompile Include="..\..\src\user_protocol\echo\user_protocol_echo.cpp">
       <Filter>소스 파일\user_protocol\echo</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\dserver\database\mysql\mysql_example.cpp">
+      <Filter>소스 파일\dserver\database\mysql</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\dserver\define.h">
