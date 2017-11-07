@@ -47,8 +47,6 @@ private:
 
 	SessionPool				session_pool_;
 
-	int count_;
-
 private:
 	HTTPServer				http_server_;
 

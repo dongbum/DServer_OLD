@@ -5,7 +5,6 @@ std::shared_ptr<DServer> DServer::server_instance_ptr_;
 
 DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
-	, count_(0)
 	, user_protocol_(user_protocol)
 	, http_server_(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT"))
 {
@@ -72,8 +71,6 @@ void DServer::AcceptHandler(SessionPtr session, const ErrorCode& error)
 	{
 		LL_DEBUG("Client connected");
 
-		count_++;
-		LL_DEBUG("count_ : %d", count_);
 		session->PostReceive();
 	}
 	else
