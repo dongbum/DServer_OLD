@@ -33,11 +33,15 @@ bool ConfigManager::Initialize(std::string file_name)
 }
 
 
-ConfigManager::INI_Value ConfigManager::GetValue(std::string section_name, std::string key_name)
+ConfigManager::INI_Value ConfigManager::GetValue(std::string section_name, std::string key_name, bool to_upper_case /* = false */)
 {
 	try
 	{
-		return ptree_.get<ConfigManager::INI_Value>(section_name + "." + key_name);
+		ConfigManager::INI_Value result = ptree_.get<ConfigManager::INI_Value>(section_name + "." + key_name);
+		if (to_upper_case)
+			std::transform(result.begin(), result.end(), result.begin(), toupper);
+
+		return result;
 	}
 	catch (boost::property_tree::ptree_bad_path& error)
 	{

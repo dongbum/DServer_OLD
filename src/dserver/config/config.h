@@ -14,7 +14,7 @@ public:
 	virtual ~ConfigManager(void);
 
 	bool Initialize(std::string file_name);
-	ConfigManager::INI_Value GetValue(std::string section_name, std::string key_name);
+	ConfigManager::INI_Value GetValue(std::string section_name, std::string key_name, bool to_upper_case = false);
 
 public:
 	static ConfigManager& GetMutableInstance(void) { return ConfigManager::get_mutable_instance(); }
