@@ -195,29 +195,31 @@ void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 				LL_DEBUG("Header.ProtocolNo  : %d", header->GetProtocolNo());
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
-				// 데이터 처리
-				// user_protocol_->ExecuteProtocol(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
+				if ("TRUE" == CONFIG_MANAGER_INSTANCE.GetValue("DServer", "USE_CGCII_TEST", true))
+				{
+					unsigned char send_buffer[SEND_BUFFER_SIZE] = { 0, };
+					int index = 0;
 
-				// 
-				unsigned char send_buffer[SEND_BUFFER_SIZE] = { 0, };
-				int index = 0;
+					int test = 7;
 
-				int test = 7;
+					Header send_header;
+					send_header.SetDataLength(4);
+					send_header.SetTotalLength(16);
 
-				Header send_header;
-				send_header.SetDataLength(4);
-				send_header.SetTotalLength(16);
+					memcpy(&send_buffer[index], &send_header, sizeof(send_header));
+					index += sizeof(send_header);
+					memcpy(&send_buffer[index], &test, sizeof(test));
+					index += sizeof(test);
 
-				memcpy(&send_buffer[index], &send_header, sizeof(send_header));
-				index += sizeof(send_header);
-				memcpy(&send_buffer[index], &test, sizeof(test));
-				index += sizeof(test);
+					int send_length = index;
 
-				int send_length = index;
-
-				PostSend(false, send_length, send_buffer);
-
-				//
+					PostSend(false, send_length, send_buffer);
+				}
+				else
+				{
+					// 데이터 처리
+					user_protocol_->ExecuteProtocol(shared_from_this(), header->GetProtocolNo(), &packet_buffer_[read_data], header->GetDataLength());
+				}
 
 				packet_data_size -= header->GetTotalLength();
 				read_data += header->GetTotalLength();
