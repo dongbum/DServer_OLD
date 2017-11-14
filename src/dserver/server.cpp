@@ -9,7 +9,7 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	, http_server_(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT"))
 {
 	LL_DEBUG("Server Port:[%s]", server_port.c_str());
-	LL_DEBUG("WebServer Port:[%s]", server_port.c_str());
+	LL_DEBUG("WebServer Port:[%s]", CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT").c_str());
 
 	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
 	max_session_count = std::max(max_session_count, 100);
