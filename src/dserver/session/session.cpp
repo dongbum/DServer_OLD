@@ -235,9 +235,13 @@ void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 			if (packet_data_size > RECV_BUFFER_SIZE)
 				packet_data_size = RECV_BUFFER_SIZE;
 
+			/*
 			char TempBuffer[RECV_BUFFER_SIZE] = { 0, };
 			memcpy(&TempBuffer[0], &packet_buffer_[read_data], packet_data_size);
 			memcpy(&packet_buffer_[0], &TempBuffer[0], packet_data_size);
+			*/
+
+			memmove(&packet_buffer_[0], &packet_buffer_[read_data], packet_data_size);
 		}
 
 		packet_buffer_size_ = packet_data_size;
