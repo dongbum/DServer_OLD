@@ -8,12 +8,12 @@ Session::Session(IoService& io_service, DServer* server, UserProtocol* user_prot
 ,	packet_buffer_size_(0)
 ,	user_protocol_(user_protocol)
 {
-	// TODO Auto-generated constructor stub
+
 }
 
 Session::~Session()
 {
-	// TODO Auto-generated destructor stub
+	
 }
 
 Socket& Session::GetSocket()
@@ -21,15 +21,11 @@ Socket& Session::GetSocket()
 	return socket_;
 }
 
-// Accept가 되면 처리할 함수
 void Session::PostReceive(void)
 {
 	LL_DEBUG("Session::PostReceive START");
 
 	memset(recv_buffer_, 0, sizeof(recv_buffer_));
-
-	// Recv를 한다.
-	// HandleReceive로 처리를 넘긴다.
 
 	socket_.async_read_some(
 			boost::asio::buffer(recv_buffer_),
@@ -154,7 +150,6 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 }
 
 
-// Recv를 처리할 함수
 void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 {
 	LL_DEBUG("Session::HandleReceive : bytes_transferred(%d)", bytes_transferred);
@@ -170,7 +165,6 @@ void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 			LL_DEBUG("Client connection error : %d - msg : %s", error.value(), error.message().c_str());
 		}
 
-		// Recv가 실패하거나 소켓의 연결이 끊겼다면 소켓을 닫도록 한다.
 		server_->CloseHandler(shared_from_this());
 	}
 	else
