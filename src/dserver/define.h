@@ -80,8 +80,6 @@ typedef boost::system::error_code		ErrorCode;
 typedef boost::mutex					Mutex;
 typedef boost::lock_guard<Mutex>		LockGuard;
 
-const int32_t kEND_MARKER = 19830419;
-
 #define SVR							DServer::GetServerInstance()
 #define GAME_SVR					std::static_pointer_cast<DServer>(SVR)
 
