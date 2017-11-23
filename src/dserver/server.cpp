@@ -8,6 +8,8 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	, user_protocol_(user_protocol)
 	, http_server_(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT"))
 {
+	acceptor_.set_option(Acceptor::reuse_address(true));
+
 	LL_DEBUG("Server Port:[%s]", server_port.c_str());
 	LL_DEBUG("WebServer Port:[%s]", CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT").c_str());
 
