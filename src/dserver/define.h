@@ -73,6 +73,10 @@
 
 #include "monitor/system_resource_monitor.h"
 
+#ifdef _DEBUG
+#include <vld.h>
+#endif
+
 typedef boost::asio::strand				Strand;
 typedef boost::asio::io_service			IoService;
 typedef boost::asio::ip::tcp::endpoint	EndPoint;
