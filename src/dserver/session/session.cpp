@@ -7,7 +7,6 @@ Session::Session(IoService& io_service, DServer* server, UserProtocol* user_prot
 	, server_(server)
 	, packet_buffer_size_(0)
 	, user_protocol_(user_protocol)
-	, strand_(io_service)
 	, is_cgcii_test_(false)
 {
 	if ("TRUE" == CONFIG_MANAGER_INSTANCE.GetValue("DServer", "USE_CGCII_TEST", true))
@@ -18,7 +17,7 @@ Session::Session(IoService& io_service, DServer* server, UserProtocol* user_prot
 
 Session::~Session()
 {
-	
+	SendBufferPool::purge_memory();
 }
 
 Socket& Session::GetSocket()
@@ -262,13 +261,11 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 	memcpy(send_data, data, size);
 
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data, size),
-		//strand_.wrap(
-			boost::bind(&Session::HandleWrite,
-				shared_from_this(),
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				send_data)
-		//)
+		boost::bind(&Session::HandleWrite,
+			shared_from_this(),
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred,
+			send_data)
 	);
 }
 

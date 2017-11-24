@@ -26,8 +26,6 @@ private :
 	void		HandleReceive(const ErrorCode& error, size_t bytes_transferred);
 	void		HandleWrite(const ErrorCode& error, size_t bytes_transferred, unsigned char* send_data);
 
-	Strand strand_;
-
 	std::shared_ptr<DServer> server_;
 	Socket socket_;
 
