@@ -10,6 +10,10 @@ class UserProtocol;
 class Session : public std::enable_shared_from_this<Session>
 {
 public :
+	struct SEND_BUFFER_TAG {};
+
+	typedef boost::singleton_pool<SEND_BUFFER_TAG, SEND_BUFFER_SIZE> SendBufferPool;
+
 	Session(IoService& io_service, DServer* server, UserProtocol* user_protocol);
 	virtual ~Session();
 
@@ -20,11 +24,7 @@ public :
 
 private :
 	void		HandleReceive(const ErrorCode& error, size_t bytes_transferred);
-	void		HandleWrite(const ErrorCode& error, size_t bytes_transferred);
-
-	std::deque< unsigned char* > send_data_queue_;
-	unsigned char* send_data = nullptr;
-	unsigned int send_data_size = 0;
+	void		HandleWrite(const ErrorCode& error, size_t bytes_transferred, unsigned char* send_data);
 
 	std::shared_ptr<DServer> server_;
 	Socket socket_;
@@ -35,4 +35,5 @@ private :
 	unsigned char recv_buffer_[RECV_BUFFER_SIZE];
 
 	UserProtocol* user_protocol_;
+	bool is_cgcii_test_;
 };

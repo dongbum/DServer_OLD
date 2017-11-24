@@ -56,6 +56,9 @@
 
 #include <boost/serialization/singleton.hpp>
 
+#include <boost/pool/singleton_pool.hpp>
+#include <boost/pool/pool_alloc.hpp>
+
 #include "json/json.h"
 
 #include "config/config.h"
@@ -70,6 +73,10 @@
 
 #include "monitor/system_resource_monitor.h"
 
+#ifdef _DEBUG
+#include <vld.h>
+#endif
+
 typedef boost::asio::strand				Strand;
 typedef boost::asio::io_service			IoService;
 typedef boost::asio::ip::tcp::endpoint	EndPoint;
@@ -80,11 +87,9 @@ typedef boost::system::error_code		ErrorCode;
 typedef boost::mutex					Mutex;
 typedef boost::lock_guard<Mutex>		LockGuard;
 
-const int32_t kEND_MARKER = 19830419;
-
 #define SVR							DServer::GetServerInstance()
 #define GAME_SVR					std::static_pointer_cast<DServer>(SVR)
 
-#define RECV_BUFFER_SIZE			1024 * 64		// 수신용 버퍼 크기
-#define SEND_BUFFER_SIZE			1024 * 64		// 송신용 버퍼 크기
+#define RECV_BUFFER_SIZE			1024 * 10		// 수신용 버퍼 크기
+#define SEND_BUFFER_SIZE			1024 * 10		// 송신용 버퍼 크기
 #define MAX_DATETIME_SIZE			(19+1)

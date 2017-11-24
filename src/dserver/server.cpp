@@ -8,21 +8,13 @@ DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	, user_protocol_(user_protocol)
 	, http_server_(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT"))
 {
+	acceptor_.set_option(Acceptor::reuse_address(true));
+
 	LL_DEBUG("Server Port:[%s]", server_port.c_str());
 	LL_DEBUG("WebServer Port:[%s]", CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT").c_str());
 
 	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
 	max_session_count = std::max(max_session_count, 100);
-
-	/*
-	for (int i = 0; i < max_session_count; i++)
-	{
-		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this, user_protocol));
-		// session_queue_.push(session);
-
-		session_queue_.Push(session);
-	}
-	*/
 
 	session_pool_.Init(acceptor_, this, user_protocol, max_session_count);
 

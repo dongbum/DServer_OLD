@@ -9,7 +9,7 @@ ConfigManager::ConfigManager(void)
 
 ConfigManager::~ConfigManager(void)
 {
-
+	ptree_.clear();
 }
 
 
