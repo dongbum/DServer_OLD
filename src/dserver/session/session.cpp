@@ -8,8 +8,12 @@ Session::Session(IoService& io_service, DServer* server, UserProtocol* user_prot
 	, packet_buffer_size_(0)
 	, user_protocol_(user_protocol)
 	, strand_(io_service)
+	, is_cgcii_test_(false)
 {
-
+	if ("TRUE" == CONFIG_MANAGER_INSTANCE.GetValue("DServer", "USE_CGCII_TEST", true))
+	{
+		is_cgcii_test_ = true;
+	}
 }
 
 Session::~Session()
@@ -78,7 +82,7 @@ void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 				LL_DEBUG("Header.ProtocolNo  : %d", header->GetProtocolNo());
 				LL_DEBUG("Header.DataLength  : %d", header->GetDataLength());
 
-				if ("TRUE" == CONFIG_MANAGER_INSTANCE.GetValue("DServer", "USE_CGCII_TEST", true))
+				if (true == is_cgcii_test_)
 				{
 					unsigned char send_buffer[SEND_BUFFER_SIZE] = { 0, };
 					int index = 0;

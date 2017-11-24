@@ -37,4 +37,5 @@ private :
 	unsigned char recv_buffer_[RECV_BUFFER_SIZE];
 
 	UserProtocol* user_protocol_;
+	bool is_cgcii_test_;
 };
