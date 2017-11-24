@@ -153,6 +153,7 @@
     <ClInclude Include="..\..\src\dserver\server.h" />
     <ClInclude Include="..\..\src\dserver\session\session.h" />
     <ClInclude Include="..\..\src\dserver\session\session_pool.h" />
+    <ClInclude Include="..\..\src\dserver\system\memory_pool.h" />
     <ClInclude Include="..\..\src\dserver\utility\endian.h" />
     <ClInclude Include="..\..\src\dserver\utility\util.h" />
     <ClInclude Include="..\..\src\user_protocol\user_protocol.h" />

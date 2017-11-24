@@ -10,6 +10,10 @@ class UserProtocol;
 class Session : public std::enable_shared_from_this<Session>
 {
 public :
+	struct SEND_BUFFER_TAG {};
+
+	typedef boost::singleton_pool<SEND_BUFFER_TAG, SEND_BUFFER_SIZE> SendBufferPool;
+
 	Session(IoService& io_service, DServer* server, UserProtocol* user_protocol);
 	virtual ~Session();
 

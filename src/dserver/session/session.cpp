@@ -253,17 +253,18 @@ void Session::PostSend(const bool bImmediately, const int size, unsigned char* d
 		return;
 	}
 
-	unsigned char* send_data = new unsigned char[size];
+	//unsigned char* send_data = new unsigned char[size];
+	unsigned char* send_data = static_cast<unsigned char*>(SendBufferPool::malloc());
 	memcpy(send_data, data, size);
 
 	boost::asio::async_write(socket_, boost::asio::buffer(send_data, size),
-		strand_.wrap(
+		//strand_.wrap(
 			boost::bind(&Session::HandleWrite,
 				shared_from_this(),
 				boost::asio::placeholders::error,
 				boost::asio::placeholders::bytes_transferred,
 				send_data)
-		)
+		//)
 	);
 }
 
@@ -271,7 +272,8 @@ void Session::HandleWrite(const ErrorCode& error, size_t bytes_transferred, unsi
 {
 	LL_DEBUG("Session::HandleWrite : bytes_transferred(%d)", bytes_transferred);
 
-	delete[] send_data;
+	//delete[] send_data;
+	SendBufferPool::free(send_data);
 }
 
 /*

@@ -70,6 +70,9 @@
     <Filter Include="소스 파일\dserver\monitor">
       <UniqueIdentifier>{a79c7910-06fb-4424-ab7a-f11c18d16790}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\system">
+      <UniqueIdentifier>{f8fd3715-9ddf-4c19-a493-b9c1e3864678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\http\http_util.h">
       <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\system\memory_pool.h">
+      <Filter>소스 파일\dserver\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
