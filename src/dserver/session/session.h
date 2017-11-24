@@ -20,11 +20,9 @@ public :
 
 private :
 	void		HandleReceive(const ErrorCode& error, size_t bytes_transferred);
-	void		HandleWrite(const ErrorCode& error, size_t bytes_transferred);
+	void		HandleWrite(const ErrorCode& error, size_t bytes_transferred, unsigned char* send_data);
 
-	std::deque< unsigned char* > send_data_queue_;
-	unsigned char* send_data = nullptr;
-	unsigned int send_data_size = 0;
+	Strand strand_;
 
 	std::shared_ptr<DServer> server_;
 	Socket socket_;

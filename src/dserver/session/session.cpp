@@ -3,10 +3,11 @@
 
 
 Session::Session(IoService& io_service, DServer* server, UserProtocol* user_protocol)
-:	socket_(io_service)
-,	server_(server)
-,	packet_buffer_size_(0)
-,	user_protocol_(user_protocol)
+	: socket_(io_service)
+	, server_(server)
+	, packet_buffer_size_(0)
+	, user_protocol_(user_protocol)
+	, strand_(io_service)
 {
 
 }
@@ -37,118 +38,6 @@ void Session::PostReceive(void)
 					)
 			);
 }
-
-/*
-void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
-{
-	boost::system::error_code error;
-	boost::asio::ip::tcp::endpoint endpoint = socket_.remote_endpoint(error);
-	if (error)
-	{
-		LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error.value(), error.message().c_str());
-
-		while (send_data_queue_.empty() == false)
-		{
-			delete[] send_data_queue_.front();
-			send_data_queue_.pop_front();
-		}
-
-		server_->CloseHandler(shared_from_this());
-		return;
-	}
-
-	unsigned char* target_data = nullptr;
-	unsigned int target_data_size = size + sizeof(Header);
-
-	unsigned char* send_data = nullptr;
-	unsigned int send_data_size = 0;
-
-	if (bImmediately == false)
-	{
-		target_data = new unsigned char[target_data_size];
-		if (nullptr == target_data)
-			LL_DEBUG("new error");
-
-		Header header;
-		header.SetTotalLength(target_data_size);
-
-		memcpy(target_data, &header, sizeof(Header));
-		memcpy(target_data + sizeof(Header), data, size);
-
-		send_data = new unsigned char[target_data_size];
-		if (nullptr == send_data)
-			LL_DEBUG("new error");
-
-		memset(send_data, 0, target_data_size);
-		memcpy(send_data, target_data, target_data_size);
-
-		send_data_size = target_data_size;
-
-		send_data_queue_.push_back(send_data);
-		// send_data_queue_.push(send_data);
-		LL_DEBUG("Send target data push : %d", send_data_queue_.size());
-
-		delete[] target_data;
-	}
-	else
-	{
-		target_data = data;
-		send_data = new unsigned char[size];
-		if (nullptr == send_data)
-			LL_DEBUG("new error");
-
-		memset(send_data, 0, size);
-		memcpy(send_data, data, size);
-
-		send_data_size = size;
-
-		send_data_queue_.push_back(send_data);
-		//send_data_queue_.push(send_data);
-	}
-
-	if (bImmediately == false && send_data_queue_.size() > 1)
-	{
-		LL_DEBUG("bImmediately is false and send_data_queue.size : %d", send_data_queue_.size());
-		return;
-	}
-
-	LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
-
-	if (send_data_size <= 0)
-		LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
-
-	boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
-		boost::bind(&Session::HandleWrite, shared_from_this(),
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred)
-	);
-}
-*/
-
-void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
-{
-	boost::system::error_code error;
-	boost::asio::ip::tcp::endpoint endpoint = socket_.remote_endpoint(error);
-	if (error)
-	{
-		LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error.value(), error.message().c_str());
-
-		server_->CloseHandler(shared_from_this());
-		return;
-	}
-
-	int32_t send_data_size = size;
-
-	unsigned char send_data[SEND_BUFFER_SIZE] = { 0, };
-	memcpy(send_data, data, size);
-
-	boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
-		boost::bind(&Session::HandleWrite, shared_from_this(),
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred)
-	);
-}
-
 
 void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 {
@@ -238,6 +127,153 @@ void Session::HandleReceive(const ErrorCode& error, size_t bytes_transferred)
 	}
 }
 
+
+/*
+void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
+{
+boost::system::error_code error;
+boost::asio::ip::tcp::endpoint endpoint = socket_.remote_endpoint(error);
+if (error)
+{
+LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error.value(), error.message().c_str());
+
+while (send_data_queue_.empty() == false)
+{
+delete[] send_data_queue_.front();
+send_data_queue_.pop_front();
+}
+
+server_->CloseHandler(shared_from_this());
+return;
+}
+
+unsigned char* target_data = nullptr;
+unsigned int target_data_size = size + sizeof(Header);
+
+unsigned char* send_data = nullptr;
+unsigned int send_data_size = 0;
+
+if (bImmediately == false)
+{
+target_data = new unsigned char[target_data_size];
+if (nullptr == target_data)
+LL_DEBUG("new error");
+
+Header header;
+header.SetTotalLength(target_data_size);
+
+memcpy(target_data, &header, sizeof(Header));
+memcpy(target_data + sizeof(Header), data, size);
+
+send_data = new unsigned char[target_data_size];
+if (nullptr == send_data)
+LL_DEBUG("new error");
+
+memset(send_data, 0, target_data_size);
+memcpy(send_data, target_data, target_data_size);
+
+send_data_size = target_data_size;
+
+send_data_queue_.push_back(send_data);
+// send_data_queue_.push(send_data);
+LL_DEBUG("Send target data push : %d", send_data_queue_.size());
+
+delete[] target_data;
+}
+else
+{
+target_data = data;
+send_data = new unsigned char[size];
+if (nullptr == send_data)
+LL_DEBUG("new error");
+
+memset(send_data, 0, size);
+memcpy(send_data, data, size);
+
+send_data_size = size;
+
+send_data_queue_.push_back(send_data);
+//send_data_queue_.push(send_data);
+}
+
+if (bImmediately == false && send_data_queue_.size() > 1)
+{
+LL_DEBUG("bImmediately is false and send_data_queue.size : %d", send_data_queue_.size());
+return;
+}
+
+LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
+
+if (send_data_size <= 0)
+LL_DEBUG("Send Start. Send target data size : %d", send_data_size);
+
+boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
+boost::bind(&Session::HandleWrite, shared_from_this(),
+boost::asio::placeholders::error,
+boost::asio::placeholders::bytes_transferred)
+);
+}
+*/
+
+/*
+void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
+{
+boost::system::error_code error;
+boost::asio::ip::tcp::endpoint endpoint = socket_.remote_endpoint(error);
+if (error)
+{
+LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error.value(), error.message().c_str());
+
+server_->CloseHandler(shared_from_this());
+return;
+}
+
+int32_t send_data_size = size;
+
+unsigned char send_data[SEND_BUFFER_SIZE] = { 0, };
+memcpy(send_data, data, size);
+
+boost::asio::async_write(socket_, boost::asio::buffer(send_data, send_data_size),
+boost::bind(&Session::HandleWrite, shared_from_this(),
+boost::asio::placeholders::error,
+boost::asio::placeholders::bytes_transferred)
+);
+}
+*/
+
+void Session::PostSend(const bool bImmediately, const int size, unsigned char* data)
+{
+	ErrorCode error_code;
+	EndPoint end_point = socket_.remote_endpoint(error_code);
+	if (error_code)
+	{
+		LL_DEBUG("%s - error No: %d error Message: %s", __FUNCTION__, error_code.value(), error_code.message().c_str());
+
+		server_->CloseHandler(shared_from_this());
+		return;
+	}
+
+	unsigned char* send_data = new unsigned char[size];
+	memcpy(send_data, data, size);
+
+	boost::asio::async_write(socket_, boost::asio::buffer(send_data, size),
+		strand_.wrap(
+			boost::bind(&Session::HandleWrite,
+				shared_from_this(),
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred,
+				send_data)
+		)
+	);
+}
+
+void Session::HandleWrite(const ErrorCode& error, size_t bytes_transferred, unsigned char* send_data)
+{
+	LL_DEBUG("Session::HandleWrite : bytes_transferred(%d)", bytes_transferred);
+
+	delete[] send_data;
+}
+
 /*
 // 데이터를 전송한다.
 void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_transferred)
@@ -287,8 +323,3 @@ void Session::HandleWrite(const boost::system::error_code& error, size_t bytes_t
 	PostSend(true, header->GetTotalLength(), next_data);
 }
 */
-
-void Session::HandleWrite(const ErrorCode& error, size_t bytes_transferred)
-{
-	LL_DEBUG("Session::HandleWrite : bytes_transferred(%d)", bytes_transferred);
-}
