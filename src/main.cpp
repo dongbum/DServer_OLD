@@ -21,7 +21,7 @@ int main(void)
 	UserProtocol user_protocol;
 	user_protocol.Initialize();
 
-	std::shared_ptr<DServer> server(new DServer(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol));
+	std::shared_ptr<DServer> server = std::make_shared<DServer>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "PORT"), &user_protocol);
 	DServer::SetServerInstance(server);
 	server->Start();
 

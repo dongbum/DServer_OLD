@@ -18,7 +18,8 @@ void SessionPool::Init(Acceptor& acceptor, DServer* server, UserProtocol* user_p
 {
 	for (uint32_t i = 0; i < session_pool_count; i++)
 	{
-		SessionPtr session = SessionPtr(new Session(acceptor.get_io_service(), server, user_protocol));
+		
+		SessionPtr session = std::make_shared<Session>(acceptor.get_io_service(), server, user_protocol);
 
 		session_queue_.Push(session);
 	}
