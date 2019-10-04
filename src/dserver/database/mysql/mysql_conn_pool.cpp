@@ -1,12 +1,5 @@
 #include "mysql_conn_pool.h"
 
-namespace dserver
-{
-namespace database
-{
-namespace mysql
-{
-
 
 MySQLConnPool::MySQLConnPool(int32_t& pool_count)
 	: pool_count_(pool_count)
@@ -50,9 +43,4 @@ MySQLConnPool::MySQLConnPtr MySQLConnPool::GetMySQLConn(void)
 	MySQLConnPtr mysql_conn = mysql_conn_vec_[0];
 
 	return mysql_conn;
-}
-
-
-}
-}
 }

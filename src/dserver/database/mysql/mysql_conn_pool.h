@@ -1,15 +1,7 @@
-#ifndef __C_MYSQL_CONN_POOL_H__
-#define __C_MYSQL_CONN_POOL_H__
+#pragma once
 
 #include "../../define.h"
 #include "mysql_conn.h"
-
-namespace dserver
-{
-namespace database
-{
-namespace mysql
-{
 
 
 class MySQLConnPool
@@ -28,10 +20,3 @@ private:
 	std::vector<MySQLConnPtr>	mysql_conn_vec_;
 	int32_t						pool_count_;
 };
-
-
-}
-}
-}
-
-#endif

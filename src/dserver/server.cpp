@@ -1,49 +1,40 @@
-/*
- * server.cpp
- *
- *  Created on: 2013. 11. 26.
- *      Author: dongbum
- */
-
 #include "server.h"
-#include "work_thread_manager.h"
+#include "session/session.h"
 
-namespace dserver
+DServer::DServer(std::string server_port, UserProtocol* user_protocol)
+	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
+	, user_protocol_(user_protocol)
+	, http_server_(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT"))
 {
+	acceptor_.set_option(Acceptor::reuse_address(true));
 
-// 생성자
-DServer::DServer(std::string server_port)
-:	session_(nullptr)
-,	acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
-,	count_(0)
-{
-	// 세션을 필요한만큼 만들어서 큐에 넣는다.
-	for (int i = 0; i < 8; i++)
-	{
-		SessionPtr session = SessionPtr(new Session(acceptor_.get_io_service(), this));
-		session->Init();
-		// session_queue_.push(session);
+	LL_DEBUG("Server Port:[%s]", server_port.c_str());
+	LL_DEBUG("WebServer Port:[%s]", CONFIG_MANAGER_INSTANCE.GetValue("DServer", "WEB_PORT").c_str());
 
-		tbb_queue_.push(session);
-	}
+	int32_t max_session_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "MAX_SESSION_COUNT"));
+	max_session_count = std::max(max_session_count, 100);
+
+	session_pool_.Init(acceptor_, this, user_protocol, max_session_count);
+
+	LL_DEBUG("SessionPool Size:[%d]", session_pool_.Size());
 
 	IOServiceHandler();
 }
 
-// 소멸자
+
 DServer::~DServer(void)
 {
 
 }
 
+
 void DServer::IOServiceHandler(void)
 {
 	SessionPtr new_session = nullptr;
+	new_session = session_pool_.GetSession();
 
-	// 큐에서 세션 한개를 뺀다.
-	tbb_queue_.try_pop(new_session);
+	LL_DEBUG("SessionPool GetSession() success. Size:[%d]", session_pool_.Size());
 
-	// 그 세션에서 accept를 받는다.
 	acceptor_.async_accept(
 				new_session->GetSocket(),
 				boost::bind(
@@ -55,44 +46,53 @@ void DServer::IOServiceHandler(void)
 				);
 }
 
-// 소켓 accept 핸들러
-void DServer::AcceptHandler(SessionPtr session, const boost::system::error_code& error)
+
+void DServer::AcceptHandler(SessionPtr session, const ErrorCode& error)
 {
+	LL_DEBUG("AcceptHandler START");
+
+	if (false == acceptor_.is_open())
+	{
+		LL_DEBUG("Acceptor is close.");
+		return;
+	}
+
 	if (!error)
 	{
-		std::cout << "Client connected" << std::endl;
+		LL_DEBUG("Client connected");
 
-		// Accept가 되었다면 세션의 PostHandler로 처리를 넘긴다.
-
-		count_++;
-		std::cout << "count_ : " << count_ << std::endl;
-		session->PostHandler();
+		session->PostReceive();
 	}
 	else
 	{
-		std::cout << error.value() << " : " << error.message() << std::endl;
+		LL_DEBUG("%d : %s", error.value(), error.message().c_str());
 
-		// Accept에 문제가 있다면 이 세션을 종료한다.
 		CloseHandler(session);
 	}
 
 	IOServiceHandler();
 }
 
-void DServer::Init(void)
+
+void DServer::Start(void)
 {
+	LL_DEBUG("START");
 
-}
+	int32_t thread_count = boost::lexical_cast<int32_t>(CONFIG_MANAGER_INSTANCE.GetValue("DServer", "THREAD_COUNT"));
+	if (0 == thread_count)
+		thread_count = (std::max)(static_cast<int>(boost::thread::hardware_concurrency()), 1);
 
-// 시작
-void DServer::Start(std::string& thread_count)
-{
-	// 워커스레드 매니저 생성
-	work_thread_manager_ = new WorkThreadManager(boost::lexical_cast<uint16_t>(thread_count));
+	LL_DEBUG("ThreadCount:[%d]", thread_count);
 
-	std::cout << "START" << std::endl;
+	for (int i = 0; i < thread_count; ++i)
+	{
+		boost::thread io_thread(boost::bind(&boost::asio::io_service::run, &io_service_));
+		io_thread_group_.add_thread(&io_thread);
+	}
 
-	io_service_.run();
+	io_thread_group_.join_all();
+
+	http_server_.Start();
 }
 
 
@@ -102,25 +102,22 @@ void DServer::Stop(void)
 }
 
 
-// 세션 종료
 void DServer::CloseHandler(SessionPtr session)
 {
-	std::cout << "CloseHandler" << std::endl;
+	LL_DEBUG("CloseHandler");
+	LL_DEBUG("before push : session_pool_.size() : %d", session_pool_.Size());
+	LL_DEBUG("socket close");
 
-	// std::cout << "before push : session_queue_.size() : " << session_queue_.size() << std::endl;
-	std::cout << "before push : tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
+	if (true == session->GetSocket().is_open())
+	{
+		ErrorCode ignored_error;
+		session->GetSocket().shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_error);
+		session->GetSocket().close();
+	}
 
-	// 세션의 소켓을 닫는다.
-	session->GetSocket().close();
+	LL_DEBUG("push to session_queue_");
 
-	// 세션큐에 다시 이 세션을 넣는다.
-	// session_queue_.push(session);
+	session_pool_.ReleaseSession(session);
 
-	// tbb 큐에 다시 이 세션을 넣는다.
-	tbb_queue_.push(session);
-
-	// std::cout << "push end : session_queue_.size() : " << session_queue_.size() << std::endl;
-	std::cout << "push end : tbb_queue_.size() : " << tbb_queue_.unsafe_size() << std::endl;
-}
-
+	LL_DEBUG("push end : session_pool_.size() : %d", session_pool_.Size());
 }

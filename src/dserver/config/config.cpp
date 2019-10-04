@@ -1,18 +1,19 @@
-/*
- * config.cpp
- *
- *  Created on: 2013. 11. 30.
- *      Author: dongbum
- */
-
 #include "config.h"
 
-namespace dserver
-{
-namespace config
+
+ConfigManager::ConfigManager(void)
 {
 
-Config::Config(std::string file_name)
+}
+
+
+ConfigManager::~ConfigManager(void)
+{
+	ptree_.clear();
+}
+
+
+bool ConfigManager::Initialize(std::string file_name)
 {
 	std::cout << file_name << " Loading..." << std::endl;
 
@@ -25,19 +26,22 @@ Config::Config(std::string file_name)
 	catch (boost::property_tree::ini_parser_error& error)
 	{
 		std::cout << "Load failed : " << error.message() << std::endl;
+		return false;
 	}
+
+	return true;
 }
 
-Config::~Config(void)
-{
 
-}
-
-Config::INI_Value Config::GetValue(std::string section_name, std::string key_name)
+ConfigManager::INI_Value ConfigManager::GetValue(std::string section_name, std::string key_name, bool to_upper_case /* = false */)
 {
 	try
 	{
-		return ptree_.get<Config::INI_Value>(section_name + "." + key_name);
+		ConfigManager::INI_Value result = ptree_.get<ConfigManager::INI_Value>(section_name + "." + key_name);
+		if (to_upper_case)
+			std::transform(result.begin(), result.end(), result.begin(), toupper);
+
+		return result;
 	}
 	catch (boost::property_tree::ptree_bad_path& error)
 	{
@@ -45,9 +49,3 @@ Config::INI_Value Config::GetValue(std::string section_name, std::string key_nam
 		exit(1);
 	}
 }
-
-
-}
-}
-
-

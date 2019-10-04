@@ -1,21 +1,13 @@
-/*
- * Header.h
- *
- *  Created on: 2013. 11. 30.
- *      Author: dongbum
- */
-
-#ifndef HEADER_H_
-#define HEADER_H_
+#pragma once
 
 #include "define.h"
 
-namespace dserver
-{
-class Header
+#pragma pack(push, 1)
+
+typedef struct _Header
 {
 public:
-	Header(void)
+	_Header(void)
 	{
 		total_length_ = 0;
 		protocol_no_ = 0;
@@ -26,12 +18,13 @@ public:
 	int32_t			GetProtocolNo(void)		{ return protocol_no_; };
 	unsigned int&	GetDataLength(void)		{ return data_length_; };
 
+	void			SetTotalLength(int32_t total_length)	{ total_length_ = total_length; };
+	void			SetDataLength(int32_t data_length)		{ data_length_ = data_length; };
+
 private:
 	int32_t			total_length_;
 	int32_t			protocol_no_;
 	unsigned int	data_length_;
-};
+} Header;
 
-}
-
-#endif /* HEADER_H_ */
+#pragma pack(pop)

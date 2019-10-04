@@ -40,15 +40,42 @@
     <Filter Include="소스 파일\dserver\database\mysql">
       <UniqueIdentifier>{dfa634a0-5bcc-4cc0-923d-5c97f74b82b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\dserver\session">
+      <UniqueIdentifier>{6abd1716-fbe0-4053-8718-412417061151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\interface">
+      <UniqueIdentifier>{86e3c83c-5393-4f54-9fdc-61b2c18b84a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\logging">
+      <UniqueIdentifier>{6805a70e-76a0-4de9-b3f0-863088ebdc7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\container">
+      <UniqueIdentifier>{169dda63-f901-463a-aae3-71139797fd9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\http">
+      <UniqueIdentifier>{932d853b-3b79-4cc5-9fd0-8eedd1c36a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\json">
+      <UniqueIdentifier>{a2c2413a-2347-406b-900b-b125b65c3d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\web_protocol">
+      <UniqueIdentifier>{2e9ca56b-c5d7-4df7-9ca3-1f11992bcb2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\web_protocol\info">
+      <UniqueIdentifier>{03dec4cf-d937-4ad4-adae-43d01afcecdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\web_protocol\index">
+      <UniqueIdentifier>{eaa5d5d1-4d41-46e5-aec7-db19b08efbe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\monitor">
+      <UniqueIdentifier>{a79c7910-06fb-4424-ab7a-f11c18d16790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dserver\system">
+      <UniqueIdentifier>{f8fd3715-9ddf-4c19-a493-b9c1e3864678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\dserver\server.cpp">
-      <Filter>소스 파일\dserver</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\dserver\session.cpp">
-      <Filter>소스 파일\dserver</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\dserver\work_thread_manager.cpp">
       <Filter>소스 파일\dserver</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\dserver\utility\util.cpp">
@@ -75,14 +102,47 @@
     <ClCompile Include="..\..\src\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\user_protocol\user_protocol.cpp">
-      <Filter>소스 파일\user_protocol</Filter>
+    <ClCompile Include="..\..\src\dserver\session\session_pool.cpp">
+      <Filter>소스 파일\dserver\session</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\user_protocol\user_protocol_echo.cpp">
+    <ClCompile Include="..\..\src\dserver\session\session.cpp">
+      <Filter>소스 파일\dserver\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\logging\log_manager.cpp">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\http\http_server.cpp">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\http\http_service.cpp">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\json\json_reader.cpp">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\json\json_value.cpp">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\json\json_writer.cpp">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\web_protocol\index\web_protocol_index.cpp">
+      <Filter>소스 파일\web_protocol\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_disk_space.cpp">
+      <Filter>소스 파일\web_protocol\info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dserver\monitor\system_resource_monitor.cpp">
+      <Filter>소스 파일\dserver\monitor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\web_protocol\info\web_protocol_info_memory.cpp">
+      <Filter>소스 파일\web_protocol\info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\user_protocol\echo\user_protocol_echo.cpp">
       <Filter>소스 파일\user_protocol\echo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\dserver\work_queue.cpp">
-      <Filter>소스 파일\dserver</Filter>
+    <ClCompile Include="..\..\src\dserver\database\mysql\mysql_example.cpp">
+      <Filter>소스 파일\dserver\database\mysql</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,12 +153,6 @@
       <Filter>소스 파일\dserver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\server.h">
-      <Filter>소스 파일\dserver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\dserver\session.h">
-      <Filter>소스 파일\dserver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\dserver\work_thread_manager.h">
       <Filter>소스 파일\dserver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\dserver\utility\util.h">
@@ -131,11 +185,94 @@
     <ClInclude Include="..\..\src\user_protocol\user_protocol_define.h">
       <Filter>소스 파일\user_protocol</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\dserver\work_queue.h">
+    <ClInclude Include="..\..\src\dserver\session\session_pool.h">
+      <Filter>소스 파일\dserver\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\session\session.h">
+      <Filter>소스 파일\dserver\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_manager.h">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_message.h">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\logging\log_define.h">
+      <Filter>소스 파일\dserver\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\acceptor.h">
       <Filter>소스 파일\dserver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\dserver\request_work.h">
-      <Filter>소스 파일\dserver</Filter>
+    <ClInclude Include="..\..\src\dserver\container\thread_safe_queue.h">
+      <Filter>소스 파일\dserver\container</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_server.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_service.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_define.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_response.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\json_tool.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\reader.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\value.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\version.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\writer.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\allocator.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\assertions.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\autolink.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\config.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\features.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\forwards.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\json\json.h">
+      <Filter>소스 파일\dserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_base_protocol.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\web_protocol\web_protocol.h">
+      <Filter>소스 파일\web_protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\monitor\system_resource_monitor.h">
+      <Filter>소스 파일\dserver\monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\http\http_util.h">
+      <Filter>소스 파일\dserver\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dserver\system\memory_pool.h">
+      <Filter>소스 파일\dserver\system</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\dserver\json\json_valueiterator.inl">
+      <Filter>소스 파일\dserver\json</Filter>
+    </None>
   </ItemGroup>
 </Project>

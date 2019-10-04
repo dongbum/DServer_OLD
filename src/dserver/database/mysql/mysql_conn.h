@@ -1,5 +1,4 @@
-#ifndef _MYSQL_CONN_H_
-#define _MYSQL_CONN_H_
+#pragma once
 
 #include "../../define.h"
 
@@ -10,12 +9,6 @@
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
 
-namespace dserver
-{
-namespace database
-{
-namespace mysql
-{
 
 class MySQLConn
 {
@@ -56,9 +49,3 @@ private:
 	uint32_t					column_index_;
 
 };
-
-}
-}
-}
-
-#endif

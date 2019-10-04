@@ -1,24 +1,14 @@
-/*
- * server.h
- *
- *  Created on: 2013. 11. 26.
- *      Author: dongbum
- */
-
-#ifndef SERVER_H_
-#define SERVER_H_
+#pragma once
 
 #include "define.h"
-#include "session.h"
-#include "work_thread_manager.h"
-#include "../user_protocol/user_protocol.h"
+#include "session/session_pool.h"
+#include "http/http_server.h"
 
-namespace dserver
-{
 
-class Session;
 class Config;
-
+class UserProtocol;
+class Session;
+class SessionPool;
 class DServer
 {
 public :
@@ -29,41 +19,32 @@ public :
 
 	typedef std::shared_ptr<Session>		SessionPtr;
 
-	// 생성자
-	DServer(std::string server_port);
-
-	// 소멸자
+	DServer(std::string server_port, UserProtocol* user_protocol);
 	virtual ~DServer(void);
 
-	void Init(void);
-	void Start(std::string& thread_count);
-	void Start(Config& config);
+	void Start(void);
 	void Stop(void);
 
 	void Accept(void);
 
-	// 소켓 accept 핸들러
-	void AcceptHandler(SessionPtr session, const boost::system::error_code& error);
-
-	// 소켓 close 핸들러
+	void AcceptHandler(SessionPtr session, const ErrorCode& error);
 	void CloseHandler(SessionPtr session);
-
 	void IOServiceHandler();
-private :
+
+public:
+	UserProtocol*			GetUserProtocol(void) { return user_protocol_; }
+
+private:
 	IoService				io_service_;
 	Acceptor				acceptor_;
-	SessionPtr				session_;
-	WorkThreadManager*		work_thread_manager_;
+	boost::thread_group		io_thread_group_;
 
-	// 세션들을 담아둘 큐
-	// 이 큐에서 세션을 빼서 처리한다.
-	// std::queue<Session*> session_queue_;
+	SessionPool				session_pool_;
 
-	tbb::concurrent_queue<SessionPtr> tbb_queue_;
+private:
+	HTTPServer				http_server_;
 
-	int count_;
+private:
+	UserProtocol*			user_protocol_;
+
 };
-
-}
-
-#endif /* SERVER_H_ */
