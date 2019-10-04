@@ -2,6 +2,7 @@
 
 #include "../define.h"
 #include "http_define.h"
+#include "http_util.h"
 
 class HTTPResponse
 {
@@ -26,11 +27,7 @@ public:
 		headers_[1].name = "Content-Length";
 		headers_[1].value = std::to_string(content_.size());
 
-		std::map<unsigned int, std::string>::const_iterator iter = http_status_table.find(status_);
-		if (http_status_table.end() == iter)
-			http_status_message_ = std::string("HTTP/1.1 500 Server Error");
-		else
-			http_status_message_ = std::string("HTTP/1.1 ") + std::string(iter->second);
+		http_status_message_ = HTTP_UTIL_INSTANCE.FindHttpMessage(status_);
 
 		buffer.push_back(boost::asio::buffer(http_status_message_));
 		buffer.push_back(boost::asio::buffer(crlf));

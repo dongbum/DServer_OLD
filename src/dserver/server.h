@@ -9,7 +9,7 @@ class Config;
 class UserProtocol;
 class Session;
 class SessionPool;
-class DServer : public std::enable_shared_from_this<DServer>
+class DServer
 {
 public :
 	typedef boost::asio::io_service			IoService;
@@ -30,12 +30,6 @@ public :
 	void AcceptHandler(SessionPtr session, const ErrorCode& error);
 	void CloseHandler(SessionPtr session);
 	void IOServiceHandler();
-
-public:
-	static std::shared_ptr<DServer> server_instance_ptr_;
-
-	static void SetServerInstance(std::shared_ptr<DServer>& server_instance_ptr) { server_instance_ptr_ = server_instance_ptr; }
-	static std::shared_ptr<DServer>& GetServerInstance(void) { return server_instance_ptr_; }
 
 public:
 	UserProtocol*			GetUserProtocol(void) { return user_protocol_; }

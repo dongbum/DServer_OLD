@@ -1,4 +1,5 @@
 #include "http_service.h"
+#include "http_util.h"
 #include "../../web_protocol/web_protocol.h"
 
 HTTPService::HTTPService(std::shared_ptr<Socket> socket_ptr, WebProtocol* web_protocol)
@@ -158,13 +159,6 @@ void HTTPService::ProcessRequest(void)
 void HTTPService::SendResponse(void)
 {
 	socket_ptr_->shutdown(boost::asio::ip::tcp::socket::shutdown_receive);
-	
-	std::map<unsigned int, std::string>::const_iterator iter = http_status_table.find(response_status_code_);
-	if (http_status_table.end() == iter)
-	{
-		Finish();
-		return;
-	}
 
 	response_.SetStatus(response_status_code_);
 	response_.ToBuffers(response_buffer_);
@@ -200,9 +194,5 @@ void HTTPService::Finish(void)
 
 std::string HTTPService::extension_to_type(const std::string & extension)
 {
-	std::map<std::string, std::string>::const_iterator iter = mapping_table.find(extension);
-	if (mapping_table.end() == iter)
-		return "text/plain";
-
-	return iter->second;
+	return HTTP_UTIL_INSTANCE.FindMapping(extension);
 }

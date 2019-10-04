@@ -1,8 +1,6 @@
 #include "server.h"
 #include "session/session.h"
 
-std::shared_ptr<DServer> DServer::server_instance_ptr_;
-
 DServer::DServer(std::string server_port, UserProtocol* user_protocol)
 	: acceptor_(io_service_, EndPoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<int32_t>(server_port)))
 	, user_protocol_(user_protocol)
@@ -91,6 +89,8 @@ void DServer::Start(void)
 		boost::thread io_thread(boost::bind(&boost::asio::io_service::run, &io_service_));
 		io_thread_group_.add_thread(&io_thread);
 	}
+
+	io_thread_group_.join_all();
 
 	http_server_.Start();
 }
